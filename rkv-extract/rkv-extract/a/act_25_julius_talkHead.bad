@@ -1,8 +1,0 @@
-mesh act_25_julius_talkHead.mdl
-skeleton act_25_julius_talkHead.anm
-
-anim talkIdle01
-5-95,1
-cycle loop
-
-//end

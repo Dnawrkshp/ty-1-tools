@@ -1,6 +1,0 @@
-mesh act1_42_SyncBlueTongue.mdl
-skeleton act1_42_SyncBlueTongue_Syn.anm
-
-anim SkeletonSetup
-0-5,1
-cyc;e stop
