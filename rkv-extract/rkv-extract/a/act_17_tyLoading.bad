@@ -1,0 +1,17 @@
+mesh Act_17_tyLoading.ase
+skeleton Actanim_17_tyLoading.ASE
+vat Act_17_tyLoading.vat
+
+
+// Standing while looking around
+anim Idle1
+1-300,1
+cycle loop
+
+// Boomerang spin
+anim Idle2
+301-441,1
+cycle loop
+
+
+//end

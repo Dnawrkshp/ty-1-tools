@@ -1,0 +1,8 @@
+mesh Act_19_Fish.ase
+
+anim idle
+0-0,1
+cycle loop
+
+
+

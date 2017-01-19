@@ -1,0 +1,21 @@
+mesh Act_21_Kingfisher.ASE
+skeleton Act_21_Kingfisher.ASE
+vat act_21_Kingfisher.vat
+
+anim fly
+100-131,1
+cycle loop
+
+anim glide
+134,1
+cycle loop
+
+anim land
+133-164,1
+cycle stop
+
+anim idle01
+200-350
+cycle loop
+
+//end

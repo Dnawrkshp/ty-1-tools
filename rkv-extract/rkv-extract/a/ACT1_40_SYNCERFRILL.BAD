@@ -1,0 +1,11 @@
+mesh Act1_40_SyncerFrill.mdl
+skeleton Act1_40_SyncerFrill.anm
+
+
+//Syncer anims
+
+anim lipsneutral
+15-35,1
+cycle stop
+
+//end

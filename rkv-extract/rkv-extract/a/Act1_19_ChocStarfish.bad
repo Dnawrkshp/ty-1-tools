@@ -1,0 +1,18 @@
+//Animations for Chocolate starfish
+
+mesh act1_19_chocstarfish.mdl
+skeleton act1_19_chocstarfish.mdl
+
+//Ambulatory animations
+
+anim swim
+3-51,1
+cycle loop
+
+//Idle animation
+
+anim idle
+53-120,1
+cycle loop 
+
+//End

@@ -1,0 +1,24 @@
+mesh Act_04_Bilby.mdl
+skeleton Act_04_Bilby.anm
+
+anim idle01
+100-300,1
+cycle stop
+
+//anim idle02_jump
+//300-405,1
+//cycle stop
+
+//anim idle03_wave
+//405-465,1
+//cycle stop
+
+//anim escape01_yahoo
+//500-565,1
+//cycle stop
+
+anim dance
+566-590,1
+cycle loop
+
+//end

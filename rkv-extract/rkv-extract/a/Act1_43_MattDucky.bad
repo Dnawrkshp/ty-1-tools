@@ -1,0 +1,8 @@
+fps=30
+
+mesh Act1_43_MattDucky
+skeleton Act1_43_MattDucky
+
+anim BouncyPaddle
+40-80,1
+cycle loop

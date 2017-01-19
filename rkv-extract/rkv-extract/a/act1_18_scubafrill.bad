@@ -1,0 +1,62 @@
+mesh act1_18_scubafrill.mdl
+skeleton act1_18_scubafrill.anm
+
+
+//r_mouth is the reference point for the mouth bubbles
+//r_flipper_L (and _R) are the ends of the flippers
+//r_claw_L (and _R) are his claws
+
+
+//SWIMMING ANIMS:
+anim swim01
+5-23,1
+cycle loop
+
+//it would look good if the character was moved forward a bit during attack
+anim attack01
+30-72,1
+event moveForward 42
+event attackHit 48
+cycle stop
+
+anim idle01
+270-318,1
+cycle stop
+
+anim flinch
+220-253,1
+cycle stop
+
+//the scare anim follows into the scramble anim
+anim scared
+350-378,1
+cycle stop
+
+//the scramble is a frantic swim, used for just after he has been scared
+anim scramble
+379-392,1
+cycle loop
+
+//because hes an underwater character, he needs to sink to the floor.
+//call the entry, go into the idle, and play the exit anim when he hits the floor
+anim death_entry
+490-563,1
+//90-161,162-188,189-218
+cycle stop
+
+anim death_loop
+564-588,1
+cycle loop
+
+anim death_exit
+589-610,1
+cycle stop
+
+//Speargun anims
+anim shoot
+395-431,1
+event shootspear 419
+cycle stop
+
+
+//end

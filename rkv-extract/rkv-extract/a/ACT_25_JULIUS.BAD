@@ -1,0 +1,133 @@
+mesh Act_25_Julius.ASE
+skeleton Act_25_Julius.ASE
+vat act_25_Julius.vat
+
+anim walk
+1-30,1
+event RightFoot 7
+event LeftFoot 22
+cycle loop
+
+anim run
+35-53,1
+event RightFoot 40 
+event LeftFoot 48
+cycle loop
+
+anim idle01
+530-660,1
+cycle stop
+
+anim idle02
+660-791,1
+cycle stop
+
+anim idle03
+870-1099,1
+cycle stop
+
+anim goToSleep_enter
+252-401,1
+cycle stop
+
+anim snore
+402-458,1
+cycle loop
+
+anim goToSleep_exit
+460-518,1
+cycle stop
+
+//------------------------------
+//     Synker Animations
+//------------------------------
+
+
+// Body Anims
+anim body_LookAround
+530-660,1
+cycle stop
+
+anim body_EarScratch
+660-791,1
+cycle stop
+
+anim body_Thinking
+870-1099,1
+cycle stop
+
+anim body_ChinScratch
+1110-1330,1
+cycle stop
+
+Anim body_Yes
+1335-1400,1
+cycle stop
+
+Anim body_No
+1410-1490,1
+cycle stop
+
+Anim body_Angry
+1500-1640,1
+cycle stop
+
+Anim body_Happy
+1650-1716,1
+cycle stop
+
+Anim body_nod
+3001-3201,1
+cycle loop
+
+Anim body_shiver
+2801-2831,1
+cycle loop
+
+anim body_MachineTwiddle
+3300-3500,1
+cycle stop
+
+//  head Anims
+anim HeadNeutral
+1801-1890,1
+cycle loop
+
+anim HeadHappy
+1901-1990,1
+cycle loop
+
+anim HeadSad
+2001-2090,1
+cycle loop
+
+anim HeadAngry
+2101-2190,1
+cycle loop
+
+anim HeadCurious
+2201-2290,1
+cycle loop
+
+anim HeadSurprised
+2301-2390,1
+cycle loop
+
+//  Lip Anims
+anim LipsNeutral
+2401-2490,1
+cycle stop
+
+anim LipsHappy
+2501-2590,1
+cycle stop
+
+anim LipsSad
+2601-2690,1
+cycle stop
+
+anim LipsAngry
+2701-2790,1
+cycle stop
+
+//end

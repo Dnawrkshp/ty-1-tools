@@ -1,0 +1,46 @@
+mesh act1_20_ringo.mdl
+skeleton Act1_20_ringo.Anm
+
+//Head animations
+
+anim NeutralToMenacing
+285-300,1
+cycle stop
+
+anim menacingToNeutral
+300-315,1
+cycle stop
+
+anim Idle
+315-345,1
+cycle loop
+
+anim lookLeft
+345-360,1
+cycle stop
+
+anim lookLeftidle
+360-390,1
+cycle loop
+
+anim lookLeftTofront
+390-405,1
+cycle stop
+
+anim lookRight
+405-420,1
+cycle stop
+
+anim lookRightidle
+420-450,1
+cycle loop
+
+anim lookRightTofront
+450-465,1
+cycle stop
+
+anim Flinch
+480-510,1
+cycle stop
+
+.end

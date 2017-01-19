@@ -1,0 +1,110 @@
+mesh act1_07_Andy.mdl
+skeleton act1_07_Andy.anm
+
+anim SetUp
+0-2,1
+cycle stop
+
+//Wombat standing on the spot in the snow. (on the board)
+anim idle01 
+50-108,1
+cycle loop
+
+//Wombat standing on the spot in the snow. (on the board)
+anim idle02 
+128-165,1
+cycle loop
+
+//Wombat pushes off and goes into board_Idle.
+anim start01 
+195-231,1
+cycle stop
+
+//On board moving down hill.
+anim board_idle01 
+260-298,1
+cycle loop
+
+//Turn_Right
+//anim turn_right
+//370-398,1
+//cycle stop
+
+//Turn_left
+//anim turn_left
+//365-385,1
+//cycle loop
+
+//Quickly crouches the does a jump.
+anim start_jump
+423-440,1
+cycle stop
+event leaveground 433
+
+//Mid air idle anim.
+//anim jump_idle
+//455-480,1
+//cycle loop
+
+// Land from jump on the ground
+anim jump_land
+482-500,1
+cycle stop
+
+//Helicopter spin in mid air.
+anim jump_spin
+520-552,1
+cycle stop
+
+//Get_Hit
+anim get_hit
+600-653,1
+cycle stop
+
+//Salute
+anim salute
+670-719,1
+cycle stop
+
+//Die
+anim die
+737-769,1
+cycle stop
+
+//Stuck_in_Snow
+anim snow_stuck
+793-834,1
+cycle stop
+
+//Full_Stop
+anim fullstop
+905-960,1
+cycle stop
+
+/////////Mannerisms
+
+//  Mannerism 1 Andy general conversation
+anim BodyNod
+1620-1780,1
+cycle stop
+
+//  Mannerism 2
+anim yo
+1920-2010,1
+cycle stop
+
+//  BodyNo
+anim no
+1850-1900,1
+cycle stop
+
+//  Body Yes
+anim yes
+2020-2100,1
+cycle stop
+
+// Body Give
+anim BodyGive
+2100-2150,1
+cycle stop
+

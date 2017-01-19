@@ -1,0 +1,12 @@
+mesh Act1_37_Birdflock.mdl
+skeleton Act1_37_Birdflock.anm
+
+anim flap
+1-29,1
+cycle loop
+
+anim glide
+32-81,1
+cycle loop
+
+//end

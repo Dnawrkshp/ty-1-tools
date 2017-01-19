@@ -1,0 +1,16 @@
+mesh Act1_26_jellyfish.mdl
+skeleton Act1_26_jellyfish.anm
+
+//Ambulatory Animations
+
+anim swim
+1-31,1
+cycle loop
+
+//Idle
+
+anim idle
+32-62,1
+cycle loop
+
+//End

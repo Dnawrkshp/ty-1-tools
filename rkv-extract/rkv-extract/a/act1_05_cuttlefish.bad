@@ -1,0 +1,6 @@
+mesh act1_05_cuttlefish.mdl
+skeleton act1_05_cuttlefish.anm
+
+anim swim
+10-30,1
+cycle loop

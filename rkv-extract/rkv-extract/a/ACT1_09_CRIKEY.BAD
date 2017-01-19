@@ -1,0 +1,106 @@
+mesh Act1_09_Crikey.mdl
+skeleton Act1_09_Crikey.anm
+
+anim swimSlow
+10-30,1
+cycle loop
+
+anim swimSlowNoArmour
+400-443,1
+cycle loop
+
+anim swimFast
+35-45,1
+cycle loop
+
+anim attack1
+50-70,1
+cycle stop
+
+
+//"attackjump" is now broken up into the following:
+
+anim jumpEnter
+70-88,1
+cycle stop
+
+anim jump
+88-100,1
+cycle stop
+
+anim jumpAttack
+100-114,1
+cycle stop
+
+anim jumpExit
+114-150,1
+cycle stop
+
+
+
+
+anim grabEnter
+160-175,1
+cycle stop
+
+anim grabIdle
+180-200,1
+cycle loop
+
+anim grabExit
+205-225,1
+cycle stop
+
+anim bigFlinch
+230-250,1
+cycle stop
+
+anim smallFlinch
+260-275,1
+cycle stop
+
+anim Idle_01
+275-310,1
+cycle stop
+
+anim Idle_Circleslow
+320-390,1
+cycle stop
+
+
+
+//Death animations
+anim deathEntry
+500-510,1
+cycle stop
+
+anim deathloop
+510-530,1
+cycle loop
+
+anim deathExit
+540-570,1
+cycle stop
+
+
+
+//Tank Stuff
+anim biteTankEnter
+600-620,1
+cycle stop
+
+anim biteTankSwim
+622-665,1
+cycle loop
+
+anim tankSwallow
+665-700,1
+event mouthClosed 683
+cycle stop
+
+
+anim test01
+500-510
+510-540
+540-570
+cycle loop

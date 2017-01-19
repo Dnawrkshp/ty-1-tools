@@ -1,0 +1,93 @@
+mesh act1_14_yabby.mdl
+skeleton act1_14_yabby.anm
+
+anim SetUp
+0-1,1
+cycle stop
+
+// AMBULATORY ANIMS:
+anim walk01
+5-21,1
+cycle loop
+
+//this is a slower version of the walk...
+anim walk02
+70-92,1
+cycle loop
+
+anim jump_entry
+240-255,1
+cycle stop
+
+anim jump_loop
+256-272,1
+cycle loop
+
+anim jump_exit
+273-290,1
+cycle stop
+
+//anim jumpTurn
+//180-216,1
+//cycle stop
+
+//anim turnAround
+//140-172,1
+//cycle stop
+
+
+// IDLES:
+//stationary idle
+anim idle01
+300-500,1
+cycle stop
+
+//looks around
+anim idle02
+520-629,1
+cycle stop
+
+anim idle03
+0,1
+cycle stop
+
+
+// DEFENSIVE ANIMS:
+anim flinch01
+0,1
+cycle stop
+
+//yabby goes into the scared animation
+anim scared01_entry
+30-44,1
+cycle stop
+
+//knees shaking, eyes covered...
+anim scared01_loop
+45-60,1
+cycle loop
+
+
+// OFFENSIVE ANIMS:
+//this is a single right claw attack
+anim attack01
+100-127,1
+event pincerClench 113
+cycle stop
+
+//this WILL be a sinle left claw attack
+anim attack02
+0,1
+cycle stop
+
+//this WILL be a double
+anim attack03
+0,1
+cycle stop
+
+anim death01
+0,1
+cycle stop
+
+
+//end

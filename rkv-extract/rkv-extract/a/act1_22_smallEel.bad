@@ -1,0 +1,60 @@
+mesh act1_22_smallEel.mdl
+skeleton act1_22_smallEel.anm
+
+
+// AMBULATORY LOOPS:
+anim SwimSlow
+10-40,1
+cycle loop
+
+//anim comment goes here...
+anim SwimFast
+50-62,1
+cycle loop
+
+
+// IDLE ANIMS:
+anim SpiralIdle
+70-170,1
+cycle loop
+
+// COMBAT ANIMS:
+
+anim attack01
+210-235,1
+cycle stop
+
+anim flinch
+240-260,1
+cycle stop
+
+
+//could be used as a scared anim or another idle (we always need more).
+anim alert
+280-375,1
+cycle stop
+
+//anim comment goes here...
+anim deathEntry
+400-410,1
+cycle stop
+
+anim deathloop
+415-435,1
+cycle loop
+
+anim deathExit
+440-470,1
+cycle stop
+
+// TEST ANIMS:
+//anim comment goes here...
+anim test01
+0
+0
+0
+0
+cycle loop
+
+
+//end

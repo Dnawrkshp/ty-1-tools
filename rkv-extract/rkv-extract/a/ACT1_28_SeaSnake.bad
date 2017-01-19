@@ -1,0 +1,68 @@
+//ACT1_28_SeaSnake Bad File
+mesh ACT1_28_SeaSnake.mdl
+skeleton ACT1_28_SeaSnake.anm
+
+
+
+//Idles
+
+anim idle01 
+10-110,1
+cycle loop
+
+anim idle02 
+200-300,1
+cycle loop
+
+
+//Run - fast crawl
+
+anim run
+400-412,1
+cycle loop
+
+//Walk 
+
+anim walk
+500-525, 1
+cycle loop
+
+// Receive blow- when hit by rang 
+
+anim Flinch
+600-630,1
+cycle stop
+
+//Taunt - inna R&B Style- For when the snake can see Ty but he's out of range
+
+anim taunt
+700-740,1
+cycle loop
+
+//Attack
+
+anim attack
+800-840,1
+cycle stop
+
+//Alert - For when Snake see's Ty for the first time
+
+anim alert
+900-940,1
+cycle stop
+
+//Scared - when Ty has the invincable powerup
+
+anim scared
+1000-1025,1
+cycle stop
+
+//death
+
+anim death
+1100-1124,1
+cycle stop
+
+
+
+//End

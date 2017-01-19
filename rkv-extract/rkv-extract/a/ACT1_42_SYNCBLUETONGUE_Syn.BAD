@@ -1,0 +1,78 @@
+mesh act1_42_SyncBlueTongue.mdl
+skeleton act1_42_SyncBlueTongue_Syn.anm
+
+anim SkeletonSetup
+0-2,1
+cyc;e stop
+
+//syncer stuff
+
+anim guard
+685-741,1
+cycle stop
+
+anim scared1
+1156-1206,1
+cycle stop
+
+anim scared2
+592-665,1
+cycle stop
+
+anim point
+538-592,1
+cycle stop
+
+anim cheer
+470-517,1
+cycle stop
+
+anim walkto
+142-280,1
+cycle stop
+
+anim walkfrom
+300-395,1
+cycle stop
+
+anim LipsAngry
+1457-1476,1
+cycle stop
+
+anim HeadAngry
+1457-1476,1
+cycle stop
+
+anim bodytaunt
+1557-1646,1
+cycle stop
+
+anim HeadHappy
+1667-1686,1
+cycle stop
+
+anim HeadSad
+1691-1711,1
+cycle stop
+
+anim HeadSurprised
+1716-1736,1
+cycle stop
+
+anim LipsNeutral
+1741-1756,1
+cycle stop
+
+anim LipsHappy
+1667-1686,1
+cycle stop
+
+anim LipsSad
+1691-1711,1
+cycle stop
+
+anim HeadNeutral
+1741-1760,1
+cycle stop
+
+//end

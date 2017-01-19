@@ -1,0 +1,9 @@
+mesh Act_16_Dragonfly.mdl
+skeleton Act_16_Dragonfly.Anm
+vat Act_16_Dragonfly.vat
+
+anim hover
+0-40,1
+cycle loop
+
+//end

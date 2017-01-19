@@ -1,0 +1,92 @@
+mesh Act_12_Rex_MG.mdl
+skeleton Act_12_Rex_MG.anm
+
+
+//////////////Without chest
+
+anim idle
+450-500,1
+cycle loop
+
+anim walk
+10-40,1
+event RightFoot 27
+event LeftFoot 12
+cycle loop
+
+anim run
+50-70,1
+event RightFoot 54
+event LeftFoot 64
+cycle loop
+
+anim JumpTurn
+170-190,1
+cycle stop
+
+anim jump
+90-105,1
+cycle stop
+
+anim JumpMidair
+105-133,1
+cycle loop
+
+anim JumpDown
+138-150,1
+cycle loop
+
+anim Land
+150-160,1
+cycle stop
+//This should cycle straight to Run anim
+
+/////////////With chest
+
+anim ChestWalk
+200-230,1
+cycle loop
+
+//there is no chest run 
+
+
+anim ChestJumpTurn
+250-270,1
+cycle stop
+
+anim ChestJump
+280-290,1
+cycle stop
+
+anim ChestJumpMidair
+290-320,1
+cycle loop
+
+anim ChestJumpDown
+325-337,1
+cycle loop
+
+anim ChestLand
+337-347,1
+cycle stop
+//This should cycle straight to Walk anim
+
+
+anim ChestPickup
+360-385,1
+event chestpickup 368
+cycle stop
+
+anim ChestDrop
+400-418,1
+event chestrelease 410
+cycle stop
+
+//Chest on for pickup start 368-385
+//Chest on for drop 400-410
+//Chest on for walk 200-230
+//Chest on for jump and land 300-348
+
+
+//end
+

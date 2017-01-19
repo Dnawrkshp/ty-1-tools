@@ -1,0 +1,88 @@
+// Speedboat Frill
+
+mesh Act1_12_speedboat.mdl
+skeleton Act1_12_speedboat.anm
+
+anim idle
+1-51,1
+cycle loop
+
+anim ride
+62-92,1
+cycle loop
+
+anim turn_left
+92-97,1
+cycle stop
+
+anim turn_left_idle
+98-129,1
+cycle loop
+
+anim turn_left_return
+129-134,1
+cycle stop
+
+anim turn_right
+134-139,1
+cycle stop
+
+anim turn_right_idle
+140-165,1
+cycle loop
+
+anim turn_right_return
+165-170,1
+cycle stop
+
+anim taunt
+171-231,1
+cycle stop
+
+anim stunned
+233-264,1
+cycle stop
+
+anim scared
+265-324,1
+cyle stop
+
+anim block
+325-356,1
+cycle stop
+
+anim death
+670-880,1
+event sink 870
+cycle stop
+
+anim death_2
+384-406,1
+cycle stop
+
+//Attack animations
+//note: anim readythrow loops till throw is called or can be //skipped 
+//and go straight to the throw depending on the difficulty //setting.
+//note: animthrow can be followed by another animpickup or just //back to the anim backtosteering
+
+anim jumpback
+414-447,1
+cycle stop
+
+anim pickup
+447-535,1
+cycle stop
+
+anim readythrow
+535-551,1
+cycle stop
+
+anim throw
+551-614,1
+cycle stop
+
+anim backtosteering
+614-643,1
+cycle stop
+
+//end

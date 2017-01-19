@@ -1,0 +1,21 @@
+mesh Act_20_WaterDragon.ASE
+skeleton ActAnim_20_WaterDragon.ASE
+vat Act_20_WaterDragon.VAT
+
+anim alert
+86-136,1
+cycle loop
+
+anim run
+152-164,1
+cycle loop
+
+anim idle
+1-86,1
+cycle loop
+
+anim dive
+165-195,1
+cycle loop
+
+

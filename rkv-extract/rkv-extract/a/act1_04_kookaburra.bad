@@ -1,0 +1,36 @@
+mesh act1_04_kookaburra.mdl
+skeleton act1_04_kookaburra.anm
+
+
+// FLYING ANIMS
+anim flap01
+5-15,1
+cycle loop
+
+anim glide01
+20-30,1
+cycle loop
+
+//for when he lands on a branch or something
+anim land
+50-72,1
+cycle stop
+
+
+// IDLES:
+anim idle01
+100-320,1
+cycle loop
+
+//scratches under wing
+anim idle02
+330-388,1
+cycle stop
+
+//
+anim idle03
+0,1
+cycle stop
+
+
+//end

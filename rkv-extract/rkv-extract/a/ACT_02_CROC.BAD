@@ -1,0 +1,114 @@
+mesh Act_02_croc.mdl
+skeleton Act_02_croc.anm
+
+anim SetUp
+0-1,1
+cycle stop
+
+//anim run
+//100-112,1
+//cycle loop
+
+//anim idle_01
+//200-370,1
+//cycle stop
+
+//anim idle_water_01
+//500-620,1
+//cycle stop
+
+//croc attacks by jumping up out of the water and chomps while in the air
+//this anim loops 360 in rotation so the anim will have to be set -360 to link properly with other anims
+//anim attack_water_01
+//700-776,1
+//event chompstart 710
+//event chompend 725
+//cycle stop
+
+anim death
+800-850,1
+event splash 822
+cycle stop
+
+anim flinch
+860-885,1
+cycle stop
+
+//croc attacks by diving fowards into the water
+//lunge attack
+//PROGRAMMER NOTE: he's animated to stop and then move fowards quite rapidly stop him moving at event "stop" then throw his translate fowards at event "moveFowardStart"
+
+//anim attack_water_lunge
+//1100-1134,1
+//event stop 1100
+//event moveFowardStart 1109
+//event moveFoward Stop 1134
+//event chomp 1110
+//cycle stop
+
+//croc attacks by munching - munch swim attack
+//good for shallow water but will also work in deep or under
+anim attack_water_munch
+1200-1211,1
+cycle stop
+
+//anim deleted
+//anim emerge_water_01
+//800-845,1
+//cycle stop
+
+anim swim
+1000-1040,1
+cycle loop
+
+//croc swimming turn quickly animation
+//looks pretty wierd by itself until set up properly
+//NOTE TO PROGIE: 
+//the croc stops MOVING at event "turnstart" and startmoving again (in the opposite) direction at event "turnEnd"
+//the croc starts TURNING from event "turnstart" and stops at event "turnEnd"
+//the croc turns clockwise - "the direction the head starts to point" in the beginning of the animation, the anim is designed to turn 180 degrees
+anim swimTurn
+1300-1342,1
+event turnStart 1300
+event turnEnd 1318
+cycle stop
+
+//Wallow animmations
+//anim wallowYawn
+//1390-1490,1
+//cycle stop
+
+//anim wallowToRun
+//1500-1525,1
+//cycle stop
+
+//anim scared
+//1540-1610,1
+//cycle stop
+
+//anim flinch1
+//1620-1635,1
+//cycle stop
+
+//anim flinch2
+//1640-1655,1
+//cycle stop
+
+//anim attack1
+//1660-1695,1
+//cycle stop
+
+//anim death
+//1700-1730,1
+//cycle stop
+
+//anim taunt
+//1740-1830,1
+//cycle stop
+
+//anim alert
+//1840-1900,1
+//cycle stop
+
+//end
+

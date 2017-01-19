@@ -1,0 +1,147 @@
+mesh Act1_29_ArsonFrill.mdl
+skeleton Act1_29_ArsonFrill.anm
+
+
+// AMBULATORY ANIMS:
+anim walk
+200-230,1
+event LeftFoot 214
+event RightFoot 230
+cycle loop
+
+anim run
+100-114,1
+event LeftFoot 103
+event RightFoot 110
+cycle loop
+
+
+// IDLE ANIMS:
+//anim idle01_scratchhead
+//300-400,1
+//cycle stop
+
+//anim idle02_look
+//404-480,1
+//cycle stop
+
+//anim idle03_lookSlouch
+//480-707,1
+//cycle stop
+
+//anim idle04_salute
+//717-746,1
+//cycle stop
+
+//anim idle05_swatfly
+//770-872,1
+//cycle stop
+
+
+// ATTACK ANIMS:
+//anim attackIdle01_dance
+//1000-1095,1
+//event LeftFoot 1007
+//event RightFoot 1014
+//event LeftFoot 1024
+//event RightFoot 1024
+//event RightFoot 1031
+//event LeftFoot 1040
+//event RightFoot 1048
+//event LeftFoot 1056
+//event RightFoot 1064
+//event LeftFoot 1072
+//event RightFoot 1080
+//event LeftFoot 1080
+//event RightFoot 1088
+//event LeftFoot 1095
+//event RightFoot 1095
+//cycle loop
+
+//anim attackIdle02_stand
+//1200-1295,1
+//cycle loop
+
+//anim attack01_jabR
+//1100-1109,1
+//event AttackSwing 1100
+//event Attack 1102-1106
+//cycle stop
+
+//anim attack01_jabL
+//1110-1120,1
+//event AttackSwing 1110
+//event Attack 1112-1116
+//cycle stop
+
+//anim attack01_uppercut
+//1120-1136,1
+//event Attack 1125-1129
+//cycle stop
+
+//the frill's standard run attack anim.
+//anim runAttack01
+//1455-1475,1
+//event AttackSwing 1456
+//event Attack 1464-1470
+//cycle stop
+
+//anim flinch01
+//1300-1312,1
+//cycle stop
+
+//anim flinch02
+//1320-1336,1
+//cycle stop
+
+//anim flinch03
+//1340-1356,1
+//cycle stop
+
+//  Death by TyBite
+//Torch Included
+anim death01
+1361-1386,1
+event FallImpact 1368
+cycle stop
+
+//anim throw_01
+//1450-1481,1
+//event rockLaunch 1469
+//cycle stop
+
+//anim scared_idle
+//1500-1544,1
+//cycle loop
+
+//anim scared_toRun
+//1544-1553,1
+//cycle stop
+
+anim taunt01
+1580-1658,1
+cycle stop
+
+//anim alert
+//1701-1729,1
+//cycle stop
+
+//anim dodge
+//1801-1810,1
+//cycle stop
+
+//  Death by Rang
+//torch Included
+//anim death02
+//1901-1930,1
+//cycle stop
+
+//anim QuickTurn
+//2001-2017,1
+//cycle stop
+
+anim lightFire
+2030-2095,1
+cycle stop
+
+//end

@@ -1,0 +1,37 @@
+mesh act1_00_auroraKid.mdl
+skeleton act1_00_auroraKid.anm
+
+
+//reference points:
+//r_mouth
+
+
+// SWIMMING LOOPS:
+anim walk01
+5-29,1
+cycle loop
+
+
+// IDLES:
+// Generic Idle
+anim idle01
+50-200,1
+cycle stop
+
+// Happy Idle
+anim idle02
+200-400,1
+cycle stop
+
+// Scared and Lonely Idle
+anim idle03
+400-600,1
+cycle stop
+
+
+anim LipsNeutral
+40-45,1
+cycle stop
+
+
+//end

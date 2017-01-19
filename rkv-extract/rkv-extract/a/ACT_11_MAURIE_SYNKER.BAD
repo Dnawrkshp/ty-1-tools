@@ -1,0 +1,91 @@
+mesh Act_11_maurie.mdl
+skeleton Act_11_maurie_Synker.anm
+
+anim setup
+0-100,1
+cycle stop
+
+/////////////////
+//  Synker Anims
+/////////////////
+
+
+//Body Expressions
+
+anim BodyNeutral
+514-722,1
+cycle loop
+
+anim BodyJolly
+400-514,1
+cycle loop
+
+anim BodyGlasses
+722-900,1
+cycle loop
+
+anim BodyRubTummy
+900-1200,1
+cycle loop
+
+anim BodyPointSign
+1200-1389,1
+cycle stop
+
+anim BodyGreeting
+2601-2690,1
+cycle loop
+
+anim BodyNo
+3201-3390,1
+cycle loop
+
+anim BodyYes
+3401-3590,1
+cycle loop
+
+anim BodyGive
+3600-3650,1
+cycle stop
+
+anim BodyNod
+4001-4222,1
+cycle loop
+
+//Lip sync
+
+anim HeadAngry
+1501-1690,1
+cycle loop
+
+anim HeadNeutral
+1701-1890,1
+cycle loop
+
+anim HeadHappy
+1901-2090,1
+cycle loop
+
+anim HeadSurprised
+2101-2290,1
+cycle loop
+
+anim HeadCurious
+2301-2490,1
+cycle loop
+
+anim Lips
+2500-2540,1
+cycle stop
+
+/////////////////
+//these anims are old ones?? 
+//anim walk_L
+//1000-1049,1
+//cycle stop
+
+//anim walk_R
+//1100-1146,1
+//cycle stop
+
+//end
