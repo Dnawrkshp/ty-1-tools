@@ -1,4 +1,5 @@
-#include "interceptor.h"
+#include "globals.h"
+#include "handlers.h"
 
 #include <Windows.h>
 #include <Psapi.h>
@@ -9,13 +10,11 @@
 
 using namespace std;
 
-HMODULE GetModule(HANDLE hProc);
-
 /*
  * Hardcoded offsets from Ty the Tasmanian Tiger r1332_v1.02
- */
-#define OFF_LOADRESOURCEFILE	0x001AD280
-
+ *
+ * Should work well in all version if the initial address of LoadResourceFile() is found
+*/
 #define FUNCOFF_RKVCOMPAREAT	0x20
 #define FUNCOFF_RKVSEEK			0x202
 #define FUNCOFF_RKVREAD			0x213
@@ -67,10 +66,10 @@ typedef struct RKVDirectoryEntry {
 } _RKVDirectoryEntry;
 
 typedef void* (*CHECKCACHE) (char * fileName, int32_t * size, char * buffer, int32_t a4);
-typedef void (*RKVSEEK) (int32_t stream, int32_t offset, int32_t origin);
-typedef void (*RKVREAD) (int32_t stream, void * buffer, int32_t fileSize, int32_t bufferSize);
+typedef void(*RKVSEEK) (int32_t stream, int32_t offset, int32_t origin);
+typedef void(*RKVREAD) (int32_t stream, void * buffer, int32_t fileSize, int32_t bufferSize);
 typedef void* (*MALLOC) (int32_t size);
-typedef int32_t (*RKVCOMPAREAT) (char * fileName, int32_t offset);
+typedef int32_t(*RKVCOMPAREAT) (char * fileName, int32_t offset);
 typedef RKVFileEntry* (*GETRKVFILEENTRY) (char * fileName, int32_t fBlockOffset, int32_t fBlockSize, int32_t blockSize, RKVCOMPAREAT rkvCompareAt);
 
 static GETRKVFILEENTRY TY_GETRKVFILEENTRY = NULL;
@@ -80,12 +79,17 @@ static MALLOC TY_MALLOC = NULL;
 
 static char FULLPATH[0x121];
 
+
 static void Log(char * fileName, int32_t * size, char * buffer, int32_t bufferSize, signed char a5) {
 #ifdef _DEBUG
 	std::ofstream outfile;
 
-	outfile.open("resources.log", std::ios_base::app);
-	outfile << "Load: " << fileName << endl;
+	//outfile.open("resources.log", std::ios_base::app);
+	//outfile << "Load: " << fileName << endl;
+
+	OutputDebugStringA("Load: ");
+	OutputDebugStringA(fileName);
+	OutputDebugStringA("\r\n");
 #endif
 }
 
@@ -164,6 +168,31 @@ static void * _LoadResourceFile(char * fileName, int32_t * size, char * buffer, 
 	return NULL;
 }
 
+char * ReadFile(std::ifstream * in, int32_t * size, char * buffer, int32_t bufferSize, signed char a5) {
+	int32_t fSize = (int32_t)(*in).tellg();
+	if (fSize > 0) {
+		if (size)
+			*size = fSize;
+
+		if (buffer) {
+			if (bufferSize >= 0)
+				fSize = bufferSize;
+		}
+		else {
+			buffer = (char*)TY_MALLOC(fSize + 1);
+			((char*)buffer)[fSize] = 0;
+		}
+
+		(*in).seekg(0, std::ios::beg);
+		if ((*in).read(buffer, fSize)) {
+			(*in).close();
+			return buffer;
+		}
+	}
+
+	return NULL;
+}
+
 // Handles the loading of resource files from ./Resource/%RKV%/...
 // Ex: "standard.shader" => "./Resource/Data_PC/Shaders/standard.shader" if the file exists
 static void * LoadResourceFile(char * fileName, int32_t * size, char * buffer, int32_t bufferSize, signed char a5) {
@@ -191,40 +220,31 @@ static void * LoadResourceFile(char * fileName, int32_t * size, char * buffer, i
 
 			// Get relative path of file
 			sprintf_s(FULLPATH, "Resource\\%s\\%s%s", rkvName, dEntry->directoryPath, fEntry->fileName);
-			
+
 			// Check if file exists
 			std::ifstream in(FULLPATH, std::ios::binary | std::ios::ate);
 			if (in) {
-				fSize = in.tellg();
-				if (fSize > 0) {
-					if (size)
-						*size = fSize;
-
-					if (buffer) {
-						if (bufferSize >= 0)
-							fSize = bufferSize;
-					}
-					else {
-						buffer = (char*)TY_MALLOC(fSize + 1);
-						((char*)buffer)[fSize] = 0;
-					}
-					
-					in.seekg(0, std::ios::beg);
-					if (in.read(buffer, fSize)) {
-						in.close();
-						return buffer;
-					}
-				}
+				buffer = ReadFile(&in, size, buffer, bufferSize, a5);
 				in.close();
+				return buffer;
 			}
 		}
 	}
-
-	return _LoadResourceFile(fileName, size, buffer, bufferSize, a5);
+	
+	// Get PC_External
+	sprintf_s(FULLPATH, "PC_External\\%s", fileName);
+	std::ifstream in(FULLPATH, std::ios::binary | std::ios::ate);
+	if (!in)
+		return _LoadResourceFile(fileName, size, buffer, bufferSize, a5);
+	else {
+		buffer = ReadFile(&in, size, buffer, bufferSize, a5);
+		in.close();
+		return buffer;
+	}
 }
 
 // Sets up addresses and installs hook into Ty's resource loading function
-void Hook(void)
+void Handler_Resource(HANDLE hProc)
 {
 	int32_t callOffset = 0x12;
 	unsigned char patch[] = {
@@ -241,66 +261,39 @@ void Hook(void)
 		0xC3					// ret					; exit function
 	};
 
+	if (!hProc)
+		return;
+
 	// Attach this process and write hook
-	DWORD pid = GetCurrentProcessId();
-	HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
-	if (hProc) {
-		// Get base address
-		DWORD baseAddress = (DWORD)GetModule(hProc);
-		
-		// Setup addresses based on FUNCADDR_LOADRESOURCEFILE
-		FUNCADDR_LOADRESOURCEFILE = baseAddress + OFF_LOADRESOURCEFILE;
-		FUNCADDR_RKVCOMPAREAT = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVCOMPAREAT);																			// push offset sub_141CF70
-		FUNCADDR_RKVSEEK = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVSEEK+1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVSEEK) + 5;								// call dword 0x141cb70
-		FUNCADDR_RKVREAD = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVREAD+1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVREAD) + 5;								// call dword 0x141cb50
-		FUNCADDR_MALLOC = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_MALLOC+1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_MALLOC) + 5;								// call dword 0x13f9ce0
-		FUNCADDR_GETRKVFILEENTRY = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_GETRKVFILEENTRY + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_GETRKVFILEENTRY) + 5;	// call dword 0x1411650
-		FUNCPTR_CHECKCACHE = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_CHECKCACHE);																				// mov eax, [0x160a1d0]
+	if (!BaseAddress)
+		return;
 
-		VARADDR_DATARKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_DATARKV);																						// cmp [0x160a218], ebx
-		VARADDR_MUSICRKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_MUSICRKV);																					// cmp [0x160a278], ebx
-		VARADDR_VIDEORKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_VIDEORKV);																					// cmp [0x160a2d8], ebx
-		VARADDR_PATCHRKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_PATCHRKV);																					// cmp [0x160a338], ebx
+	if (!LoadResourceFileAddress)
+		throw new exception("Unable to determine address of LoadResourceFile()");
 
-		TY_RKVSEEK = (RKVSEEK)FUNCADDR_RKVSEEK;
-		TY_RKVREAD = (RKVREAD)FUNCADDR_RKVREAD;
-		TY_MALLOC = (MALLOC)FUNCADDR_MALLOC;
-		TY_GETRKVFILEENTRY = (GETRKVFILEENTRY)FUNCADDR_GETRKVFILEENTRY;
+	// Setup addresses based on FUNCADDR_LOADRESOURCEFILE
+	FUNCADDR_LOADRESOURCEFILE = LoadResourceFileAddress;
+	FUNCADDR_RKVCOMPAREAT = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVCOMPAREAT);																			// push offset sub_141CF70
+	FUNCADDR_RKVSEEK = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVSEEK + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVSEEK) + 5;							// call dword 0x141cb70
+	FUNCADDR_RKVREAD = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVREAD + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVREAD) + 5;							// call dword 0x141cb50
+	FUNCADDR_MALLOC = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_MALLOC + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_MALLOC) + 5;								// call dword 0x13f9ce0
+	FUNCADDR_GETRKVFILEENTRY = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_GETRKVFILEENTRY + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_GETRKVFILEENTRY) + 5;	// call dword 0x1411650
+	FUNCPTR_CHECKCACHE = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_CHECKCACHE);																				// mov eax, [0x160a1d0]
 
-		// Calculate relative offset and store into patch
-		void * funcPtr = &LoadResourceFile;
-		*(uint32_t*)(&patch[callOffset + 1]) = (uint32_t)(((uint32_t)funcPtr - FUNCADDR_LOADRESOURCEFILE - callOffset) - 5);
+	VARADDR_DATARKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_DATARKV);																						// cmp [0x160a218], ebx
+	VARADDR_MUSICRKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_MUSICRKV);																					// cmp [0x160a278], ebx
+	VARADDR_VIDEORKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_VIDEORKV);																					// cmp [0x160a2d8], ebx
+	VARADDR_PATCHRKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_PATCHRKV);																					// cmp [0x160a338], ebx
 
-		// write patch
-		WriteProcessMemory(hProc, (LPVOID)FUNCADDR_LOADRESOURCEFILE, &patch, (DWORD)(sizeof(patch)/sizeof(char)), NULL);
+	TY_RKVSEEK = (RKVSEEK)FUNCADDR_RKVSEEK;
+	TY_RKVREAD = (RKVREAD)FUNCADDR_RKVREAD;
+	TY_MALLOC = (MALLOC)FUNCADDR_MALLOC;
+	TY_GETRKVFILEENTRY = (GETRKVFILEENTRY)FUNCADDR_GETRKVFILEENTRY;
 
-		CloseHandle(hProc);
-	}
-}
+	// Calculate relative offset and store into patch
+	void * funcPtr = &LoadResourceFile;
+	*(uint32_t*)(&patch[callOffset + 1]) = (uint32_t)(((uint32_t)funcPtr - FUNCADDR_LOADRESOURCEFILE - callOffset) - 5);
 
-// Get Base Address of TY.exe
-// from http://stackoverflow.com/a/31895513
-HMODULE GetModule(HANDLE hProc)
-{
-	HMODULE hMods[1024];
-	DWORD cbNeeded;
-	unsigned int i;
-
-	if (EnumProcessModules(hProc, hMods, sizeof(hMods), &cbNeeded))
-	{
-		for (i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
-		{
-			TCHAR szModName[MAX_PATH];
-			if (GetModuleFileNameEx(hProc, hMods[i], szModName, sizeof(szModName) / sizeof(TCHAR)))
-			{
-				std::wstring wstrModName = szModName;
-				std::wstring wstrModContain = L"TY.exe";
-				if (wstrModName.find(wstrModContain) != string::npos)
-				{
-					return hMods[i];
-				}
-			}
-		}
-	}
-	return nullptr;
+	// write patch
+	WriteProcessMemory(hProc, (LPVOID)FUNCADDR_LOADRESOURCEFILE, &patch, (DWORD)(sizeof(patch) / sizeof(char)), NULL);
 }

@@ -15,8 +15,13 @@ When the library gets loaded, it inserts some assembly code into the game; inter
 
 ### Installation
 1. Open [resource-manager solution](resource-manager.sln)
-2. Build the project
+2. Build the project under the Release configuration
 3. Copy the output dll into the directory of your Ty the Tasmanian Tiger installation
+
+### Debugging
+1. Set the Windows system environment variable `TY_1_DIR` to the path of your Ty installation
+2. Ensure the path ends with a backslash (ex: `Z:\Games\Ty the Tasmanian Tiger\`)
+3. Set the Solution Configuration to Debug
 
 ### Usage
 1. [Install](#installation)

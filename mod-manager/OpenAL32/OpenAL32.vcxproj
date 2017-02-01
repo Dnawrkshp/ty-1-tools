@@ -141,13 +141,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\globals.h" />
+    <ClInclude Include="include\handlers.h" />
     <ClInclude Include="include\al.h" />
     <ClInclude Include="include\alc.h" />
-    <ClInclude Include="include\interceptor.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\interceptor.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\level.cpp" />
+    <ClCompile Include="source\resource.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
