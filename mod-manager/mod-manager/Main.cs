@@ -22,7 +22,7 @@ namespace ty_mod_manager
         {
             InitializeComponent();
 
-            DataPC = new TyRKV("Data_PC.rkv");
+            DataPC = new TyRKV(Path.Combine(Program.TyDirectory, "Data_PC.rkv"));
 
             ImportMods(Program.ModDirectory);
 

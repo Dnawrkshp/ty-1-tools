@@ -13,6 +13,7 @@ namespace ty_mod_manager
         public static string ModDirectory = "Mods";
         public static string OutDirectory = "PC_External";
         public static string TyExecutable = "TY.exe";
+        public static string TyDirectory = "";
 
         public static double RVersion = 0d;
         public static double VVersion = 0d;
@@ -34,20 +35,20 @@ namespace ty_mod_manager
         [STAThread]
         static void Main()
         {
-            string tyDir = Environment.CurrentDirectory;
-            if (!File.Exists(Path.Combine(tyDir, TyExecutable)))
-                tyDir = Environment.GetEnvironmentVariable("TY_1_DIR");
+            TyDirectory = Environment.CurrentDirectory;
+            if (!File.Exists(Path.Combine(TyDirectory, TyExecutable)))
+                TyDirectory = Environment.GetEnvironmentVariable("TY_1_DIR");
 
-            if (tyDir == null || !File.Exists(Path.Combine(tyDir, TyExecutable)))
+            if (TyDirectory == null || !File.Exists(Path.Combine(TyDirectory, TyExecutable)))
             {
                 MessageBox.Show("Please place this within your Ty installation.\r\n\r\nAlternatively, set the TY_1_DIR system environment variable.");
                 return;
             }
 
-            ModDirectory = Path.Combine(tyDir, ModDirectory);
-            OutDirectory = Path.Combine(tyDir, OutDirectory);
-            TyExecutable = Path.Combine(tyDir, TyExecutable);
-            LogPath = Path.Combine(tyDir, LogPath);
+            ModDirectory = Path.Combine(TyDirectory, ModDirectory);
+            OutDirectory = Path.Combine(TyDirectory, OutDirectory);
+            TyExecutable = Path.Combine(TyDirectory, TyExecutable);
+            LogPath = Path.Combine(TyDirectory, LogPath);
 
             if (!GetTyVersion())
                 return;
