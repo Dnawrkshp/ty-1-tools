@@ -15,6 +15,8 @@ namespace ty_mod_manager
         public static string TyExecutable = "TY.exe";
         public static string TyDirectory = "";
 
+        public static ulong ErrorCount = 0;
+
         public static double RVersion = 0d;
         public static double VVersion = 0d;
 
@@ -66,6 +68,7 @@ namespace ty_mod_manager
 
         public static void Log(string line, Exception e = null, bool show = false)
         {
+            ErrorCount++;
             File.AppendAllText(LogPath, line + "\r\n" + e?.ToString() + "\r\n\r\n\r\n");
 
             if (show)

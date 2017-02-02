@@ -24,7 +24,11 @@ namespace ty_mod_manager
 
             DataPC = new TyRKV(Path.Combine(Program.TyDirectory, "Data_PC.rkv"));
 
-            ImportMods(Program.ModDirectory);
+            if (!ImportMods(Program.ModDirectory))
+            {
+                // to-do
+                // inform user there were errors importing mods
+            }
 
             ApplyMods();
 
@@ -182,8 +186,10 @@ namespace ty_mod_manager
             return true;
         }
 
-        public void ImportMods(string directory)
+        public bool ImportMods(string directory)
         {
+            ulong currentErrorCount = Program.ErrorCount;
+
             foreach (string xml in Directory.GetFiles(directory, "*.xml", SearchOption.TopDirectoryOnly))
             {
                 try
@@ -192,6 +198,8 @@ namespace ty_mod_manager
                 }
                 catch (Exception e) { Program.Log("Failed to load \"" + xml + "\"", e); }
             }
+
+            return currentErrorCount == Program.ErrorCount;
         }
 
         public void ImportMod(string path)
