@@ -3,6 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 Ty 1 Tools is a set of utilities for modifying the Windows edition of Ty the Tasmanian Tiger. As of now, it consists of:
+* [Mod Manager](mod-manager/)
 * [Resource Manager](resource-manager/)
 * [RKV Extract](rkv-extract/)
 
@@ -21,7 +22,7 @@ Want to contribute? Great!
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars0.githubusercontent.com/u/2020854?v=3" width="75px;"/><br /><sub>Dan Gerendasy</sub>](https://www.github.com/Dnawrkshp)<br />[📖](https://www.github.com/Dnawrkshp/ty-1-tools/commits?author=Dnawrkshp) [💻](https://www.github.com/Dnawrkshp/ty-1-tools/commits?author=Dnawrkshp)
+| [<img src="https://avatars0.githubusercontent.com/u/2020854?v=3" width="75px;"/><br /><sub>Dan Gerendasy</sub>](https://www.github.com/Dnawrkshp)<br />[📖](https://www.github.com/Dnawrkshp/ty-1-tools/commits?author=Dnawrkshp) [💻](https://www.github.com/Dnawrkshp/ty-1-tools/commits?author=Dnawrkshp) [💡](https://github.com/Dnawrkshp/ty-1-tools/tree/master/mod-manager/Examples)
 | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
