@@ -129,7 +129,7 @@ namespace ty_mod_manager
                         catch (Exception e) { Program.Log("Unable to add language translations for level \"" + level.InputPath + "\"", e, true); return false; }
 
                         // Add to z1.lv2
-                        Match portal = Regex.Match(z1LV2, @"^name.*PORTAL\s$", RegexOptions.Multiline);
+                        Match portal = Regex.Match(z1LV2, @"^name\s*PORTAL\s*$", RegexOptions.Multiline);
 
                         if (!portal.Success)
                         {
@@ -200,7 +200,7 @@ namespace ty_mod_manager
             XmlDocument xmldoc = new XmlDocument();
             XmlNodeList xmlnode;
             XmlNode mod;
-            string name, version, authors, description;
+            string name, tyversion, version, authors, description;
             TyVersionRange versionRange;
 
             xmldoc.Load(fs);
@@ -208,18 +208,19 @@ namespace ty_mod_manager
 
             for (int i = 0; i < xmlnode.Count; i++)
             {
-                name = null; version = null; versionRange = null; authors = null; description = null;
+                name = null; tyversion = null;  version = null; versionRange = null; authors = null; description = null;
 
                 mod = xmlnode[i];
 
-                try { name = mod.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log("Invalid name attribute for tymod \"" + mod.OuterXml + "\"", e); }
-                try { version = mod.Attributes.GetNamedItem("version").Value; versionRange = new TyVersionRange(version); } catch (Exception e) { Program.Log("", e); }
+                try { name = mod.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log("Invalid name attribute for tymod \"" + mod.OuterXml + "\"", e); continue; }
+                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion); } catch (Exception e) { Program.Log("", e); }
+                try { version = mod.Attributes.GetNamedItem("version").Value; } catch (Exception e) { Program.Log("", e); }
                 try { authors = mod.Attributes.GetNamedItem("authors").Value; } catch (Exception e) { Program.Log("", e); }
                 try { description = mod.Attributes.GetNamedItem("description").Value; } catch (Exception e) { Program.Log("", e); }
 
                 if (name != null && name != String.Empty)
                 {
-                    TyMod tymod = new TyMod(name, versionRange, authors, description);
+                    TyMod tymod = new TyMod(name, versionRange, version, authors, description);
                     tymod.AddFromNode(mod);
 
                     Mods.Add(tymod);

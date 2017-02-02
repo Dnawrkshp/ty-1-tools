@@ -49,6 +49,7 @@ namespace ty_mod_manager
         public string Name { get; } = null;
         public string Authors { get; } = null;
         public string Description { get; } = null;
+        public string ModVersion { get; } = null;
         public TyVersionRange VersionRange { get; } = null;
         public List<TyModEdit> Edits { get; } = null;
         public List<TyModImport> Imports { get; } = null;
@@ -58,10 +59,11 @@ namespace ty_mod_manager
 
         #endregion
 
-        public TyMod(string name, TyVersionRange versionRange = null, string authors = null, string description = null)
+        public TyMod(string name, TyVersionRange versionRange = null, string version = null, string authors = null, string description = null)
         {
             Name = name;
             VersionRange = versionRange != null && versionRange.Valid ? versionRange : null;
+            ModVersion = version;
             Authors = authors ?? String.Empty;
             Description = description ?? String.Empty;
 
@@ -86,7 +88,7 @@ namespace ty_mod_manager
                 tag.Add?.Invoke(this, node.ChildNodes[x]);
             }
 
-            if (Edits.Count > 0 || Imports.Count > 0)
+            if (Edits.Count > 0 || Imports.Count > 0 || Translations.Count > 0 || Levels.Count > 0)
                 _valid = true;
         }
 
@@ -240,11 +242,19 @@ namespace ty_mod_manager
 
         public static void ApplyImport(TyModImport import)
         {
-            string src = Path.Combine(Program.ModDirectory, import.Source);
-            string dst = Path.Combine(Program.OutDirectory, import.Source);
+            string src, dst;
+            FileInfo fi;
 
-            if (import.Source == null || !File.Exists(Path.Combine(Program.ModDirectory, import.Source)))
+            if (import.Source == null || (!File.Exists((src = Path.Combine(Program.ModDirectory, import.Source))) && !Directory.Exists(src)))
+            {
+                Program.Log("Unable to find resource \"" + import.Source==null?"(null)":import.Source + "\"", null, true);
                 return;
+            }
+
+            if (import.Destination == null)
+                dst = Path.Combine(Program.OutDirectory, import.Source);
+            else
+                dst = Path.Combine(Program.OutDirectory, import.Destination);
 
             if (import.Plugin)
             {
@@ -252,9 +262,57 @@ namespace ty_mod_manager
             }
             else if (import.Destination != null && import.Destination != String.Empty)
             {
-                if (File.Exists(dst))
-                    File.Delete(dst);
-                File.Copy(src, dst);
+                fi = new FileInfo(dst);
+
+                // Determine if copying folder or file
+                if (!File.Exists(src) && fi.Name == "")
+                {
+                    // Delete any copy of the dst directory in the output folder unless the output folder is the dst directory
+                    if (Path.GetFullPath(dst) != Path.GetFullPath(Program.OutDirectory) && fi.Directory.Exists)
+                    {
+                        Directory.Delete(fi.Directory.FullName, true);
+
+                        // Wait until directory is deleted
+                        while (Directory.Exists(Program.OutDirectory))
+                            System.Threading.Thread.Sleep(10);
+                    }
+
+                    ApplyImport_Directory(src, fi.Directory.FullName);
+                }
+                else
+                {
+                    // Ensure the directory exists for copying
+                    if (!fi.Directory.Exists)
+                        Directory.CreateDirectory(fi.Directory.FullName);
+
+                    // Delete any pre-existing copy
+                    if (fi.Exists)
+                        File.Delete(dst);
+
+                    // Copy
+                    File.Copy(src, dst);
+                }
+            }
+        }
+
+        private static void ApplyImport_Directory(string directory, string outputDir)
+        {
+            DirectoryInfo di;
+            FileInfo fi;
+
+            if (!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
+
+            foreach (string path in Directory.EnumerateDirectories(directory, "*", SearchOption.TopDirectoryOnly))
+            {
+                di = new DirectoryInfo(path);
+                ApplyImport_Directory(path, Path.Combine(outputDir, di.Name));
+            }
+
+            foreach (string file in Directory.EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly))
+            {
+                fi = new FileInfo(file);
+                File.Copy(file, Path.Combine(outputDir, fi.Name));
             }
         }
 
@@ -299,7 +357,7 @@ namespace ty_mod_manager
                 ApplyLevel_Directory(levelID, level, path, Path.Combine(outputDir, di.Name));
             }
 
-            foreach (string file in Directory.EnumerateFiles(directory, "*.*", SearchOption.TopDirectoryOnly))
+            foreach (string file in Directory.EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly))
             {
                 fi = new FileInfo(file);
                 outfile = Path.Combine(outputDir, fi.Name.Replace("%l", levelID));

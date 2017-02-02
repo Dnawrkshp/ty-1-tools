@@ -1,0 +1,145 @@
+
+<root>
+	<!--
+	    Add a mod and specify compatible interval version range of Ty the Tasmanian Tiger.
+	    Note that we ignore the _vX.XX part of the game version.
+
+	    Refer to this site for more information on interval notation with versions:
+	    https://docs.microsoft.com/en-us/nuget/create-packages/dependency-versions#version-ranges
+	-->
+	<tymod name="Rapidfire Rangs" version="1.0.0" tyversion="[,r1402]" authors="Dnawrkshp" description="Give Ty some roids.">
+
+		<!--
+			The name attribute defines how we are searching for the global definition.
+			It supports regex and it supports finding by any property.
+			For instance, <global source="global.sound" Volume="124" value="100"></global> would change any Volume properties defined as 124 to 100.
+			It does not yet support searching with multiple attributes.
+
+			Replaces property `ammoCount` in prop_0446_rang_03 in global.model without destroying other properties.
+			Types:
+				inclusive            Add (or replace existing property definitions) without destroying other property definitions.
+				exclusive            Remove pre-existing property definitions and add the given property definitions.
+				replace              Replace existing property definition, but do not add if the definition doesn't already exist.
+
+			The default type is inclusive.
+		-->
+
+		<!-- Boomerang -->
+
+		<!--
+			Replaces property `flightTime` and `range` in prop_0484_rang_01 in global.model without destroying other properties.
+			Types:
+				inclusive            Add (or replace existing property definitions) without destroying other property definitions.
+				exclusive            Remove pre-existing property definitions and add the given property definitions.
+				replace              Replace existing property definition, but do not add if the definition doesn't already exist.
+
+			The default type is inclusive.
+		-->
+		<global source="global.model" type="inclusive" name="prop_0484_rang_01">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Frostyrang -->
+		<global source="global.model" type="inclusive" name="prop_0485_rang_02">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Flamerang -->
+		<global source="global.model" type="inclusive" name="prop_0486_rang_03">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Kaboomarang -->
+		<global source="global.model" type="inclusive" name="prop_0538_rang_23">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Megarang -->
+		<global source="global.model" type="inclusive" name="prop_0539_rang_22">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Zoomerang -->
+		<global source="global.model" type="inclusive" name="prop_0489_rang_08">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Infrarang -->
+		<global source="global.model" type="inclusive" name="prop_0492_rang_11">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Zappyrang -->
+		<global source="global.model" type="inclusive" name="prop_0493_rang_20">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Aquarang -->
+		<global source="global.model" type="inclusive" name="prop_0488_rang_07">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+		<!-- Chronorang -->
+		<global source="global.model" type="inclusive" name="prop_0537_rang_21">
+			<flightTime value="5"></flightTime>
+			<range value="10000.0"></range>
+		</global>
+
+	</tymod>
+
+	<tymod name="Bambi Cliffs" version="1.0.0" tyversion="[]" authors="Dnawrkshp" description="Renames Rainbow Cliffs to Bambi Cliffs.">
+		<!-- Rename `Rainbow Cliffs` to `Bambi Cliffs` for english and french -->
+		<translation name="TEXT_LEVEL_Z1">
+			<english value="Bambi Cliffs"></english>
+			<french value="Bambi Cliffs"></french>
+		</translation>
+	</tymod>
+
+	<tymod name="Custom Map" version="1.0.0" tyversion="[,0]" authors="Dnawrkshp" description="Adds a custom map portal in between A Walk in the Park and Ship Rex.&#13;&#10;This is not a valid map and is disabled.">
+		<!-- Add custom map from CustomMap0 directory. Path must be relative. -->
+		<level directory="CustomMap0/">
+			<!-- Name of map in each supported language -->
+			<name>
+				<english value="Custom Map"></english>
+				<spanish value="Custom Map"></spanish>
+				<german value="Custom Map"></german>
+				<french value="Custom Map"></french>
+				<italian value="Custom Map"></italian>
+			</name>
+
+			<!-- Position of portal in Rainbow Cliffs -->
+			<position>
+				<x value="0"></x>
+				<y value="2372"></y>
+				<z value="12520"></z>
+			</position>
+		</level>
+	</tymod>
+
+	<tymod name="Dumb AI" version="1.0.0" tyversion="[]" authors="Dnawrkshp" description="Make all AI ignore you.">
+		<!--
+			context can be used to define a part of the global you wish to apply the edits to.
+			Context is defined by the comments above each segment in a global file.
+			For instance, the comment:
+
+				// ==================================================================== Actors go here
+
+			Appears above all actor definitions in the global.model file. We then use regex to determine if the context matches.
+			This allows you to edit the correct defintions.
+		-->
+		<global source="global.model" type="inclusive" context="actors go here" name=".">
+			<chaseRange value="0"></chaseRange>
+			<stayAlertRange value="0"></stayAlertRange>
+			<alertRange value="0"></alertRange>
+		</global>
+	</tymod>
+</root>

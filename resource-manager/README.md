@@ -1,4 +1,4 @@
-# [Obsolete] Ty 1 Resource Manager (r1332_v1.02)
+# [[Obsolete]](../mod-manager) Ty 1 Resource Manager (r1332_v1.02)
 [![MIT License](https://img.shields.io/npm/l/eslint-find-rules.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
