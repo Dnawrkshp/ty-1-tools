@@ -28,7 +28,7 @@ namespace ty_mod_manager
 
             ApplyMods();
 
-            this.Text = "TY Mod Manager   (r" + Program.RVersion.ToString("G") + "_v" + Program.VVersion.ToString("F") + ")";
+            this.Text = "Ty The Tasmanian Tiger " + "r" + Program.RVersion.ToString("G") + "_v" + Program.VVersion.ToString("F");
         }
 
         #region Import and Apply Mods
