@@ -68,7 +68,7 @@ namespace ty_mod_manager
             // Apply all imports first
             foreach (TyMod mod in Mods)
             {
-                if (mod.Valid && mod.VersionRange.ContainsVersion(Program.RVersion))
+                if (mod.Valid && (mod.VersionRange == null || mod.VersionRange.ContainsVersion(Program.RVersion)))
                 {
                     foreach (TyMod.TyModImport import in mod.Imports)
                         TyMod.ApplyImport(import);
@@ -91,7 +91,7 @@ namespace ty_mod_manager
             // Apply everything else
             foreach (TyMod mod in Mods)
             {
-                if (mod.Valid && mod.VersionRange.ContainsVersion(Program.RVersion))
+                if (mod.Valid && (mod.VersionRange == null || mod.VersionRange.ContainsVersion(Program.RVersion)))
                 {
                     // Apply global edit
                     foreach (TyModEdit edit in mod.Edits)

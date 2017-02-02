@@ -18,7 +18,7 @@ namespace ty_mod_manager
         public static double VVersion = 0d;
 
         public static string PortalEntry = "pos = %x, %y, %z\r\n" +
-                                           "ID = 6,BliBliStationPortal\r\n" +
+                                           "ID = %i,%l\r\n" +
                                            "standPos = -192.000, 4379.000, 4551.000\r\n" +
                                            "standYaw = -632.000\r\n" +
                                            "connectingLevel = %i,%l\r\n" +
