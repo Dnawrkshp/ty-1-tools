@@ -213,7 +213,7 @@ namespace ty_mod_manager
                 mod = xmlnode[i];
 
                 try { name = mod.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log("Invalid name attribute for tymod \"" + mod.OuterXml + "\"", e); continue; }
-                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion); } catch (Exception e) { Program.Log("", e); }
+                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion); } catch (Exception e) { }
                 try { version = mod.Attributes.GetNamedItem("version").Value; } catch (Exception e) { Program.Log("", e); }
                 try { authors = mod.Attributes.GetNamedItem("authors").Value; } catch (Exception e) { Program.Log("", e); }
                 try { description = mod.Attributes.GetNamedItem("description").Value; } catch (Exception e) { Program.Log("", e); }

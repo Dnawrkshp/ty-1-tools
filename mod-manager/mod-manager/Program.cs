@@ -50,9 +50,14 @@ namespace ty_mod_manager
             TyExecutable = Path.Combine(TyDirectory, TyExecutable);
             LogPath = Path.Combine(TyDirectory, LogPath);
 
-            if (!GetTyVersion())
-                return;
+            if (File.Exists(LogPath))
+                File.Delete(LogPath);
 
+            if (!GetTyVersion())
+            {
+                Log("Unable to determine version of Ty.exe", null, true);
+                return;
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -61,11 +66,10 @@ namespace ty_mod_manager
 
         public static void Log(string line, Exception e = null, bool show = false)
         {
+            File.AppendAllText(LogPath, line + "\r\n" + e?.ToString() + "\r\n\r\n\r\n");
+
             if (show)
-            {
                 MessageBox.Show(line, e?.ToString());
-                return;
-            }
         }
 
         private static bool GetTyVersion()

@@ -30,8 +30,12 @@ namespace ty_mod_manager
 
         public TyVersionRange(string versionRange)
         {
+            // If no tyversion, default is to support all versions
             if (versionRange == null || versionRange == String.Empty)
-                goto failed;
+            {
+                Valid = true;
+                return;
+            }
 
             min_inclusive = !versionRange.StartsWith("(");
             max_inclusive = !versionRange.EndsWith(")");
@@ -57,7 +61,7 @@ namespace ty_mod_manager
                 return;
             }
 
-            failed: Program.Log("Invalid version range \"" + versionRange + "\"");
+            Program.Log("Invalid version range \"" + versionRange + "\"");
         }
 
         public bool ContainsVersion(double version)
