@@ -7,7 +7,7 @@ Ty 1 Tools is a set of utilities for modifying the Windows edition of Ty the Tas
 * [Resource Manager](resource-manager/)
 * [RKV Extract](rkv-extract/)
 
-Information on usage and installation can be found in the README.md of each individual project.
+Information on usage and installation can be found in the README.md of each individual project as well as on the [Wiki](wiki).
 
 ### Contributing
 Want to contribute? Great!

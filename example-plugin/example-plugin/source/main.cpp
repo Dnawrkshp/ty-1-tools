@@ -8,7 +8,8 @@
 /*
  * This is an example plugin for the Ty Mod Manager
  * 
- * This plugin simply prints out a debug string every second
+ * This plugin simply adjusts some floats based on the revision number.
+ * Specifically, this makes you run, glide, and jump faster.
  *
  * NOTE: In order to debug this, you must have the following:
  *   * TY_1_DIR system environment variable set to the directory of your Ty installation.
