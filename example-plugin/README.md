@@ -2,9 +2,11 @@
 [![MIT License](https://img.shields.io/npm/l/eslint-find-rules.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-This sample demonstrates how to create a dll to be loaded by the Mod Manager proxy dll.
+This sample demonstrates how to create a plugin for the Ty Mod Manager.
 
-In this sample, main() is called with specific parameters. A thread is then created to run in the background change the run speed, glide speed, and jump height of Ty when Control is held.
+In this sample, the exported function "main" is called with specific parameters. The function creates a thread to run in the background. This thread changes the run speed, glide speed, and jump height of Ty when control key is held.
+
+Currently, revision 1402 is the only compatible version of Ty.
 
 ### Build requirements
 * Visual Studio 2017 RC
