@@ -237,7 +237,7 @@ namespace ty_mod_manager
             string src, dst;
             FileInfo fi;
 
-            if (import.Source == null || (!File.Exists((src = Path.Combine(Program.ModDirectory, import.Source))) && !Directory.Exists(src)))
+            if (import.Source == null || (!File.Exists((src = (Path.IsPathRooted(import.Source) ? import.Source : Path.Combine(Program.ModDirectory, import.Source)))) && !Directory.Exists(src)))
             {
                 Program.Log(tymod.ToString(), "Unable to find resource \"" + (import.Source ?? "(null)") + "\"", null, true);
                 return;
@@ -246,7 +246,7 @@ namespace ty_mod_manager
             if (import.Plugin)
             {
                 // Add full path to plugins.ini file
-                File.AppendAllText(Path.Combine(Program.OutDirectory, "plugins.ini"), import.Source + "\r\n");
+                File.AppendAllText(Path.Combine(Program.OutDirectory, "plugins.ini"), (Path.IsPathRooted(import.Source) ? import.Source : Path.Combine(Program.ModDirectory, import.Source) + "\r\n"));
             }
             else if (import.Destination != null && import.Destination != String.Empty)
             {
