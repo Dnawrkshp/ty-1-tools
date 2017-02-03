@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1FF1EDD3-1DEE-4284-B8C1-7A8088BFF58E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ty_mod_manager</RootNamespace>
+    <RootNamespace>TyModManager</RootNamespace>
     <AssemblyName>ty-mod-manager</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
