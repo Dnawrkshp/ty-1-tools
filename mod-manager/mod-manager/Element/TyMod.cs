@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using TyModManager.Archive;
+using TyModManager.Attribute;
+using TyModManager.UI;
 
-namespace ty_mod_manager
+namespace TyModManager.Element
 {
     public class TyMod
     {
@@ -39,19 +42,20 @@ namespace ty_mod_manager
         public string Authors { get; } = null;
         public string Description { get; } = null;
         public string ModVersion { get; } = null;
-        public TyVersionRange VersionRange { get; } = null;
+        public TyVersion TyVersion { get; } = null;
         public List<TyModEdit> Edits { get; } = null;
         public List<TyModImport> Imports { get; } = null;
         public List<TyModTranslate> Translations { get; } = null;
         public List<TyLevel> Levels { get; } = null;
         public bool Valid { get { return _valid; } }
+        public bool Enabled { get; set; } = false;
 
         #endregion
 
-        public TyMod(string name, TyVersionRange versionRange = null, string version = null, string authors = null, string description = null)
+        public TyMod(string name, TyVersion tyversion = null, string version = null, string authors = null, string description = null)
         {
             Name = name;
-            VersionRange = versionRange != null && versionRange.Valid ? versionRange : null;
+            TyVersion = tyversion != null && tyversion.Valid ? tyversion : null;
             ModVersion = version;
             Authors = authors ?? String.Empty;
             Description = description ?? String.Empty;

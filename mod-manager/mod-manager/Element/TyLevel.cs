@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ty_mod_manager
+namespace TyModManager.Element
 {
     public class TyLevel
     {
@@ -14,6 +14,8 @@ namespace ty_mod_manager
         public float Z { get; set; } = 0f;
 
         public string InputPath { get; } = null;
+
+        public int IndexOffset { get; set; } = -1;
 
         public TyLevel(string path)
         {

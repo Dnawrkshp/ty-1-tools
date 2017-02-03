@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ty_mod_manager
+namespace TyModManager.Attribute
 {
-    public class TyVersionRange
+    public class TyVersion
     {
         private double min = -1;
         private bool min_inclusive = false;
@@ -28,19 +28,19 @@ namespace ty_mod_manager
             return result + (max_inclusive ? "]" : ")");
         }
 
-        public TyVersionRange(string versionRange, string context)
+        public TyVersion(string tyversion, string context)
         {
             // If no tyversion, default is to support all versions
-            if (versionRange == null || versionRange == String.Empty)
+            if (tyversion == null || tyversion == String.Empty)
             {
                 Valid = true;
                 return;
             }
 
-            min_inclusive = !versionRange.StartsWith("(");
-            max_inclusive = !versionRange.EndsWith(")");
+            min_inclusive = !tyversion.StartsWith("(");
+            max_inclusive = !tyversion.EndsWith(")");
 
-            string[] parts = versionRange.Split(new char[] { ',' });
+            string[] parts = tyversion.Split(new char[] { ',' });
 
             if (parts.Length == 1)
             {
@@ -48,7 +48,7 @@ namespace ty_mod_manager
                 max = min;
 
                 if (!min_inclusive && !max_inclusive)
-                    Program.Log(context, "Version \"" + versionRange + "\" will never find a match");
+                    Program.Log(context, "Version \"" + tyversion + "\" will never find a match");
                 else
                     Valid = true;
                 return;
@@ -61,7 +61,7 @@ namespace ty_mod_manager
                 return;
             }
 
-            Program.Log(context, "Invalid version range \"" + versionRange + "\"");
+            Program.Log(context, "Invalid version range \"" + tyversion + "\"");
         }
 
         public bool ContainsVersion(double version)

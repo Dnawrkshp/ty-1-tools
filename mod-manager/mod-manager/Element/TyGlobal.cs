@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ty_mod_manager
+namespace TyModManager.Element
 {
     public class TyGlobal
     {

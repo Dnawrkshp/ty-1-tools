@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ty_mod_manager
+namespace TyModManager.Archive
 {
     public class TyRKV
     {

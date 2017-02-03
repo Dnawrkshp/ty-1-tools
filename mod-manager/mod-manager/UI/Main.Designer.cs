@@ -1,4 +1,4 @@
-﻿namespace ty_mod_manager
+﻿namespace TyModManager.UI
 {
     partial class Main
     {
