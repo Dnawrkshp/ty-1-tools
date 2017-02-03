@@ -269,10 +269,10 @@ void Handler_Resource(HANDLE hProc)
 		return;
 
 	if (!LoadResourceFileAddress)
-		throw new exception("Unable to determine address of LoadResourceFile()");
+		throw exception("Unable to determine address of LoadResourceFile()");
 
 	// Setup addresses based on FUNCADDR_LOADRESOURCEFILE
-	FUNCADDR_LOADRESOURCEFILE = LoadResourceFileAddress;
+	FUNCADDR_LOADRESOURCEFILE = (uint32_t)LoadResourceFileAddress;
 	FUNCADDR_RKVCOMPAREAT = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVCOMPAREAT);																			// push offset sub_141CF70
 	FUNCADDR_RKVSEEK = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVSEEK + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVSEEK) + 5;							// call dword 0x141cb70
 	FUNCADDR_RKVREAD = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVREAD + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_RKVREAD) + 5;							// call dword 0x141cb50

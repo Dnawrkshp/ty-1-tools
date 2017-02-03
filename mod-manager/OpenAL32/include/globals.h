@@ -1,7 +1,10 @@
 #pragma once
 
-extern unsigned long BaseAddress;
-extern unsigned long PID;
+#include <cstdint>
 
-extern unsigned long LevelEntriesAddress;
-extern unsigned long LoadResourceFileAddress;
+extern uint64_t BaseAddress;
+extern uint64_t BaseEndAddress;
+extern uint64_t PID;
+
+extern uint64_t LevelEntriesAddress;
+extern uint64_t LoadResourceFileAddress;

@@ -72,9 +72,9 @@ void Handler_Level(HANDLE hProc)
 		return;
 
 	if (!LevelEntriesAddress)
-		throw new exception("Unable to determine address of level ids");
+		throw exception("Unable to determine address of level ids");
 
-	for (DWORD x = BaseAddress; x < TY_SIZE + BaseAddress; x++)
+	for (uint64_t x = BaseAddress; x < BaseEndAddress; x++)
 		if (ReadProcessMemory(hProc, (LPCVOID)x, (LPVOID)buffer, 4, &read) && read == 4)
 			if (memcmp(buffer, &LevelEntriesAddress, 4) == 0)
 				WriteProcessMemory(hProc, (LPVOID)x, (LPVOID)&LevelEntries, 4, NULL);
@@ -274,7 +274,7 @@ void SetupLevelEntries(void) {
 
 	while (fscanf(pFile, "%i", &i) == 1) {
 		if (i < 0 || i > 1000) {
-			throw new exception("Invalid level index.");
+			throw exception("Invalid level index.");
 		}
 		else {
 			fscanf(pFile, "%s", &id);
@@ -289,7 +289,7 @@ void SetupLevelEntries(void) {
 				CustomIDContainerPointer += strlen(CustomIDContainerPointer) + 1;
 			}
 			else {
-				throw new exception("Invalid level id.");
+				throw exception("Invalid level id.");
 			}
 		}
 	}

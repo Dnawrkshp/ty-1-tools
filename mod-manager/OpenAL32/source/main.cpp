@@ -10,11 +10,12 @@
 
 HMODULE GetModule(HANDLE hProc);
 
-unsigned long BaseAddress = 0;
-unsigned long PID = 0;
+uint64_t BaseAddress = 0;
+uint64_t BaseEndAddress = 0;
+uint64_t PID = 0;
 
-unsigned long LevelEntriesAddress = 0;
-unsigned long LoadResourceFileAddress = 0;
+uint64_t LevelEntriesAddress = 0;
+uint64_t LoadResourceFileAddress = 0;
 
 static LPALENABLE _alEnable = NULL;
 static LPALDISABLE _alDisable = NULL;
@@ -135,7 +136,7 @@ static void GetAddresses(HANDLE hProc) {
 		0x55, 0x8B, 0xEC, 0x83, 0xEC, 0x08, 0x53, 0x56, 0x33, 0xDB, 0xC7, 0x45, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0x33, 0xF6, 0x57, 0x8B, 0x7D, 0x08
 	};
 
-	for (DWORD x = BaseAddress; x < TY_SIZE + BaseAddress; x++) {
+	for (uint64_t x = BaseAddress; x < BaseEndAddress; x++) {
 		if (ReadProcessMemory(hProc, (LPCVOID)x, (LPVOID)buffer, 32, &read) && read == 32) {
 			if (!LevelEntriesAddress && memcmp(buffer, pattern_levelentries, 12) == 0)
 				LevelEntriesAddress = *(UINT32*)(x + 12);
@@ -255,19 +256,32 @@ static int Init() {
 	_alcCaptureStop = (LPALCCAPTURESTOP)GetProcAddress(hModOAL32, "alcCaptureStop");
 	_alcCaptureSamples = (LPALCCAPTURESAMPLES)GetProcAddress(hModOAL32, "alcCaptureSamples");
 
-	PID = GetCurrentProcessId();
-	HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, false, PID);
-	if (hProc) {
-		BaseAddress = (DWORD)GetModule(hProc);
-		GetAddresses(hProc);
+	try {
+		PID = GetCurrentProcessId();
+		HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, false, (DWORD)PID);
+		if (hProc) {
+			BaseAddress = (DWORD)GetModule(hProc);
 
-		Handler_Resource(hProc);
-		Handler_Level(hProc);
+			// Error checking
+			if (BaseEndAddress == 0)
+				throw std::exception("Unable to determine size of module");
+			if (BaseAddress == 0)
+				throw std::exception("Unable to determine base address of module");
 
-		CloseHandle(hProc);
+			GetAddresses(hProc);
+
+			Handler_Resource(hProc);
+			Handler_Level(hProc);
+			Handler_Plugin(hProc);
+
+			CloseHandle(hProc);
+		}
+		else {
+			throw std::exception("Unable to install handlers into TY process (unable to OpenProcess)");
+		}
 	}
-	else {
-		throw new std::exception("Unable to install handlers into TY process (unable to OpenProcess)");
+	catch (std::exception & e) {
+		OutputDebugStringA(e.what());
 	}
 
 	hasLoadedLibrary = 1;
@@ -280,6 +294,7 @@ HMODULE GetModule(HANDLE hProc)
 {
 	HMODULE hMods[1024];
 	DWORD cbNeeded;
+	MODULEINFO moduleInfo = { 0 };
 	unsigned int i;
 
 	if (EnumProcessModules(hProc, hMods, sizeof(hMods), &cbNeeded))
@@ -290,9 +305,11 @@ HMODULE GetModule(HANDLE hProc)
 			if (GetModuleFileNameEx(hProc, hMods[i], szModName, sizeof(szModName) / sizeof(TCHAR)))
 			{
 				std::wstring wstrModName = szModName;
-				std::wstring wstrModContain = L"TY.exe";
-				if (wstrModName.find(wstrModContain) != std::string::npos)
+				if (wstrModName.find(L"TY.exe") != std::string::npos)
 				{
+					if (GetModuleInformation(hProc, hMods[i], &moduleInfo, sizeof(moduleInfo)))
+						BaseEndAddress = (uint64_t)moduleInfo.SizeOfImage + (uint64_t)hMods[i];
+					
 					return hMods[i];
 				}
 			}
