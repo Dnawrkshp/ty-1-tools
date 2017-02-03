@@ -85,6 +85,27 @@ namespace TyModManager.Attribute
             return false;
         }
 
+        public bool OverlapsVersion(TyVersion version)
+        {
+            // Invalid version
+            if (version == null || !version.Valid)
+                return false;
+
+            // This or passed version supports all ty versions
+            if ((min < 0 && max < 0) || (version.min < 0 && version.max < 0))
+                return true;
+
+            // version minimum is within this maximum
+            if (min < 0 && (max_inclusive ? version.min <= max : version.min < max))
+                return true;
+
+            // version contains our min and max
+            if (version.ContainsVersion(min) && version.ContainsVersion(max))
+                return true;
+            
+            return false;
+        }
+
 
         private bool IsIdentifier(char c)
         {

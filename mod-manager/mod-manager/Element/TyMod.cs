@@ -67,6 +67,9 @@ namespace TyModManager.Element
 
             if (ModVersion == null)
                 ModVersion = String.Empty;
+
+            // Try and read the if enabled
+            Enabled = Program.Config.EnabledMods.Any(x => x == ToString());
         }
 
         public override string ToString()
@@ -185,15 +188,16 @@ namespace TyModManager.Element
 
         private static void AddFromNode_Level(TyMod tymod, XmlNode node)
         {
-            string directory = null;
+            string directory = null, name = null;
             TyLevel level;
 
             try { directory = node.Attributes.GetNamedItem("directory").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
+            try { name = node.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid name attribute for level import \"" + node.OuterXml + "\"", e); return; }
 
-            level = new TyLevel(Path.Combine(Program.ModDirectory, directory));
+            level = new TyLevel(Path.Combine(Program.ModDirectory, directory), name, tymod.ModVersion, tymod.Authors);
             foreach (XmlNode child in node.ChildNodes)
             {
-                if (child.Name == "name")
+                if (child.Name == "translation")
                 {
                     foreach (XmlNode grandchild in child.ChildNodes)
                     {

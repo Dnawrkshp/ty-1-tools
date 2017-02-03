@@ -19,9 +19,12 @@ namespace TyModManager
         public static List<TyMod> Mods = new List<TyMod>();
         public static TyRKV DataPC = null;
 
+        public static Configuration Config = null;
+
         public static string ModDirectory = "Mods";
         public static string OutDirectory = "PC_External";
         public static string TyExecutable = "TY.exe";
+        public static string ConfigPath = "mod-manager.config";
         public static string TyDirectory = String.Empty;
 
         public static ulong ErrorCount = 0;
@@ -59,7 +62,6 @@ namespace TyModManager
             ModDirectory = Path.Combine(TyDirectory, ModDirectory);
             OutDirectory = Path.Combine(TyDirectory, OutDirectory);
             TyExecutable = Path.Combine(TyDirectory, TyExecutable);
-            LogPath = Path.Combine(TyDirectory, LogPath);
 
             if (File.Exists(LogPath))
                 File.Delete(LogPath);
@@ -70,13 +72,20 @@ namespace TyModManager
                 return;
             }
 
+            // Load program config
+            Config = new Configuration(ConfigPath);
+
+            // Load Data_PC.rkv
             DataPC = new TyRKV(Path.Combine(Program.TyDirectory, "Data_PC.rkv"));
+
+            // Import mods
             if (!ImportMods(Program.ModDirectory))
             {
                 // to-do
                 // inform user there were errors importing mods
             }
 
+            // Load UI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());
@@ -84,6 +93,7 @@ namespace TyModManager
 
         #region Import Mods
 
+        // Loops through root directory and read XML mods
         private static bool ImportMods(string directory)
         {
             ulong currentErrorCount = Program.ErrorCount;
@@ -100,6 +110,7 @@ namespace TyModManager
             return currentErrorCount == Program.ErrorCount;
         }
 
+        // Import individual XML mod
         private static void ImportMod(string path)
         {
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -127,8 +138,18 @@ namespace TyModManager
                 if (name != null && name != String.Empty)
                 {
                     TyMod tymod = new TyMod(name, tyversionRange, version, authors, description);
+
+                    // Check if tymod already exists
+                    if (Mods.Any(x => x.ToString() == tymod.ToString() && x.TyVersion.OverlapsVersion(tymod.TyVersion)))
+                    {
+                        Log(path, "TyMod with same name, version, and dependency already exists (\"" + tymod.ToString() + "\")");
+                        continue;
+                    }
+
+                    // Add Elements from node
                     tymod.AddFromNode(mod);
 
+                    // Add to list
                     Mods.Add(tymod);
                 }
             }
@@ -140,15 +161,17 @@ namespace TyModManager
 
         #region Apply Mods
 
+        // Apply list of mods
         public static bool ApplyMods(List<TyMod> mods)
         {
             Dictionary<string, TyGlobal> globals = new Dictionary<string, TyGlobal>();
             Dictionary<string, TyTranslation> translations = new Dictionary<string, TyTranslation>();
-            List<string> customLevels = new List<string>();
-            string[] englishTranslations = null;
-            string z1LV2 = null;
-            uint levelIndex = 0, levelStart = 0;
+            List<TyLevel> levels = new List<TyLevel>();
 
+            // Save level order
+            ApplyMods_LevelOrder();
+
+            // Delete existing directory
             if (Directory.Exists(Program.OutDirectory))
                 Directory.Delete(Program.OutDirectory, true);
 
@@ -182,19 +205,6 @@ namespace TyModManager
                 }
             }
 
-            // Load the potentially altered z1.lv2
-            z1LV2 = File.ReadAllText(Path.Combine(Program.OutDirectory, "z1.lv2"), Encoding.GetEncoding("iso-8859-1"));
-
-
-            // Offset levelIndex by index of "TEXT_LEVEL_Z1" translation entry
-            englishTranslations = translations["english"].Translations.Keys.ToArray();
-            levelIndex = 0;
-            while (englishTranslations[levelIndex] != "TEXT_LEVEL_Z1")
-                levelIndex++;
-
-            levelStart = (uint)translations["english"].Translations.Count - levelIndex;
-            levelIndex = levelStart;
-
             // Apply everything else
             foreach (TyMod mod in mods)
             {
@@ -218,49 +228,17 @@ namespace TyModManager
                         TyMod.ApplyGlobal(globals[edit.Source], edit);
                     }
 
-                    // Apply level
+                    // Add level
                     foreach (TyLevel level in mod.Levels)
-                    {
-                        string levelID = "f" + (levelIndex - levelStart).ToString();
-                        TyMod.ApplyLevel(levelID, level);
-
-                        // Add language definitions
-                        try
-                        {
-                            translations["english"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["english"]);
-                            translations["german"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["german"]);
-                            translations["spanish"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["spanish"]);
-                            translations["french"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["french"]);
-                            translations["italian"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["italian"]);
-                        }
-                        catch (Exception e) { Program.Log(mod.ToString(), "Unable to add language translations for level \"" + level.InputPath + "\"", e, true); return false; }
-
-                        // Add to z1.lv2
-                        Match portal = Regex.Match(z1LV2, @"^name\s*PORTAL\s*$", RegexOptions.Multiline);
-
-                        if (!portal.Success)
-                        {
-                            Program.Log("z1.lv2", "Unable to find portal entries", null, true);
-                            return false;
-                        }
-                        z1LV2 = z1LV2.Insert(z1LV2.IndexOf("\r\n", portal.Index) + 2, "\r\n" + Program.PortalEntry
-                            .Replace("%l", levelID)
-                            .Replace("%i", levelIndex.ToString())
-                            .Replace("%x", level.X.ToString("F"))
-                            .Replace("%y", level.Y.ToString("F"))
-                            .Replace("%z", level.Z.ToString("F"))
-                            .Replace("%a", mod.Authors)
-                            );
-
-                        customLevels.Add(levelIndex.ToString() + " " + levelID);
-
-                        levelIndex++;
-                    }
+                        levels.Add(level);
 
                     foreach (TyModTranslate translation in mod.Translations)
                         TyMod.ApplyTranslate(translations, translation);
                 }
             }
+
+            // Apply levels
+            ApplyMods_Level(levels, ref translations);
 
             // Write all edited global files
             foreach (string key in globals.Keys)
@@ -280,13 +258,168 @@ namespace TyModManager
                 File.WriteAllText(file.FullName, translations[key].ToString(), Encoding.GetEncoding("iso-8859-1"));
             }
 
+            // Update Config with new list of enabled mods
+            Config.EnabledMods.Clear();
+            foreach (TyMod mod in mods)
+                Config.EnabledMods.Add(mod.ToString());
+            Config.Save(Program.ConfigPath);
+
+            return true;
+        }
+
+        private static void ApplyMods_Level(List<TyLevel> levels, ref Dictionary<string, TyTranslation> translations)
+        {
+            List<string> customLevels = new List<string>();
+            string z1LV2, levelID;
+            string[] englishTranslations = null;
+            uint levelStart = 0;
+            TyLevel level;
+
+            if (levels == null || levels.Count == 0)
+                return;
+
+            // Sort least to greatest by IndexOffset
+            levels.Sort((a, b) => a.IndexOffset.CompareTo(b.IndexOffset));
+
+            // Load the potentially altered z1.lv2
+            z1LV2 = File.ReadAllText(Path.Combine(Program.OutDirectory, "z1.lv2"), Encoding.GetEncoding("iso-8859-1"));
+
+            // Offset levelIndex by index of "TEXT_LEVEL_Z1" translation entry
+            englishTranslations = translations["english"].Translations.Keys.ToArray();
+            while (englishTranslations[levelStart] != "TEXT_LEVEL_Z1")
+                levelStart++;
+
+            levelStart = (uint)translations["english"].Translations.Count - levelStart;
+
+            // Apply level
+            for (int x = 0; x <= levels.Max(l => l.IndexOffset); x++)
+            {
+                levelID = "f" + x.ToString();
+                level = levels.Where(l => l.IndexOffset == x).FirstOrDefault();
+
+                // Try to add level names to translations
+                try { translations["english"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["english"]); }
+                catch (Exception e)
+                {
+                    if (level != null) { Log(level.ToString(), "Unable to get english translation", e); }
+                    translations["english"].Translations.Add("TEXT_LEVEL_" + levelID, String.Empty);
+                }
+
+                try { translations["german"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["german"]); }
+                catch (Exception e)
+                {
+                    if (level != null) { Log(level.ToString(), "Unable to get german translation", e); }
+                    translations["german"].Translations.Add("TEXT_LEVEL_" + levelID, String.Empty);
+                }
+
+                try { translations["spanish"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["spanish"]); }
+                catch (Exception e)
+                {
+                    if (level != null) { Log(level.ToString(), "Unable to get spanish translation", e); }
+                    translations["spanish"].Translations.Add("TEXT_LEVEL_" + levelID, String.Empty);
+                }
+
+                try { translations["french"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["french"]); }
+                catch (Exception e)
+                {
+                    if (level != null) { Log(level.ToString(), "Unable to get french translation", e); }
+                    translations["french"].Translations.Add("TEXT_LEVEL_" + levelID, String.Empty);
+                }
+
+                try { translations["italian"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["italian"]); }
+                catch (Exception e)
+                {
+                    if (level != null) { Log(level.ToString(), "Unable to get italian translation", e); }
+                    translations["italian"].Translations.Add("TEXT_LEVEL_" + levelID, String.Empty);
+                }
+
+
+                // Apply level
+                if (level != null) {
+
+                    // Find portal entries in z1.lv2
+                    Match portal = Regex.Match(z1LV2, @"^name\s*PORTAL\s*$", RegexOptions.Multiline);
+                    if (!portal.Success)
+                    {
+                        Program.Log("z1.lv2", "Unable to find portal entries", null, true);
+                        return;
+                    }
+
+                    // Add level files to output directory
+                    TyMod.ApplyLevel(levelID, level);
+
+                    // Add portal for level
+                    z1LV2 = z1LV2.Insert(z1LV2.IndexOf("\r\n", portal.Index) + 2, "\r\n" + Program.PortalEntry
+                        .Replace("%l", levelID)
+                        .Replace("%i", (x+levelStart).ToString())
+                        .Replace("%x", level.X.ToString("F"))
+                        .Replace("%y", level.Y.ToString("F"))
+                        .Replace("%z", level.Z.ToString("F"))
+                        .Replace("%a", level.Authors)
+                        );
+
+                    // Add to list of custom levels (to be used by the OpenAL32 proxy)
+                    customLevels.Add((x + levelStart).ToString() + " " + levelID);
+                }
+            }
+
             // Write potentially edited zl.lv2
             File.WriteAllText(Path.Combine(Program.OutDirectory, "z1.lv2"), z1LV2, Encoding.GetEncoding("iso-8859-1"));
 
             // Write list of custom maps to cmaps.ini for the proxy dll to parse
             File.WriteAllText(Path.Combine(Program.OutDirectory, "cmaps.ini"), String.Join("\n", customLevels));
+        }
 
-            return true;
+        // Apply level order based on imported and enabled mods
+        private static void ApplyMods_LevelOrder()
+        {
+            int x = 0;
+
+            Config.LevelOrder.Clear();
+
+            // Loop through once, adding all levels with an offset
+            foreach (TyMod tymod in Mods)
+            {
+                foreach (TyLevel level in tymod.Levels)
+                {
+                    if (level.IndexOffset >= 0)
+                    {
+                        // Add empty entries to fill gap
+                        while (level.IndexOffset > Config.LevelOrder.Count)
+                            Config.LevelOrder.Add(String.Empty);
+                        Config.LevelOrder.Add(level.ToString());
+                    }
+                }
+            }
+
+            // Loop through again, adding all levels with an offset
+            foreach (TyMod tymod in Mods)
+            {
+                foreach (TyLevel level in tymod.Levels)
+                {
+                    if (level.IndexOffset < 0)
+                    {
+                        // Find empty entry and replace
+                        for (x = 0; x < Config.LevelOrder.Count; x++)
+                        {
+                            if (Config.LevelOrder[x] == String.Empty)
+                            {
+                                Config.LevelOrder[x] = level.ToString();
+                                break;
+                            }
+                        }
+
+                        // Update level offset
+                        level.IndexOffset = x;
+
+                        // Add new entry if no empty ones exist
+                        if (x == Config.LevelOrder.Count)
+                            Config.LevelOrder.Add(level.ToString());
+                    }
+                }
+            }
+
+            Config.Save(ConfigPath);
         }
 
         #endregion
@@ -309,6 +442,7 @@ namespace TyModManager
 
         #region Get TyVersion
 
+        // Get version of Ty directly from the executable
         private static bool GetTyVersion()
         {
             byte[] tyExe = File.ReadAllBytes(TyExecutable);
