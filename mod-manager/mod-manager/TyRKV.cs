@@ -107,7 +107,7 @@ namespace ty_mod_manager
 
         public static string ParseString(FileStream fs, long offset)
         {
-            string ret = "";
+            string ret = String.Empty;
 
             loop: if (fs.Position != offset)
                 fs.Seek(offset - fs.Position, SeekOrigin.Current);

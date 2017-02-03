@@ -221,10 +221,10 @@ namespace ty_mod_manager
                 mod = xmlnode[i];
 
                 try { name = mod.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log(path, "Invalid name attribute for tymod \"" + mod.OuterXml + "\"", e); continue; }
-                try { version = mod.Attributes.GetNamedItem("version").Value; } catch (Exception e) { }
-                try { authors = mod.Attributes.GetNamedItem("authors").Value; } catch (Exception e) { }
-                try { description = mod.Attributes.GetNamedItem("description").Value; } catch (Exception e) { }
-                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion, name + " (" + (version ?? "") + ";" + (authors ?? "") + ")"); } catch (Exception e) { }
+                try { version = mod.Attributes.GetNamedItem("version").Value; } catch { }
+                try { authors = mod.Attributes.GetNamedItem("authors").Value; } catch { }
+                try { description = mod.Attributes.GetNamedItem("description").Value; } catch { }
+                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion, name + " (" + (version ?? String.Empty) + ";" + (authors ?? String.Empty) + ")"); } catch  { }
 
                 if (name != null && name != String.Empty)
                 {

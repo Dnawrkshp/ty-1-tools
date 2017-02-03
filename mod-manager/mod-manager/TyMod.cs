@@ -67,7 +67,7 @@ namespace ty_mod_manager
 
         public override string ToString()
         {
-            return (Name ?? "Unnamed Ty Mod") + " (" + (ModVersion ?? "") + ";" + (Authors ?? "") + ")";
+            return (Name ?? "Unnamed Ty Mod") + " (" + (ModVersion ?? String.Empty) + ";" + (Authors ?? String.Empty) + ")";
         }
 
         public void AddFromNode(XmlNode node)
@@ -253,7 +253,7 @@ namespace ty_mod_manager
                 fi = new FileInfo(dst = Path.Combine(Program.OutDirectory, import.Destination));
 
                 // Determine if copying folder or file
-                if (!File.Exists(src) && fi.Name == "")
+                if (!File.Exists(src) && fi.Name == String.Empty)
                 {
                     // Delete any copy of the dst directory in the output folder unless the output folder is the dst directory
                     if (Path.GetFullPath(dst) != Path.GetFullPath(Program.OutDirectory) && fi.Directory.Exists)
@@ -531,7 +531,7 @@ namespace ty_mod_manager
 
         public override string ToString()
         {
-            string result = Key + (Key == "name" ? " " : " = ") + (Value ?? "");
+            string result = Key + (Key == "name" ? " " : " = ") + (Value ?? String.Empty);
             foreach (TyModEditItem sub in SubItems)
                 result += "\r\n\t" + sub.ToString();
 
@@ -554,7 +554,7 @@ namespace ty_mod_manager
 
         public override string ToString()
         {
-            string result = Key + (Key == "name" ? " " : " = ") + (Value ?? "");
+            string result = Key + (Key == "name" ? " " : " = ") + (Value ?? String.Empty);
             foreach (TyModEditItem sub in SubItems)
                 result += "\r\n\t" + sub.ToString();
 

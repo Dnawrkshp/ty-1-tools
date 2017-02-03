@@ -13,7 +13,7 @@ namespace ty_mod_manager
         public static string ModDirectory = "Mods";
         public static string OutDirectory = "PC_External";
         public static string TyExecutable = "TY.exe";
-        public static string TyDirectory = "";
+        public static string TyDirectory = String.Empty;
 
         public static ulong ErrorCount = 0;
 

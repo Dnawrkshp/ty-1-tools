@@ -53,7 +53,7 @@ namespace ty_mod_manager
                     continue;
 
                 if (words.Length == 1 && words[0] != String.Empty)
-                    Translations.Add(words[0], "");
+                    Translations.Add(words[0], String.Empty);
                 else if (words[0] != String.Empty)
                     Translations.Add(words[0], words[1]);
             }

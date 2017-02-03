@@ -44,7 +44,7 @@ namespace ty_mod_manager
 
             if (parts.Length == 1)
             {
-                min = ParseValue(parts[0].Replace("r", ""), context);
+                min = ParseValue(parts[0].Replace("r", String.Empty), context);
                 max = min;
 
                 if (!min_inclusive && !max_inclusive)
@@ -55,8 +55,8 @@ namespace ty_mod_manager
             }
             else if (parts.Length == 2)
             {
-                min = ParseValue(parts[0].Replace("r", ""), context);
-                max = ParseValue(parts[1].Replace("r", ""), context);
+                min = ParseValue(parts[0].Replace("r", String.Empty), context);
+                max = ParseValue(parts[1].Replace("r", String.Empty), context);
                 Valid = true;
                 return;
             }
@@ -101,7 +101,7 @@ namespace ty_mod_manager
                 return -1d;
 
             string subString = value.Substring(start, value.Length - (IsIdentifier(value[value.Length - 1]) ? 1 : 0) - start);
-            string doubleString = "";
+            string doubleString = String.Empty;
             double result = -1d;
 
             start = 0;

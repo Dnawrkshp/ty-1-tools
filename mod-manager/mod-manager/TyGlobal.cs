@@ -26,7 +26,7 @@ namespace ty_mod_manager
 
         public override string ToString()
         {
-            string result = "";
+            string result = String.Empty;
 
             foreach (TyGlobalItem item in Items)
                 result += "\r\n\r\n" + item.ToString("    ");
@@ -94,7 +94,7 @@ namespace ty_mod_manager
             {
                 if (lastItems.Count > 0)
                 {
-                    indent = ParseContents_GetLineInfo(line.Replace("\r", ""), ref lastItems, out words);
+                    indent = ParseContents_GetLineInfo(line.Replace("\r", String.Empty), ref lastItems, out words);
                     parent = lastItems[lastItems.Count - 1];
 
                     if (words.Length == 0)
@@ -178,7 +178,7 @@ namespace ty_mod_manager
 
         public string ToString(string indent)
         {
-            string result = (Key == null ? "" : Key + " ") + (EqualSign ? "= " : "") + (Value ?? "" );
+            string result = (Key == null ? String.Empty : Key + " ") + (EqualSign ? "= " : String.Empty) + (Value ?? String.Empty );
 
             foreach (TyGlobalItem item in SubItems)
                 result += "\r\n" + indent + item.ToString(indent + "    ");
