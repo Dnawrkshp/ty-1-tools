@@ -28,7 +28,7 @@ namespace ty_mod_manager
             return result + (max_inclusive ? "]" : ")");
         }
 
-        public TyVersionRange(string versionRange)
+        public TyVersionRange(string versionRange, string context)
         {
             // If no tyversion, default is to support all versions
             if (versionRange == null || versionRange == String.Empty)
@@ -44,24 +44,24 @@ namespace ty_mod_manager
 
             if (parts.Length == 1)
             {
-                min = ParseValue(parts[0].Replace("r", ""));
+                min = ParseValue(parts[0].Replace("r", ""), context);
                 max = min;
 
                 if (!min_inclusive && !max_inclusive)
-                    Program.Log("Version \"" + versionRange + "\" will never find a match");
+                    Program.Log(context, "Version \"" + versionRange + "\" will never find a match");
                 else
                     Valid = true;
                 return;
             }
             else if (parts.Length == 2)
             {
-                min = ParseValue(parts[0].Replace("r", ""));
-                max = ParseValue(parts[1].Replace("r", ""));
+                min = ParseValue(parts[0].Replace("r", ""), context);
+                max = ParseValue(parts[1].Replace("r", ""), context);
                 Valid = true;
                 return;
             }
 
-            Program.Log("Invalid version range \"" + versionRange + "\"");
+            Program.Log(context, "Invalid version range \"" + versionRange + "\"");
         }
 
         public bool ContainsVersion(double version)
@@ -91,7 +91,7 @@ namespace ty_mod_manager
             return c == '[' || c == ']' || c == '(' || c == ')';
         }
 
-        private double ParseValue(string value)
+        private double ParseValue(string value, string context)
         {
             if (value == null || value == String.Empty)
                 return -1d;
@@ -117,7 +117,7 @@ namespace ty_mod_manager
                 doubleString += subString[x];
             }
 
-            try { result = double.Parse(doubleString); } catch (Exception e) { Program.Log("Invalid version number \"" + value + "\"", e); }
+            try { result = double.Parse(doubleString); } catch (Exception e) { Program.Log(context, "Invalid version number \"" + value + "\"", e); }
 
             return result;
         }

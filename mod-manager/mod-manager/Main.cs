@@ -74,8 +74,8 @@ namespace ty_mod_manager
             {
                 if (mod.Valid && (mod.VersionRange == null || mod.VersionRange.ContainsVersion(Program.RVersion)))
                 {
-                    foreach (TyMod.TyModImport import in mod.Imports)
-                        TyMod.ApplyImport(import);
+                    foreach (TyModImport import in mod.Imports)
+                        TyMod.ApplyImport(mod, import);
                 }
             }
 
@@ -105,7 +105,7 @@ namespace ty_mod_manager
                             TyRKV.FileEntry file = DataPC.FileEntries.Where(f => f.FileName == edit.Source || f.FullPath == edit.Source).FirstOrDefault();
                             if (file.FileName == null)
                             {
-                                Program.Log("Unable to find global source file \"" + edit.Source + "\"");
+                                Program.Log(mod.ToString(), "Unable to find global source file \"" + edit.Source + "\"");
                                 continue;
                             }
 
@@ -130,14 +130,14 @@ namespace ty_mod_manager
                             translations["french"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["french"]);
                             translations["italian"].Translations.Add("TEXT_LEVEL_" + levelID, level.LanguageNames["italian"]);
                         }
-                        catch (Exception e) { Program.Log("Unable to add language translations for level \"" + level.InputPath + "\"", e, true); return false; }
+                        catch (Exception e) { Program.Log(mod.ToString(), "Unable to add language translations for level \"" + level.InputPath + "\"", e, true); return false; }
 
                         // Add to z1.lv2
                         Match portal = Regex.Match(z1LV2, @"^name\s*PORTAL\s*$", RegexOptions.Multiline);
 
                         if (!portal.Success)
                         {
-                            Program.Log("Unable to find portal entries in z1.lv2", null, true);
+                            Program.Log("z1.lv2", "Unable to find portal entries", null, true);
                             return false;
                         }
                         z1LV2 = z1LV2.Insert(z1LV2.IndexOf("\r\n", portal.Index) + 2, "\r\n" + Program.PortalEntry
@@ -196,7 +196,7 @@ namespace ty_mod_manager
                 {
                     ImportMod(xml);
                 }
-                catch (Exception e) { Program.Log("Failed to load \"" + xml + "\"", e); }
+                catch (Exception e) { Program.Log(xml, "Failed to load", e); }
             }
 
             return currentErrorCount == Program.ErrorCount;
@@ -220,11 +220,11 @@ namespace ty_mod_manager
 
                 mod = xmlnode[i];
 
-                try { name = mod.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log("Invalid name attribute for tymod \"" + mod.OuterXml + "\"", e); continue; }
-                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion); } catch (Exception e) { }
-                try { version = mod.Attributes.GetNamedItem("version").Value; } catch (Exception e) { Program.Log("", e); }
-                try { authors = mod.Attributes.GetNamedItem("authors").Value; } catch (Exception e) { Program.Log("", e); }
-                try { description = mod.Attributes.GetNamedItem("description").Value; } catch (Exception e) { Program.Log("", e); }
+                try { name = mod.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log(path, "Invalid name attribute for tymod \"" + mod.OuterXml + "\"", e); continue; }
+                try { version = mod.Attributes.GetNamedItem("version").Value; } catch (Exception e) { }
+                try { authors = mod.Attributes.GetNamedItem("authors").Value; } catch (Exception e) { }
+                try { description = mod.Attributes.GetNamedItem("description").Value; } catch (Exception e) { }
+                try { tyversion = mod.Attributes.GetNamedItem("tyversion").Value; versionRange = new TyVersionRange(tyversion, name + " (" + (version ?? "") + ";" + (authors ?? "") + ")"); } catch (Exception e) { }
 
                 if (name != null && name != String.Empty)
                 {

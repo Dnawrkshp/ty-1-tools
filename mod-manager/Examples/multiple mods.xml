@@ -96,7 +96,7 @@
 
 	</tymod>
 
-	<tymod name="Bambi Cliffs" version="1.0.0" tyversion="[]" authors="Dnawrkshp" description="Renames Rainbow Cliffs to Bambi Cliffs.">
+	<tymod name="Bambi Cliffs" version="1.0.0" tyversion="" authors="Dnawrkshp" description="Renames Rainbow Cliffs to Bambi Cliffs.">
 		<!-- Rename `Rainbow Cliffs` to `Bambi Cliffs` for english and french -->
 		<translation name="TEXT_LEVEL_Z1">
 			<english value="Bambi Cliffs"></english>
@@ -125,7 +125,7 @@
 		</level>
 	</tymod>
 
-	<tymod name="Dumb AI" version="1.0.0" tyversion="[]" authors="Dnawrkshp" description="Make all AI ignore you.">
+	<tymod name="Dumb AI" version="1.0.0" tyversion="" authors="Dnawrkshp" description="Make all AI ignore you.">
 		<!--
 			context can be used to define a part of the global you wish to apply the edits to.
 			Context is defined by the comments above each segment in a global file.

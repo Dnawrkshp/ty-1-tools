@@ -57,7 +57,7 @@ namespace ty_mod_manager
 
             if (!GetTyVersion())
             {
-                Log("Unable to determine version of Ty.exe", null, true);
+                Log("mod-manager", "Unable to determine version of Ty.exe", null, true);
                 return;
             }
 
@@ -66,8 +66,11 @@ namespace ty_mod_manager
             Application.Run(new Main());
         }
 
-        public static void Log(string line, Exception e = null, bool show = false)
+        public static void Log(string context, string line, Exception e = null, bool show = false)
         {
+            if (context != null && context != String.Empty)
+                line = context + ": " + line;
+
             ErrorCount++;
             File.AppendAllText(LogPath, line + "\r\n" + e?.ToString() + "\r\n\r\n\r\n");
 

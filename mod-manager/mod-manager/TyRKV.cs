@@ -65,7 +65,7 @@ namespace ty_mod_manager
             }
             catch (Exception e)
             {
-                Program.Log("Failed to open RKV (ExtractText)", e);
+                Program.Log(file.FileName, "Failed to open RKV", e);
                 return null;
             }
         }

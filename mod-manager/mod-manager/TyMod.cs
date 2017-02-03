@@ -31,17 +31,6 @@ namespace ty_mod_manager
 
         #endregion
 
-        #region Public Definitions
-
-        public struct TyModImport
-        {
-            public bool Plugin;
-            public string Source;
-            public string Destination;
-        }
-
-        #endregion
-
         #region Properties
 
         private bool _valid = false;
@@ -71,11 +60,14 @@ namespace ty_mod_manager
             Imports = new List<TyModImport>();
             Translations = new List<TyModTranslate>();
             Levels = new List<TyLevel>();
+
+            if (ModVersion == null)
+                ModVersion = String.Empty;
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return (Name ?? "Unnamed Ty Mod") + " (" + (ModVersion ?? "") + ";" + (Authors ?? "") + ")";
         }
 
         public void AddFromNode(XmlNode node)
@@ -102,11 +94,11 @@ namespace ty_mod_manager
 
             if (node.Attributes == null)
             {
-                Program.Log("No attributes assigned to global \"" + node.OuterXml + "\"");
+                Program.Log(tymod.ToString(), "No attributes assigned to global \"" + node.OuterXml + "\"");
                 return;
             }
 
-            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log("Invalid source attribute for global \"" + node.OuterXml + "\"", e); return; }
+            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid source attribute for global \"" + node.OuterXml + "\"", e); return; }
             try { type = node.Attributes.GetNamedItem("type").Value; editType = (TyModEdit.EditType)Enum.Parse(typeof(TyModEdit.EditType), type); } catch { }
             try { context = node.Attributes.GetNamedItem("context").Value.ToLower(); } catch { }
 
@@ -145,10 +137,10 @@ namespace ty_mod_manager
         {
             string source, dest = null;
 
-            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log("Invalid source attribute for resource import \"" + node.OuterXml + "\"", e); return; }
+            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid source attribute for resource import \"" + node.OuterXml + "\"", e); return; }
             try { dest = node.Attributes.GetNamedItem("dest").Value; } catch { }
 
-            tymod.Imports.Add(new TyModImport() { Source = source, Destination = dest, Plugin = false });
+            tymod.Imports.Add(new TyModImport(source, dest, false));
         }
 
         private static void AddFromNode_Translation(TyMod tymod, XmlNode node)
@@ -156,7 +148,7 @@ namespace ty_mod_manager
             string name;
             TyModTranslate modTranslate;
 
-            try { name = node.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log("Invalid or missing name attribute for translation \"" + node.OuterXml + "\"", e); return; }
+            try { name = node.Attributes.GetNamedItem("name").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid or missing name attribute for translation \"" + node.OuterXml + "\"", e); return; }
 
             modTranslate = new TyModTranslate(name);
 
@@ -182,9 +174,9 @@ namespace ty_mod_manager
         {
             string source;
 
-            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log("Invalid source attribute for plugin import \"" + node.OuterXml + "\"", e); return; }
+            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid source attribute for plugin import \"" + node.OuterXml + "\"", e); return; }
 
-            tymod.Imports.Add(new TyModImport() { Source = source, Destination = null, Plugin = true });
+            tymod.Imports.Add(new TyModImport(source, null, true));
         }
 
         private static void AddFromNode_Level(TyMod tymod, XmlNode node)
@@ -192,7 +184,7 @@ namespace ty_mod_manager
             string directory = null;
             TyLevel level;
 
-            try { directory = node.Attributes.GetNamedItem("directory").Value; } catch (Exception e) { Program.Log("Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
+            try { directory = node.Attributes.GetNamedItem("directory").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
 
             level = new TyLevel(Path.Combine(Program.ModDirectory, directory));
             foreach (XmlNode child in node.ChildNodes)
@@ -205,7 +197,7 @@ namespace ty_mod_manager
                         {
                             level.LanguageNames[grandchild.Name.ToLower()] = grandchild.Attributes.GetNamedItem("value").Value;
                         }
-                        catch (Exception e) { Program.Log("Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
+                        catch (Exception e) { Program.Log(tymod.ToString(), "Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
                     }
                 }
                 else if (child.Name == "position")
@@ -227,7 +219,7 @@ namespace ty_mod_manager
                                     break;
                             }
                         }
-                        catch (Exception e) { Program.Log("Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
+                        catch (Exception e) { Program.Log(tymod.ToString(), "Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
                     }
                 }
             }
@@ -240,29 +232,25 @@ namespace ty_mod_manager
 
         #region Apply Mod
 
-        public static void ApplyImport(TyModImport import)
+        public static void ApplyImport(TyMod tymod, TyModImport import)
         {
             string src, dst;
             FileInfo fi;
 
             if (import.Source == null || (!File.Exists((src = Path.Combine(Program.ModDirectory, import.Source))) && !Directory.Exists(src)))
             {
-                Program.Log("Unable to find resource \"" + import.Source==null?"(null)":import.Source + "\"", null, true);
+                Program.Log(tymod.ToString(), "Unable to find resource \"" + (import.Source ?? "(null)") + "\"", null, true);
                 return;
             }
 
-            if (import.Destination == null)
-                dst = Path.Combine(Program.OutDirectory, import.Source);
-            else
-                dst = Path.Combine(Program.OutDirectory, import.Destination);
-
             if (import.Plugin)
             {
-                // to-do
+                // Add full path to plugins.ini file
+                File.AppendAllText(Path.Combine(Program.OutDirectory, "plugins.ini"), import.Source + "\r\n");
             }
             else if (import.Destination != null && import.Destination != String.Empty)
             {
-                fi = new FileInfo(dst);
+                fi = new FileInfo(dst = Path.Combine(Program.OutDirectory, import.Destination));
 
                 // Determine if copying folder or file
                 if (!File.Exists(src) && fi.Name == "")
@@ -574,4 +562,17 @@ namespace ty_mod_manager
         }
     }
 
+    public class TyModImport
+    {
+        public bool Plugin { get; set; } = false;
+        public string Source { get; set; } = null;
+        public string Destination { get; set; } = null;
+
+        public TyModImport(string source, string destination, bool plugin)
+        {
+            Plugin = plugin;
+            Source = source;
+            Destination = destination;
+        }
+    }
 }
