@@ -49,7 +49,7 @@ namespace TyModManager.UI
             lbOptions.ForeColor = LabelFore;
             lbOptions.HoverColor = LabelHover;
             lbOptions.ClickColor = LabelClick;
-            lbOptions.Click += LbOptions_Click; ;
+            lbOptions.Click += LbOptions_Click;
 
             lbExit.Font = lbPlay.Font;
             lbExit.ForeColor = LabelFore;
@@ -84,18 +84,29 @@ namespace TyModManager.UI
 
         private void LbPlay_Click(object sender, EventArgs e)
         {
+            // Update cursor
+            Cursor = Cursors.WaitCursor;
+
             // Apply and start
             if (ApplyEnabledMods())
             {
                 Program.Start(String.Empty);
                 this.Close();
             }
+
+            Cursor = DefaultCursor;
         }
 
         private void LbTest_Click(object sender, EventArgs e)
         {
+            // Update cursor
+            Cursor = Cursors.WaitCursor;
+
             if (!Program.Config.TestStartOnly && !ApplyEnabledMods())
+            {
+                Cursor = DefaultCursor;
                 return;
+            }
 
             // Start
             Program.Start(Program.Config.TestCommand);
