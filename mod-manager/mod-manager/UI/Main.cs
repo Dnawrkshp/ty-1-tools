@@ -24,6 +24,7 @@ namespace TyModManager.UI
         {
             InitializeComponent();
 
+            this.Icon = Properties.Resources.mod_manager;
             this.Text = "Ty The Tasmanian Tiger " + "r" + Program.RVersion.ToString("G") + "_v" + Program.VVersion.ToString("F");
             this.BackgroundImage = Properties.Resources.mod_manager_bg;
 
@@ -120,13 +121,45 @@ namespace TyModManager.UI
 
         private void LbOptions_Click(object sender, EventArgs e)
         {
-            
+            Options options = new Options()
+            {
+                TopMost = true
+            };
+
+            options.Shown += SubForm_Shown;
+            options.FormClosed += SubForm_FormClosed;
+
+            options.Show();
         }
 
         private void LbExit_Click(object sender, EventArgs e)
         {
             //Program.Config.Save(Program.ConfigPath);
             this.Close();
+        }
+
+        #endregion
+
+        #region Sub Form
+
+        private void SubForm_Shown(object sender, EventArgs e)
+        {
+            // Make invisible out label buttons
+            lbExit.Visible = false;
+            lbPlay.Visible = false;
+            lbMods.Visible = false;
+            lbOptions.Visible = false;
+            lbTest.Visible = false;
+        }
+
+        private void SubForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Make visible out label buttons
+            lbExit.Visible = true;
+            lbPlay.Visible = true;
+            lbMods.Visible = true;
+            lbOptions.Visible = true;
+            lbTest.Visible = true;
         }
 
         #endregion

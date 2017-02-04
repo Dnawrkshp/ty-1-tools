@@ -32,7 +32,7 @@
             this.lbMods = new TyModManager.UI.ButtonLabel();
             this.lbExit = new TyModManager.UI.ButtonLabel();
             this.lbTest = new TyModManager.UI.ButtonLabel();
-            this.buttonLink1 = new TyModManager.UI.ButtonLink();
+            this.lbGithub = new TyModManager.UI.ButtonLink();
             this.lbOptions = new TyModManager.UI.ButtonLabel();
             this.lbLog = new TyModManager.UI.LogLabel();
             this.SuspendLayout();
@@ -93,16 +93,16 @@
             this.lbTest.Text = "TEST";
             this.lbTest.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // buttonLink1
+            // lbGithub
             // 
-            this.buttonLink1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonLink1.ForeColor = System.Drawing.Color.LightGray;
-            this.buttonLink1.Image = global::TyModManager.Properties.Resources.GitHub_Mark_Light_32px;
-            this.buttonLink1.Location = new System.Drawing.Point(556, 339);
-            this.buttonLink1.Name = "buttonLink1";
-            this.buttonLink1.Size = new System.Drawing.Size(32, 32);
-            this.buttonLink1.TabIndex = 5;
-            this.buttonLink1.Text = "https://github.com/Dnawrkshp/ty-1-tools";
+            this.lbGithub.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbGithub.ForeColor = System.Drawing.Color.LightGray;
+            this.lbGithub.Image = global::TyModManager.Properties.Resources.GitHub_Mark_Light_32px;
+            this.lbGithub.Location = new System.Drawing.Point(556, 339);
+            this.lbGithub.Name = "lbGithub";
+            this.lbGithub.Size = new System.Drawing.Size(32, 32);
+            this.lbGithub.TabIndex = 5;
+            this.lbGithub.Text = "https://github.com/Dnawrkshp/ty-1-tools";
             // 
             // lbOptions
             // 
@@ -135,7 +135,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.lbLog);
             this.Controls.Add(this.lbOptions);
-            this.Controls.Add(this.buttonLink1);
+            this.Controls.Add(this.lbGithub);
             this.Controls.Add(this.lbTest);
             this.Controls.Add(this.lbExit);
             this.Controls.Add(this.lbMods);
@@ -144,7 +144,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Main";
-            this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TY Mod Manager";
@@ -160,7 +159,7 @@
         private ButtonLabel lbMods;
         private ButtonLabel lbExit;
         private ButtonLabel lbTest;
-        private ButtonLink buttonLink1;
+        private ButtonLink lbGithub;
         private ButtonLabel lbOptions;
         private LogLabel lbLog;
     }

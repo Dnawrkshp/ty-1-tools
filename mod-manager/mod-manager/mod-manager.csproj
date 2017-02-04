@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resource\mod-manager.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,6 +75,12 @@
     <Compile Include="Archive\TyRKV.cs" />
     <Compile Include="Element\TyTranslation.cs" />
     <Compile Include="Attribute\TyVersion.cs" />
+    <Compile Include="UI\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="UI\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,6 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\GitHub-Mark-Light-32px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource\mod-manager.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
