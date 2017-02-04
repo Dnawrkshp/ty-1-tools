@@ -16,6 +16,12 @@ namespace TyModManager
         [XmlArray("LevelOrder")]
         public List<string> LevelOrder { get; set; }
 
+        [XmlElement("TestCommand")]
+        public string TestCommand { get; set; }
+
+        [XmlElement("TestStartOnly")]
+        public bool TestStartOnly { get; set; }
+
         public Configuration(string xmlPath)
         {
             Configuration con = null;
@@ -36,6 +42,8 @@ namespace TyModManager
                 // Copy contents into this instance
                 this.EnabledMods = con.EnabledMods;
                 this.LevelOrder = con.LevelOrder;
+                this.TestCommand = con.TestCommand;
+                this.TestStartOnly = con.TestStartOnly;
             }
             catch (Exception e) { Program.Log(xmlPath, "Error deserializing file", e); if (xmlFile != null) { xmlFile.Close(); } }
 
@@ -44,6 +52,8 @@ namespace TyModManager
                 this.EnabledMods = new List<string>();
             if (this.LevelOrder == null)
                 this.LevelOrder = new List<string>();
+            if (this.TestCommand == null)
+                this.TestCommand = "-tydev";
         }
 
         // Default constructor for xml deserializer

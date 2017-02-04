@@ -64,9 +64,9 @@ namespace TyModManager.UI
             lbLog.MouseMove += Main_MouseMove;
         }
 
-        #region Label Click
+        #region Mods
 
-        private void LbPlay_Click(object sender, EventArgs e)
+        private bool ApplyEnabledMods()
         {
             List<Element.TyMod> tymods = new List<Element.TyMod>();
 
@@ -74,12 +74,32 @@ namespace TyModManager.UI
             foreach (Element.TyMod tymod in Program.Mods)
                 tymods.Add(tymod);
 
-            Program.ApplyMods(tymods);
+            // Apply
+            return Program.ApplyMods(tymods);
+        }
+
+        #endregion
+
+        #region Label Click
+
+        private void LbPlay_Click(object sender, EventArgs e)
+        {
+            // Apply and start
+            if (ApplyEnabledMods())
+            {
+                Program.Start(String.Empty);
+                this.Close();
+            }
         }
 
         private void LbTest_Click(object sender, EventArgs e)
         {
+            if (!Program.Config.TestStartOnly && !ApplyEnabledMods())
+                return;
 
+            // Start
+            Program.Start(Program.Config.TestCommand);
+            this.Close();
         }
 
         private void LbMods_Click(object sender, EventArgs e)
@@ -94,7 +114,7 @@ namespace TyModManager.UI
 
         private void LbExit_Click(object sender, EventArgs e)
         {
-            Program.Config.Save(Program.ConfigPath);
+            //Program.Config.Save(Program.ConfigPath);
             this.Close();
         }
 

@@ -23,7 +23,6 @@ namespace TyModManager.UI
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            string text;
             Rectangle region = new Rectangle(1, ClientRectangle.Height, ClientRectangle.Width, ClientRectangle.Height);
 
             if (Program.Logstream == null)
@@ -34,8 +33,9 @@ namespace TyModManager.UI
 
             // Draw line by line
             while (true) {
+
                 // Get previous line
-                if (!GetPreviousLine(Program.Logstream, out text))
+                if (!GetPreviousLine(Program.Logstream, out string text))
                     break;
 
                 // Indent string
@@ -53,8 +53,7 @@ namespace TyModManager.UI
                       ForeColor, Color.Empty,
                       TextFormatFlags.Left |
                       TextFormatFlags.TextBoxControl |
-                      TextFormatFlags.WordBreak |
-                      TextFormatFlags.PathEllipsis);
+                      TextFormatFlags.WordBreak);
             }
         }
 

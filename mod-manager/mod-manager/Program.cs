@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -94,6 +95,14 @@ namespace TyModManager
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());
+        }
+
+        public static void Start(string command)
+        {
+            if (File.Exists(TyExecutable))
+                Process.Start(TyExecutable, command);
+            else
+                Log(TyExecutable, "does not exist", null, true);
         }
 
         #region Import Mods
