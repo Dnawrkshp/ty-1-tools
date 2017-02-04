@@ -59,5 +59,55 @@ namespace TyModManager.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GitHub_Mark_Light_32px {
+            get {
+                object obj = ResourceManager.GetObject("GitHub_Mark_Light_32px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mod_manager_bg {
+            get {
+                object obj = ResourceManager.GetObject("mod_manager_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Raleway_Light {
+            get {
+                object obj = ResourceManager.GetObject("Raleway_Light", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Raleway_Regular {
+            get {
+                object obj = ResourceManager.GetObject("Raleway_Regular", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UbuntuMono_R {
+            get {
+                object obj = ResourceManager.GetObject("UbuntuMono_R", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

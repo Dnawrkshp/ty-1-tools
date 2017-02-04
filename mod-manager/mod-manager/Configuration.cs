@@ -21,29 +21,38 @@ namespace TyModManager
             Configuration con = null;
             FileStream xmlFile = null;
 
+            // No need to try and read a non-existent file
+            if (!File.Exists(xmlPath))
+                goto exit;
+
             try
             {
+                // Deserialize xml file
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
                 xmlFile = new FileStream(xmlPath, FileMode.Open);
                 con = (Configuration)serializer.Deserialize(xmlFile);
                 xmlFile.Close();
 
+                // Copy contents into this instance
                 this.EnabledMods = con.EnabledMods;
                 this.LevelOrder = con.LevelOrder;
             }
             catch (Exception e) { Program.Log(xmlPath, "Error deserializing file", e); if (xmlFile != null) { xmlFile.Close(); } }
 
-            if (this.EnabledMods == null)
+            // Ensure both lists aren't null
+            exit:  if (this.EnabledMods == null)
                 this.EnabledMods = new List<string>();
             if (this.LevelOrder == null)
                 this.LevelOrder = new List<string>();
         }
 
+        // Default constructor for xml deserializer
         public Configuration()
         {
 
         }
 
+        // Serialize instance
         public bool Save(string xmlPath)
         {
             try

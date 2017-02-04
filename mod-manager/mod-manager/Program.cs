@@ -19,6 +19,8 @@ namespace TyModManager
         public static List<TyMod> Mods = new List<TyMod>();
         public static TyRKV DataPC = null;
 
+        public static LogStream Logstream = null;
+
         public static Configuration Config = null;
 
         public static string ModDirectory = "Mods";
@@ -49,6 +51,9 @@ namespace TyModManager
         [STAThread]
         static void Main()
         {
+            // Setup log stream
+            Logstream = new LogStream();
+
             TyDirectory = Environment.CurrentDirectory;
             if (!File.Exists(Path.Combine(TyDirectory, TyExecutable)))
                 TyDirectory = Environment.GetEnvironmentVariable("TY_1_DIR");
@@ -142,7 +147,7 @@ namespace TyModManager
                     // Check if tymod already exists
                     if (Mods.Any(x => x.ToString() == tymod.ToString() && x.TyVersion.OverlapsVersion(tymod.TyVersion)))
                     {
-                        Log(path, "TyMod with same name, version, and dependency already exists (\"" + tymod.ToString() + "\")");
+                        Log(path, "TyMod with same name, version, authors, and dependency already exists (\"" + tymod.ToString() + "\")");
                         continue;
                     }
 
@@ -428,6 +433,10 @@ namespace TyModManager
 
         public static void Log(string context, string line, Exception e = null, bool show = false)
         {
+            // Try and shorten context if possible
+            try { Logstream.Log(Path.GetFileName(context) + ": " + line); }
+            catch { Logstream.Log(context + ": " + line); }
+
             if (context != null && context != String.Empty)
                 line = context + ": " + line;
 
@@ -507,5 +516,50 @@ namespace TyModManager
 
         #endregion
 
+    }
+
+    public class LogStream : MemoryStream
+    {
+        private StreamWriter _writer = null;
+
+        public delegate void LogHandler(string log);
+
+        // Triggered on every log
+        public event LogHandler OnLog;
+
+        // Stream reader
+        public StreamReader Reader { get; } = null;
+        
+
+        public LogStream()
+        {
+            Reader = new StreamReader(this);
+            _writer = new StreamWriter(this) { AutoFlush = true, NewLine = "\n" };
+        }
+
+        public void Log(string log)
+        {
+            // Ensure the log is valid
+            if (log == null)
+                return;
+
+            // Remove extra whitespaces
+            log = log.Trim();
+
+            // Ensure the log is still valid
+            if (log == String.Empty)
+                return;
+
+            // Add to stream
+            if (CanWrite && _writer != null)
+            {
+                this.Seek(0, SeekOrigin.End);
+                _writer.WriteLine(log);
+            }
+
+            // Raise callback
+            if (OnLog != null)
+                OnLog.Invoke(log);
+        }
     }
 }
