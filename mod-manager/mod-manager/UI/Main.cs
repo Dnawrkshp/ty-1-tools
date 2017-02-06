@@ -123,7 +123,8 @@ namespace TyModManager.UI
         {
             Options options = new Options()
             {
-                TopMost = true
+                TopMost = true,
+                Location = new Point(this.Location.X, this.Location.Y + this.Height / 4)
             };
 
             options.Shown += SubForm_Shown;
@@ -134,7 +135,6 @@ namespace TyModManager.UI
 
         private void LbExit_Click(object sender, EventArgs e)
         {
-            //Program.Config.Save(Program.ConfigPath);
             this.Close();
         }
 

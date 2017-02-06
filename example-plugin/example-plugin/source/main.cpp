@@ -6,16 +6,16 @@
 #include <TlHelp32.h>
 
 /*
- * This is an example plugin for the Ty Mod Manager
- * 
- * This plugin simply adjusts some floats based on the revision number.
- * Specifically, this makes you run, glide, and jump faster.
- *
- * NOTE: In order to debug this, you must have the following:
- *   * TY_1_DIR system environment variable set to the directory of your Ty installation.
- *   * The Mod Manager installed to that directory
- *   * 'plugins.ini' file placed in the folder $(TY_1_DIR)/PC_External with a line containing the fullpath to this plugin (ex: Z:/Games/Ty the Tasmanian Tiger/Mods/example-plugin.dll)
- */
+* This is an example plugin for the Ty Mod Manager
+*
+* This plugin simply adjusts some floats based on the revision number.
+* Specifically, this makes you run, glide, and jump faster.
+*
+* NOTE: In order to debug this, you must have the following:
+*   * TY_1_DIR system environment variable set to the directory of your Ty installation.
+*   * The Mod Manager installed to that directory
+*   * 'plugins.ini' file placed in the folder $(TY_1_DIR)/PC_External with a line containing the fullpath to this plugin (ex: Z:/Games/Ty the Tasmanian Tiger/Mods/example-plugin.dll)
+*/
 
 #define TyRunSpeed (*(float*)XZRunSpeedAddress)
 #define TyFallSpeed (*(float*)XZFallSpeedAddress)
@@ -51,7 +51,6 @@ const unsigned char pattern[256] = {
 
 // Keyboard Handler
 static HHOOK KeyboardHandle = 0;
-static DWORD ProcessID = 0;
 static bool ControlToggle = false;
 
 // Base address of Ty.exe
@@ -77,18 +76,18 @@ const float DefaultJumpSpeed = 18.57f;
 
 LRESULT CALLBACK KeyboardEvent(int nCode, WPARAM wParam, LPARAM lParam);
 void SuperSpeed(void);
-
+bool HookKeyboard(void);
 
 /*
- * Define and export our main function
- * This is called on load
- *
- * This method takes a few arguments as well.
- *   baseAddress    -  Where Ty.exe was loaded in memory
- *   endAddress     -  The end of the Ty.exe module in memory
- *   revision       -  The revision number of Ty  (rX)
- *   version        -  The version number of Ty   (vX.XX)
- */
+* Define and export our main function
+* This is called on load
+*
+* This method takes a few arguments as well.
+*   baseAddress    -  Where Ty.exe was loaded in memory
+*   endAddress     -  The end of the Ty.exe module in memory
+*   revision       -  The revision number of Ty  (rX)
+*   version        -  The version number of Ty   (vX.XX)
+*/
 __declspec(dllexport) void __cdecl main(uint64_t baseAddress, uint64_t endAddress, uint64_t revision, float version) {
 
 	// In here we can do some neat stuff
@@ -96,23 +95,9 @@ __declspec(dllexport) void __cdecl main(uint64_t baseAddress, uint64_t endAddres
 	BaseAddress = baseAddress;
 	EndAddress = endAddress;
 
-	try {
-		// Ensure both are valid
-		if (!baseAddress || !endAddress)
-			throw std::exception("Invalid baseAddress and/or endAddress");
-
-		// Get Current Process ID
-		ProcessID = GetCurrentProcessId();
-		if (!ProcessID)
-			throw std::exception("Unable to retrieve current process id");
-
-		// Hook Windows Keyboard events
-		KeyboardHandle = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardEvent, (HMODULE)baseAddress, NULL);
-		if (KeyboardHandle == NULL)
-			throw std::exception("Unabled to hook keyboard events");
-	}
-	catch (std::exception& e) {
-		OutputDebugStringA(e.what());
+	// Ensure everything is working fine
+	if (!baseAddress || !endAddress) {
+		OutputDebugStringA("Invalid baseAddress and/or endAddress");
 		return;
 	}
 
@@ -122,33 +107,13 @@ __declspec(dllexport) void __cdecl main(uint64_t baseAddress, uint64_t endAddres
 	task.detach();
 }
 
-bool IsActiveApplication()
-{
-	DWORD activeProcId;
-	HWND activatedHandle = GetForegroundWindow();
-
-	// No active window
-	if (activatedHandle == NULL)
-		return false;
-
-	// Get process id of active window
-	GetWindowThreadProcessId(activatedHandle, &activeProcId);
-
-	// Check if pid is ours
-	return activeProcId == ProcessID;
-}
-
 LRESULT CALLBACK KeyboardEvent(int nCode, WPARAM wParam, LPARAM lParam) {
-	KBDLLHOOKSTRUCT * kb = (KBDLLHOOKSTRUCT *)lParam;
-
-	if (!nCode && IsActiveApplication()) {
-		// Check if control state changed
-		if (kb->vkCode == 0xA2 || kb->vkCode == 0xA3) {
-			if (wParam == WM_KEYDOWN)
-				ControlToggle = true;
-			else if (wParam == WM_KEYUP)
-				ControlToggle = false;
-		}
+	if (nCode == HC_ACTION) {
+		// Toggle speed if Control is pressed or unpressed
+		if ((DWORD)lParam & 0xC0000000 && wParam == VK_CONTROL)
+			ControlToggle = false;
+		else if ((DWORD)lParam & 0x00FFFFFF && wParam == VK_CONTROL)
+			ControlToggle = true;
 	}
 
 	return CallNextHookEx(KeyboardHandle, nCode, wParam, lParam);
@@ -168,10 +133,37 @@ uint32_t GetAddress(const unsigned char * pattern) {
 	return 0;
 }
 
+bool HookKeyboard(void)
+{
+	THREADENTRY32 th32;
+	th32.dwSize = sizeof(THREADENTRY32);
+
+	// Get all threads and hook the keyboard
+	HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+	if (hThreadSnap != INVALID_HANDLE_VALUE) {
+		if (!Thread32First(hThreadSnap, &th32))
+			return false;
+
+		do {
+			if (th32.th32ThreadID)
+				if ((KeyboardHandle = SetWindowsHookEx(WH_KEYBOARD, KeyboardEvent, (HMODULE)BaseAddress, th32.th32ThreadID)))
+					return true;
+		} while (Thread32Next(hThreadSnap, &th32));
+
+		CloseHandle(hThreadSnap);
+	}
+
+	return false;
+}
+
 void SuperSpeed(void) {
 	uint32_t address = 0;
+	DWORD tid = 0;
 
 	while (!(address = GetAddress(pattern)))
+		Sleep(5000);
+
+	while (!HookKeyboard())
 		Sleep(5000);
 
 	XZRunSpeedAddress = address - 0x04;
