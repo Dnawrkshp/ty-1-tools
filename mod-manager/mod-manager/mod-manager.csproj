@@ -128,5 +128,8 @@
   <ItemGroup>
     <None Include="Resource\mod-manager.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource\Wiki-Light-32px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

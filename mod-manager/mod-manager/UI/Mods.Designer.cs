@@ -28,13 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOkay = new System.Windows.Forms.Button();
             this.gbMods = new System.Windows.Forms.GroupBox();
             this.gbLoadOrder = new System.Windows.Forms.GroupBox();
+            this.dgvLoadOrder = new System.Windows.Forms.DataGridView();
+            this.ColumnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnUp = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ColumnDown = new System.Windows.Forms.DataGridViewButtonColumn();
             this.lbDescription = new System.Windows.Forms.Label();
-            this.lbMods = new System.Windows.Forms.CheckedListBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.dgvMods = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbMods.SuspendLayout();
+            this.gbLoadOrder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLoadOrder)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMods)).BeginInit();
             this.SuspendLayout();
             // 
             // btCancel
@@ -60,7 +72,7 @@
             // 
             // gbMods
             // 
-            this.gbMods.Controls.Add(this.lbMods);
+            this.gbMods.Controls.Add(this.dgvMods);
             this.gbMods.Location = new System.Drawing.Point(12, 12);
             this.gbMods.Name = "gbMods";
             this.gbMods.Size = new System.Drawing.Size(327, 193);
@@ -70,12 +82,91 @@
             // 
             // gbLoadOrder
             // 
+            this.gbLoadOrder.Controls.Add(this.dgvLoadOrder);
             this.gbLoadOrder.Location = new System.Drawing.Point(12, 211);
             this.gbLoadOrder.Name = "gbLoadOrder";
             this.gbLoadOrder.Size = new System.Drawing.Size(327, 165);
             this.gbLoadOrder.TabIndex = 3;
             this.gbLoadOrder.TabStop = false;
             this.gbLoadOrder.Text = "Custom Map Import Order";
+            // 
+            // dgvLoadOrder
+            // 
+            this.dgvLoadOrder.AllowUserToAddRows = false;
+            this.dgvLoadOrder.AllowUserToDeleteRows = false;
+            this.dgvLoadOrder.AllowUserToResizeColumns = false;
+            this.dgvLoadOrder.AllowUserToResizeRows = false;
+            this.dgvLoadOrder.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dgvLoadOrder.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.dgvLoadOrder.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dgvLoadOrder.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvLoadOrder.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLoadOrder.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnID,
+            this.ColumnName,
+            this.ColumnUp,
+            this.ColumnDown});
+            this.dgvLoadOrder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLoadOrder.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvLoadOrder.Location = new System.Drawing.Point(3, 16);
+            this.dgvLoadOrder.MultiSelect = false;
+            this.dgvLoadOrder.Name = "dgvLoadOrder";
+            this.dgvLoadOrder.ReadOnly = true;
+            this.dgvLoadOrder.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvLoadOrder.RowHeadersVisible = false;
+            this.dgvLoadOrder.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLoadOrder.Size = new System.Drawing.Size(321, 146);
+            this.dgvLoadOrder.TabIndex = 0;
+            this.dgvLoadOrder.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvLoadOrder_CellContentClick);
+            this.dgvLoadOrder.SelectionChanged += new System.EventHandler(this.DgvLoadOrder_SelectionChanged);
+            // 
+            // ColumnID
+            // 
+            this.ColumnID.FillWeight = 25F;
+            this.ColumnID.HeaderText = "ID";
+            this.ColumnID.MinimumWidth = 25;
+            this.ColumnID.Name = "ColumnID";
+            this.ColumnID.ReadOnly = true;
+            this.ColumnID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColumnID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColumnID.ToolTipText = "The index of the custom map.";
+            this.ColumnID.Width = 25;
+            // 
+            // ColumnName
+            // 
+            this.ColumnName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnName.HeaderText = "Map Name";
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
+            this.ColumnName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColumnName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColumnName.ToolTipText = "The name of the custom map.";
+            // 
+            // ColumnUp
+            // 
+            this.ColumnUp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnUp.FillWeight = 20F;
+            this.ColumnUp.HeaderText = "U";
+            this.ColumnUp.MinimumWidth = 20;
+            this.ColumnUp.Name = "ColumnUp";
+            this.ColumnUp.ReadOnly = true;
+            this.ColumnUp.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColumnUp.Text = "";
+            this.ColumnUp.ToolTipText = "Shift the level up one index.";
+            this.ColumnUp.Width = 20;
+            // 
+            // ColumnDown
+            // 
+            this.ColumnDown.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnDown.FillWeight = 20F;
+            this.ColumnDown.HeaderText = "D";
+            this.ColumnDown.MinimumWidth = 20;
+            this.ColumnDown.Name = "ColumnDown";
+            this.ColumnDown.ReadOnly = true;
+            this.ColumnDown.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColumnDown.Text = "";
+            this.ColumnDown.ToolTipText = "Shift the level down one index.";
+            this.ColumnDown.Width = 20;
             // 
             // lbDescription
             // 
@@ -84,14 +175,55 @@
             this.lbDescription.Size = new System.Drawing.Size(326, 56);
             this.lbDescription.TabIndex = 4;
             // 
-            // lbMods
+            // dgvMods
             // 
-            this.lbMods.FormattingEnabled = true;
-            this.lbMods.Location = new System.Drawing.Point(6, 19);
-            this.lbMods.Name = "lbMods";
-            this.lbMods.Size = new System.Drawing.Size(315, 169);
-            this.lbMods.TabIndex = 0;
-            this.lbMods.SelectedIndexChanged += new System.EventHandler(this.LbMods_SelectedIndexChanged);
+            this.dgvMods.AllowUserToAddRows = false;
+            this.dgvMods.AllowUserToDeleteRows = false;
+            this.dgvMods.AllowUserToResizeColumns = false;
+            this.dgvMods.AllowUserToResizeRows = false;
+            this.dgvMods.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dgvMods.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.dgvMods.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dgvMods.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvMods.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMods.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2});
+            this.dgvMods.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMods.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
+            this.dgvMods.Location = new System.Drawing.Point(3, 16);
+            this.dgvMods.MultiSelect = false;
+            this.dgvMods.Name = "dgvMods";
+            this.dgvMods.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvMods.RowHeadersVisible = false;
+            this.dgvMods.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvMods.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMods.Size = new System.Drawing.Size(321, 174);
+            this.dgvMods.TabIndex = 1;
+            this.dgvMods.SelectionChanged += new System.EventHandler(this.dgvMods_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "(none";
+            this.dataGridViewTextBoxColumn1.FalseValue = "False";
+            this.dataGridViewTextBoxColumn1.FillWeight = 20F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "E";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 20;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn1.ToolTipText = "Whether or not to install the mod.";
+            this.dataGridViewTextBoxColumn1.TrueValue = "True";
+            this.dataGridViewTextBoxColumn1.Width = 20;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Mod Name";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.ToolTipText = "The name of the mod.";
             // 
             // Mods
             // 
@@ -112,6 +244,9 @@
             this.Text = "TY Mods";
             this.TopMost = true;
             this.gbMods.ResumeLayout(false);
+            this.gbLoadOrder.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLoadOrder)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMods)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -123,6 +258,14 @@
         private System.Windows.Forms.GroupBox gbMods;
         private System.Windows.Forms.GroupBox gbLoadOrder;
         private System.Windows.Forms.Label lbDescription;
-        private System.Windows.Forms.CheckedListBox lbMods;
+        private System.Windows.Forms.DataGridView dgvLoadOrder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
+        private System.Windows.Forms.DataGridViewButtonColumn ColumnUp;
+        private System.Windows.Forms.DataGridViewButtonColumn ColumnDown;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.DataGridView dgvMods;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
     }
 }

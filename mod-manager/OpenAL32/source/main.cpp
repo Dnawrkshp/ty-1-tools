@@ -120,7 +120,7 @@ static int hasLoadedLibrary = 0;
 static void GetAddresses(HANDLE hProc) {
 	unsigned char buffer[32];
 	SIZE_T read = 0;
-	const char n[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
+	const unsigned char n[] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
 
 	const unsigned char pattern_levelentries[] = {
 		0x55,					// push ebp

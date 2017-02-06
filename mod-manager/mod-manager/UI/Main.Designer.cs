@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbPlay = new TyModManager.UI.ButtonLabel();
             this.lbMods = new TyModManager.UI.ButtonLabel();
             this.lbExit = new TyModManager.UI.ButtonLabel();
@@ -35,6 +36,8 @@
             this.lbGithub = new TyModManager.UI.ButtonLink();
             this.lbOptions = new TyModManager.UI.ButtonLabel();
             this.lbLog = new TyModManager.UI.LogLabel();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.lbWiki = new TyModManager.UI.ButtonLink();
             this.SuspendLayout();
             // 
             // lbPlay
@@ -50,6 +53,7 @@
             this.lbPlay.TabIndex = 1;
             this.lbPlay.Text = "PLAY";
             this.lbPlay.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.toolTip.SetToolTip(this.lbPlay, "Launch Ty.exe normally.");
             // 
             // lbMods
             // 
@@ -92,6 +96,7 @@
             this.lbTest.TabIndex = 4;
             this.lbTest.Text = "TEST";
             this.lbTest.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.toolTip.SetToolTip(this.lbTest, "Launch Ty.exe with special arguments.");
             // 
             // lbGithub
             // 
@@ -103,6 +108,7 @@
             this.lbGithub.Size = new System.Drawing.Size(32, 32);
             this.lbGithub.TabIndex = 5;
             this.lbGithub.Text = "https://github.com/Dnawrkshp/ty-1-tools";
+            this.toolTip.SetToolTip(this.lbGithub, "GitHub Repository");
             // 
             // lbOptions
             // 
@@ -123,8 +129,20 @@
             this.lbLog.BackColor = System.Drawing.Color.Transparent;
             this.lbLog.Location = new System.Drawing.Point(12, 225);
             this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(502, 146);
+            this.lbLog.Size = new System.Drawing.Size(491, 146);
             this.lbLog.TabIndex = 7;
+            // 
+            // lbWiki
+            // 
+            this.lbWiki.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbWiki.ForeColor = System.Drawing.Color.LightGray;
+            this.lbWiki.Image = global::TyModManager.Properties.Resources.Wiki_Light_32px;
+            this.lbWiki.Location = new System.Drawing.Point(509, 339);
+            this.lbWiki.Name = "lbWiki";
+            this.lbWiki.Size = new System.Drawing.Size(32, 32);
+            this.lbWiki.TabIndex = 8;
+            this.lbWiki.Text = "https://github.com/Dnawrkshp/ty-1-tools/wiki";
+            this.toolTip.SetToolTip(this.lbWiki, "Wiki");
             // 
             // Main
             // 
@@ -133,6 +151,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(600, 380);
             this.ControlBox = false;
+            this.Controls.Add(this.lbWiki);
             this.Controls.Add(this.lbLog);
             this.Controls.Add(this.lbOptions);
             this.Controls.Add(this.lbGithub);
@@ -162,6 +181,8 @@
         private ButtonLink lbGithub;
         private ButtonLabel lbOptions;
         private LogLabel lbLog;
+        private System.Windows.Forms.ToolTip toolTip;
+        private ButtonLink lbWiki;
     }
 }
 

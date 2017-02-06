@@ -74,12 +74,8 @@ namespace TyModManager.Element
 
         public override string ToString()
         {
-            return (Name ?? "Unnamed Ty Mod") + " (" + (ModVersion ?? String.Empty) + ";" + (Authors ?? String.Empty) + ")";
-        }
-
-        public string ToPresentableString()
-        {
-            return (Name ?? "Unnamed Ty Mod") + " " + (Authors ?? String.Empty) + " (" + (ModVersion ?? String.Empty) + ")";
+            //return (Name ?? "Unnamed Ty Mod") + " (" + (ModVersion ?? String.Empty) + ";" + (Authors ?? String.Empty) + ")";
+            return (Name ?? "Unnamed Ty Mod") + (Authors == null ? " " : " by " + Authors + " ") + (ModVersion == null ? String.Empty : "(" + ModVersion + ")");
         }
 
         public void AddFromNode(XmlNode node)
