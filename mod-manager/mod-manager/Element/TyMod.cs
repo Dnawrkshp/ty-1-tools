@@ -77,6 +77,11 @@ namespace TyModManager.Element
             return (Name ?? "Unnamed Ty Mod") + " (" + (ModVersion ?? String.Empty) + ";" + (Authors ?? String.Empty) + ")";
         }
 
+        public string ToPresentableString()
+        {
+            return (Name ?? "Unnamed Ty Mod") + " " + (Authors ?? String.Empty) + " (" + (ModVersion ?? String.Empty) + ")";
+        }
+
         public void AddFromNode(XmlNode node)
         {
             ModTag tag;

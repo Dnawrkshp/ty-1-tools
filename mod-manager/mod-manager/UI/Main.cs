@@ -116,14 +116,21 @@ namespace TyModManager.UI
 
         private void LbMods_Click(object sender, EventArgs e)
         {
+            Mods mods = new Mods()
+            {
+                Location = new Point(this.Location.X, this.Location.Y - this.Height / 4)
+            };
 
+            mods.Shown += SubForm_Shown;
+            mods.FormClosed += SubForm_FormClosed;
+
+            mods.Show();
         }
 
         private void LbOptions_Click(object sender, EventArgs e)
         {
             Options options = new Options()
             {
-                TopMost = true,
                 Location = new Point(this.Location.X, this.Location.Y + this.Height / 4)
             };
 

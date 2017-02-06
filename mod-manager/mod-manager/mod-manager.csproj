@@ -75,6 +75,12 @@
     <Compile Include="Archive\TyRKV.cs" />
     <Compile Include="Element\TyTranslation.cs" />
     <Compile Include="Attribute\TyVersion.cs" />
+    <Compile Include="UI\Mods.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Mods.Designer.cs">
+      <DependentUpon>Mods.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Options.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +100,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Mods.resx">
+      <DependentUpon>Mods.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>

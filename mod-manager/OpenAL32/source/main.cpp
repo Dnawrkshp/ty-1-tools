@@ -143,7 +143,8 @@ static void GetAddresses(HANDLE hProc) {
 				LevelEntriesAddress = *(UINT32*)(x + 12);
 			else if (!LoadResourceFileAddress && memcmp(buffer, pattern_loadresourcefile, 23) == 0)
 				LoadResourceFileAddress = x;
-			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 && buffer[20] == 0xE8 && buffer[25] == 0x83 && buffer[26] == 0xC4 && buffer[27] == 0x04 && buffer[28] == 0x50 && buffer[29] == 0xE8 && buffer[30] == 0x51) {
+			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 && 
+					 buffer[20] == 0xE8 && buffer[25] == 0x83 && buffer[26] == 0xC4 && buffer[27] == 0x04 && buffer[28] == 0x50 && buffer[29] == 0xE8) {
 				WriteProcessMemory(hProc, (LPVOID)(x + 0x14), &n, 5, &read);
 				WriteProcessMemory(hProc, (LPVOID)(x + 0x1D), &n, 5, &read);
 			}

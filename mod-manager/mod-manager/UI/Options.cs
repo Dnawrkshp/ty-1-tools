@@ -19,7 +19,6 @@ namespace TyModManager.UI
             InitializeComponent();
 
             this.Icon = Properties.Resources.mod_manager;
-            this.AcceptButton = btOkay;
 
             this.toolTip.SetToolTip(this.gbTestArgs, tooltipTestArgs);
             this.toolTip.SetToolTip(this.tbTestArgs, tooltipTestArgs);
