@@ -1,5 +1,5 @@
 <root>
   <tymod name="Super Speed" version="1.0.0" authors="Dnawrkshp" tyversion="" description="Hold control to enable.">
-    <plugin source="example-plugin.dll"/>
+    <plugin>example-plugin.dll</plugin>
   </tymod>
 </root>
