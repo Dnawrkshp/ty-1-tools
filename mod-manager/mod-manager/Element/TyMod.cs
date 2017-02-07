@@ -212,7 +212,7 @@ namespace TyModManager.Element
                         catch (Exception e) { Program.Log(tymod.ToString(), "Invalid " + grandchild.Name ?? String.Empty + " translation for level import \"" + node.OuterXml + "\"", e); }
                     }
                 }
-                else if (child.Name == "position")
+                else if (child.Name == "portal")
                 {
                     foreach (XmlNode grandchild in child.ChildNodes)
                     {

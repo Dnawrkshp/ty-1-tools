@@ -4,19 +4,19 @@
 		<level directory="CustomMap0/" name="Beyond the Black Stump Copy">
 			<!-- Name of map in each supported language -->
 			<translation>
-				<english>Custom Map EN"</english>
-				<spanish>Custom Map ESP"</spanish>
-				<german>Custom Map DE"</german>
-				<french>Custom Map FR"</french>
-				<italian>Custom Map IT"</italian>
+				<english>Custom Map EN</english>
+				<spanish>Custom Map ESP</spanish>
+				<german>Custom Map DE</german>
+				<french>Custom Map FR</french>
+				<italian>Custom Map IT</italian>
 			</translation>
 
 			<!-- Position of portal in Rainbow Cliffs -->
-			<position>
+			<portal>
 				<x>0</x>
 				<y>2372</y>
 				<z>12520</z>
-			</position>
+			</portal>
 		</level>
 	</tymod>
 </root>
