@@ -1,0 +1,8 @@
+<root>
+	<tymod name="Multikaboomerang" version="1.0.0" tyversion="[,r9999]" authors="Dnawrkshp" description="When the Kaboomerang and the Multirang have a baby...">
+		<!-- Kaboomarang -->
+		<global source="global.model" type="inclusive" name="prop_0538_rang_23">
+			<ammoCount>4</ammoCount>
+		</global>
+	</tymod>
+</root>

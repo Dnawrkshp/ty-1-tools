@@ -8,6 +8,7 @@ using System.Xml;
 using TyModManager.Archive;
 using TyModManager.Attribute;
 using TyModManager.UI;
+using TyModManager.Extension;
 
 namespace TyModManager.Element
 {
@@ -132,10 +133,8 @@ namespace TyModManager.Element
         {
             foreach (XmlNode childNode in node.ChildNodes)
             {
-                if (childNode.Attributes != null)
-                    foreach (XmlAttribute attr in childNode.Attributes)
-                        if (attr.Name == "value")
-                            modEdit.SubItems.Add(new TyModEditItem(childNode.Name, attr.Value));
+                if (childNode.HasTextChild())
+                    modEdit.SubItems.Add(new TyModEditItem(childNode.Name, childNode.GetFirstTextChild()));
 
                 AddFromNode_Global_Recursive(modEdit, childNode);
             }
@@ -145,8 +144,14 @@ namespace TyModManager.Element
         {
             string source, dest = null;
 
-            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid source attribute for resource import \"" + node.OuterXml + "\"", e); return; }
-            try { dest = node.Attributes.GetNamedItem("dest").Value; } catch { }
+            try { source = node.GetFirstTextChild(); } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid value for resource import \"" + node.OuterXml + "\"", e); return; }
+            try { dest = node.Attributes.GetNamedItem("destination").Value; } catch { }
+
+            if (source == null || source == String.Empty)
+            {
+                Program.Log(tymod.ToString(), "Invalid value for resource import \"" + node.OuterXml + "\"");
+                return;
+            }
 
             tymod.Imports.Add(new TyModImport(source, dest, false));
         }
@@ -163,15 +168,12 @@ namespace TyModManager.Element
             foreach (XmlNode child in node.ChildNodes)
             {
                 name = child.Name.ToLower();
-                foreach (XmlAttribute attr in child.Attributes)
+                if (child.HasTextChild())
                 {
-                    if (attr.Name != "value")
-                        continue;
-
                     if (modTranslate.Translations.ContainsKey(name))
-                        modTranslate.Translations[name] = attr.Value;
+                        modTranslate.Translations[name] = child.GetFirstTextChild();
                     else
-                        modTranslate.Translations.Add(name, attr.Value);
+                        modTranslate.Translations.Add(name, child.GetFirstTextChild());
                 }
             }
 
@@ -180,11 +182,10 @@ namespace TyModManager.Element
 
         private static void AddFromNode_Plugin(TyMod tymod, XmlNode node)
         {
-            string source;
-
-            try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid source attribute for plugin import \"" + node.OuterXml + "\"", e); return; }
-
-            tymod.Imports.Add(new TyModImport(source, null, true));
+            if (node.HasTextChild())
+                tymod.Imports.Add(new TyModImport(node.GetFirstTextChild(), null, true));
+            else
+                Program.Log(tymod.ToString(), "Invalid value for plugin import \"" + node.OuterXml + "\"");
         }
 
         private static void AddFromNode_Level(TyMod tymod, XmlNode node)
@@ -204,9 +205,11 @@ namespace TyModManager.Element
                     {
                         try
                         {
-                            level.LanguageNames[grandchild.Name.ToLower()] = grandchild.Attributes.GetNamedItem("value").Value;
+                            level.LanguageNames[grandchild.Name.ToLower()] = grandchild.GetFirstTextChild();
+                            if (level.LanguageNames[grandchild.Name.ToLower()] == null)
+                                Program.Log(tymod.ToString(), "Invalid " + grandchild.Name + " translation for level import \"" + node.OuterXml + "\"");
                         }
-                        catch (Exception e) { Program.Log(tymod.ToString(), "Invalid directory attribute for level import \"" + node.OuterXml + "\"", e); return; }
+                        catch (Exception e) { Program.Log(tymod.ToString(), "Invalid " + grandchild.Name ?? String.Empty + " translation for level import \"" + node.OuterXml + "\"", e); }
                     }
                 }
                 else if (child.Name == "position")
@@ -218,13 +221,13 @@ namespace TyModManager.Element
                             switch (grandchild.Name.ToLower())
                             {
                                 case "x":
-                                    level.X = float.Parse(grandchild.Attributes.GetNamedItem("value").Value);
+                                    level.X = float.Parse(grandchild.GetFirstTextChild());
                                     break;
                                 case "y":
-                                    level.Y = float.Parse(grandchild.Attributes.GetNamedItem("value").Value);
+                                    level.Y = float.Parse(grandchild.GetFirstTextChild());
                                     break;
                                 case "z":
-                                    level.Z = float.Parse(grandchild.Attributes.GetNamedItem("value").Value);
+                                    level.Z = float.Parse(grandchild.GetFirstTextChild());
                                     break;
                             }
                         }

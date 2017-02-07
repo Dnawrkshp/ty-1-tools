@@ -5,6 +5,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using TyModManager.Extension;
 
 namespace TyModManager.UI.Font
 {

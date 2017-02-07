@@ -49,13 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Extension\XmlNodeExtensions.cs" />
     <Compile Include="UI\ButtonLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ButtonLink.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\Font\FontExtensions.cs" />
+    <Compile Include="Extension\FontExtensions.cs" />
     <Compile Include="UI\Font\Raleway.cs" />
     <Compile Include="UI\Font\Ubuntu.cs" />
     <Compile Include="UI\LogLabel.cs">

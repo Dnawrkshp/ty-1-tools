@@ -1,0 +1,9 @@
+<root>
+	<tymod name="Bambi Cliffs" version="1.0.0" tyversion="" authors="Dnawrkshp" description="Renames Rainbow Cliffs to Bambi Cliffs.">
+		<!-- Rename `Rainbow Cliffs` to `Bambi Cliffs` for english and french -->
+		<translation name="TEXT_LEVEL_Z1">
+			<english>Bambi Cliffs</english>
+			<french>Bambi Cliffs</french>
+		</translation>
+	</tymod>
+</root>

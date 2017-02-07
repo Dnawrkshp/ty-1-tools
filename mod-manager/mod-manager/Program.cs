@@ -272,12 +272,6 @@ namespace TyModManager
                 File.WriteAllText(file.FullName, translations[key].ToString(), Encoding.GetEncoding("iso-8859-1"));
             }
 
-            // Update Config with new list of enabled mods
-            Config.EnabledMods.Clear();
-            foreach (TyMod mod in mods)
-                Config.EnabledMods.Add(mod.ToString());
-            Config.Save(Program.ConfigPath);
-
             return true;
         }
 

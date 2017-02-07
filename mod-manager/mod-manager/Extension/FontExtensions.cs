@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace TyModManager.UI.Font
+namespace TyModManager.Extension
 {
     public static class FontExtensions
     {
