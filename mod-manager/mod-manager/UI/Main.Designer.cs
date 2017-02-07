@@ -42,14 +42,15 @@
             // 
             // lbPlay
             // 
+            this.lbPlay.AutoSize = true;
             this.lbPlay.BackColor = System.Drawing.Color.Transparent;
             this.lbPlay.ClickColor = System.Drawing.Color.White;
             this.lbPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbPlay.ForeColor = System.Drawing.SystemColors.Control;
             this.lbPlay.HoverColor = System.Drawing.Color.Gray;
-            this.lbPlay.Location = new System.Drawing.Point(510, 10);
+            this.lbPlay.Location = new System.Drawing.Point(505, 9);
             this.lbPlay.Name = "lbPlay";
-            this.lbPlay.Size = new System.Drawing.Size(78, 31);
+            this.lbPlay.Size = new System.Drawing.Size(83, 31);
             this.lbPlay.TabIndex = 1;
             this.lbPlay.Text = "PLAY";
             this.lbPlay.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -62,15 +63,16 @@
             this.lbMods.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbMods.ForeColor = System.Drawing.SystemColors.Control;
             this.lbMods.HoverColor = System.Drawing.Color.Gray;
-            this.lbMods.Location = new System.Drawing.Point(497, 90);
+            this.lbMods.Location = new System.Drawing.Point(460, 90);
             this.lbMods.Name = "lbMods";
-            this.lbMods.Size = new System.Drawing.Size(91, 31);
+            this.lbMods.Size = new System.Drawing.Size(128, 31);
             this.lbMods.TabIndex = 2;
             this.lbMods.Text = "MODS";
             this.lbMods.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lbExit
             // 
+            this.lbExit.AutoSize = true;
             this.lbExit.BackColor = System.Drawing.Color.Transparent;
             this.lbExit.ClickColor = System.Drawing.Color.White;
             this.lbExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -78,13 +80,14 @@
             this.lbExit.HoverColor = System.Drawing.Color.Gray;
             this.lbExit.Location = new System.Drawing.Point(517, 170);
             this.lbExit.Name = "lbExit";
-            this.lbExit.Size = new System.Drawing.Size(71, 31);
+            this.lbExit.Size = new System.Drawing.Size(75, 31);
             this.lbExit.TabIndex = 3;
             this.lbExit.Text = "EXIT";
             this.lbExit.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lbTest
             // 
+            this.lbTest.AutoSize = true;
             this.lbTest.BackColor = System.Drawing.Color.Transparent;
             this.lbTest.ClickColor = System.Drawing.Color.White;
             this.lbTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -92,7 +95,7 @@
             this.lbTest.HoverColor = System.Drawing.Color.Gray;
             this.lbTest.Location = new System.Drawing.Point(506, 50);
             this.lbTest.Name = "lbTest";
-            this.lbTest.Size = new System.Drawing.Size(82, 31);
+            this.lbTest.Size = new System.Drawing.Size(84, 31);
             this.lbTest.TabIndex = 4;
             this.lbTest.Text = "TEST";
             this.lbTest.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -112,6 +115,7 @@
             // 
             // lbOptions
             // 
+            this.lbOptions.AutoSize = true;
             this.lbOptions.BackColor = System.Drawing.Color.Transparent;
             this.lbOptions.ClickColor = System.Drawing.Color.White;
             this.lbOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -119,7 +123,7 @@
             this.lbOptions.HoverColor = System.Drawing.Color.Gray;
             this.lbOptions.Location = new System.Drawing.Point(454, 130);
             this.lbOptions.Name = "lbOptions";
-            this.lbOptions.Size = new System.Drawing.Size(134, 31);
+            this.lbOptions.Size = new System.Drawing.Size(137, 31);
             this.lbOptions.TabIndex = 6;
             this.lbOptions.Text = "OPTIONS";
             this.lbOptions.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -170,6 +174,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Main_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Main_MouseUp);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

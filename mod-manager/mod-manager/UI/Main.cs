@@ -27,6 +27,7 @@ namespace TyModManager.UI
             this.Icon = Properties.Resources.mod_manager;
             this.Text = "Ty The Tasmanian Tiger " + "r" + Program.RVersion.ToString("G") + "_v" + Program.VVersion.ToString("F");
             this.BackgroundImage = Properties.Resources.mod_manager_bg;
+            this.lbMods.Text = Program.Mods.Count(x => x.Enabled).ToString() + " MODS";
 
             lbPlay.Font = new System.Drawing.Font(UI.Font.Raleway.RalewayRegular, 20f, FontStyle.Bold);
             lbPlay.ForeColor = LabelFore;
@@ -167,6 +168,8 @@ namespace TyModManager.UI
             lbMods.Visible = true;
             lbOptions.Visible = true;
             lbTest.Visible = true;
+
+            lbMods.Text = Program.Mods.Count(x => x.Enabled).ToString() + " MODS";
         }
 
         #endregion
