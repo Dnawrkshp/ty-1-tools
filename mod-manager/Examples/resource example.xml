@@ -1,5 +1,5 @@
 <root>
 	<tymod name="Main Menu Music Override" version="1.0.0" tyversion="" authors="Dnawrkshp" description="Chew Z by ADHDJ (https://soundcloud.com/adhdjklol/chew-z-1)">
-		<resource destination="music_frontend.ogg">SingleMod/Chew_Z_ADHDJ.ogg</resource>
+		<resource destination="music_frontend.ogg">FrontendMods/Chew_Z_ADHDJ.ogg</resource>
 	</tymod>
 </root>
