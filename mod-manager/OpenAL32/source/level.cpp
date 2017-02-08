@@ -46,11 +46,11 @@ HMODULE GetModule(HANDLE hProc);
 void SetupLevelEntries(void);
 
 typedef struct LevelEntry {
-	const char * levelID;
-	int32_t unk_04;
-	int32_t unk_08;
-	int32_t unk_0C;
-	int32_t unk_10;
+	const char * levelID;				// ID
+	int32_t unk_04;						// Opal Color
+	int32_t unk_08;						// 
+	int32_t unk_0C;						// 
+	int32_t unk_10;						// 
 } _levelEntry;
 
 
@@ -60,12 +60,24 @@ void Handler_Level(HANDLE hProc)
 {
 	SIZE_T read = 0;
 	char buffer[4];
+	uint64_t LEA_4, LEA_8, LEA_C, LEA_10;
+	void * MyLE_4, * MyLE_8, * MyLE_C, * MyLE_10;
 
 	if (!hProc)
 		return;
 
 	// Setup level entries
 	SetupLevelEntries();
+
+	// Define addresses of unk_04, unk_08, unk_0C, unk_10
+	LEA_4 = LevelEntriesAddress + 4;
+	LEA_8 = LevelEntriesAddress + 8;
+	LEA_C = LevelEntriesAddress + 12;
+	LEA_10 = LevelEntriesAddress + 16;
+	MyLE_4 = &((char*)LevelEntries)[4];
+	MyLE_8 = &((char*)LevelEntries)[8];
+	MyLE_C = &((char*)LevelEntries)[12];
+	MyLE_10 = &((char*)LevelEntries)[16];
 
 	// Replace pointers to existing level entries with ours
 	if (!BaseAddress)
@@ -74,10 +86,20 @@ void Handler_Level(HANDLE hProc)
 	if (!LevelEntriesAddress)
 		throw exception("Unable to determine address of level ids");
 
-	for (uint64_t x = BaseAddress; x < BaseEndAddress; x++)
-		if (ReadProcessMemory(hProc, (LPCVOID)x, (LPVOID)buffer, 4, &read) && read == 4)
+	for (uint64_t x = BaseAddress; x < BaseEndAddress; x++) {
+		if (ReadProcessMemory(hProc, (LPCVOID)x, (LPVOID)buffer, 4, &read) && read == 4) {
 			if (memcmp(buffer, &LevelEntriesAddress, 4) == 0)
 				WriteProcessMemory(hProc, (LPVOID)x, (LPVOID)&LevelEntries, 4, NULL);
+			if (memcmp(buffer, &LEA_4, 4) == 0)
+				WriteProcessMemory(hProc, (LPVOID)x, (LPVOID)&MyLE_4, 4, NULL);
+			if (memcmp(buffer, &LEA_8, 4) == 0)
+				WriteProcessMemory(hProc, (LPVOID)x, (LPVOID)&MyLE_8, 4, NULL);
+			if (memcmp(buffer, &LEA_C, 4) == 0)
+				WriteProcessMemory(hProc, (LPVOID)x, (LPVOID)&MyLE_C, 4, NULL);
+			if (memcmp(buffer, &LEA_10, 4) == 0)
+				WriteProcessMemory(hProc, (LPVOID)x, (LPVOID)&MyLE_10, 4, NULL);
+		}
+	}
 }
 
 void SetupLevelEntries(void) {

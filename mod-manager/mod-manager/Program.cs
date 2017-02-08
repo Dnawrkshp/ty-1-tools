@@ -46,6 +46,8 @@ namespace TyModManager
 
         private static string LogPath = "mod-manager.log";
 
+        private const int CustomMapStartIndex = 900;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -298,6 +300,17 @@ namespace TyModManager
                 levelStart++;
 
             levelStart = (uint)translations["english"].Translations.Count - levelStart;
+            while (levelStart < CustomMapStartIndex)
+            {
+                string key = "TEXT_LEVEL_NULL_" + levelStart.ToString();
+                translations["english"].Translations.Add(key, String.Empty);
+                translations["german"].Translations.Add(key, String.Empty);
+                translations["spanish"].Translations.Add(key, String.Empty);
+                translations["french"].Translations.Add(key, String.Empty);
+                translations["italian"].Translations.Add(key, String.Empty);
+                levelStart++;
+            }
+
 
             // Apply level
             for (int x = 0; x <= levels.Max(l => l.IndexOffset); x++)
