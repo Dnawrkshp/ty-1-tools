@@ -9,7 +9,7 @@
 #include <string>
 
 // Plugin main type
-typedef void (__cdecl *PLUGINENTRY)(uint64_t baseAddress, uint64_t endAddress, uint64_t revision, float version);
+typedef void (__cdecl *PLUGINENTRY)(const char * dllPath, uint64_t baseAddress, uint64_t endAddress, uint64_t revision, float version);
 
 bool GetVersion_Match(uint32_t x, uint64_t * revision, float * version) {
 	uint32_t start = x, element0 = 0, element1 = 0;
@@ -106,7 +106,7 @@ void Handler_Plugin(void * hProc) {
 
 		pluginMain = (PLUGINENTRY)GetProcAddress(hPlugin, "main");
 		if (pluginMain)
-			pluginMain(BaseAddress, BaseEndAddress, r, v);
+			pluginMain((const char*)filePath, BaseAddress, BaseEndAddress, r, v);
 	}
 
 	fclose(iniFile);

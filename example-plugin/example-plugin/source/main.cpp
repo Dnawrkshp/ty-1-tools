@@ -88,7 +88,7 @@ bool HookKeyboard(void);
 *   revision       -  The revision number of Ty  (rX)
 *   version        -  The version number of Ty   (vX.XX)
 */
-__declspec(dllexport) void __cdecl main(uint64_t baseAddress, uint64_t endAddress, uint64_t revision, float version) {
+__declspec(dllexport) void __cdecl main(const char * dllPath, uint64_t baseAddress, uint64_t endAddress, uint64_t revision, float version) {
 
 	// In here we can do some neat stuff
 	// Let's start by moving the baseAddress and endAddress into our global variables
