@@ -284,8 +284,8 @@ void SetupLevelEntries(void) {
 
 	LevelEntries[i].levelID = LEVEL_53;
 	LevelEntries[i].unk_04 = 0x004;
-	LevelEntries[i].unk_08 = 0x005;
-	LevelEntries[i].unk_0C = 0x003;
+	LevelEntries[i].unk_08 = 0x002;
+	LevelEntries[i].unk_0C = 0x000;
 	LevelEntries[i].unk_10 = 0x000;
 	i++;
 
@@ -303,10 +303,10 @@ void SetupLevelEntries(void) {
 			if (id && strlen(id) > 0) {
 				strcpy(CustomIDContainerPointer, id);
 				LevelEntries[i].levelID = CustomIDContainerPointer;
-				LevelEntries[i].unk_04 = 0x002;
-				LevelEntries[i].unk_08 = 0x003;
-				LevelEntries[i].unk_0C = 0x002;
-				LevelEntries[i].unk_10 = 0xFFF;
+				LevelEntries[i].unk_04 = 0x004;
+				LevelEntries[i].unk_08 = 0x000;
+				LevelEntries[i].unk_0C = 0x000;
+				LevelEntries[i].unk_10 = 0x000;
 
 				CustomIDContainerPointer += strlen(CustomIDContainerPointer) + 1;
 			}
