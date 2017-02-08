@@ -131,7 +131,7 @@ namespace TyModManager.UI
             this.Close();
         }
 
-        private void dgvMods_SelectionChanged(object sender, EventArgs e)
+        private void DgvMods_SelectionChanged(object sender, EventArgs e)
         {
             Element.TyMod tymod;
 

@@ -306,7 +306,7 @@ void SetupLevelEntries(void) {
 				LevelEntries[i].unk_04 = 0x002;
 				LevelEntries[i].unk_08 = 0x003;
 				LevelEntries[i].unk_0C = 0x002;
-				LevelEntries[i].unk_10 = 0x101;
+				LevelEntries[i].unk_10 = 0xFFF;
 
 				CustomIDContainerPointer += strlen(CustomIDContainerPointer) + 1;
 			}

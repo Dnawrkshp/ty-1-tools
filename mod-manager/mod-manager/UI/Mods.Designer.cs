@@ -200,7 +200,7 @@
             this.dgvMods.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMods.Size = new System.Drawing.Size(321, 174);
             this.dgvMods.TabIndex = 1;
-            this.dgvMods.SelectionChanged += new System.EventHandler(this.dgvMods_SelectionChanged);
+            this.dgvMods.SelectionChanged += new System.EventHandler(this.DgvMods_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn1
             // 
