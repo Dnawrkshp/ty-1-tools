@@ -7,7 +7,7 @@ A little proxy DLL that hooks Ty the Tasmanian Tiger's resource loading method. 
 For version r1332_v1.02 of Ty 1 (and onward presumably), resources can be gathered from `/TY the Tasmanian Tiger/PC_External/` by filename without third-party modification. Note that Ty ignores all subdirectories within `/PC_External/`. For instance, `Shaders/standard.shader` from `Data_PC.rkv` would be placed in `/PC_External/ (/PC_External/standard.shader`) despite originating from a subdirectory.
 
 ### How it works
-The project consists of a single native dll named OpenAL32. The library acts as a proxy, redirecting any Open AL calls to the real OpenAL32.dll.
+The project consists of a single native DLL named OpenAL32. The library acts as a proxy, redirecting any Open AL calls to the real OpenAL32.dll.
 When the library gets loaded, it inserts some assembly code into the game; intercepting calls and redirecting to our `LoadResourceFile()`. From there, whenever a file is requested, our method attempts to access the file within the appropriate folder `/TY the Tasmanian Tiger/Resource/NAME_OF_RKV/` where `NAME_OF_RKV` is `Data_PC`, `Music_PC`, `Video_PC` or `Patch_PC`. If the file does not exist, it loads the standard resource.
 
 ### Build requirements
@@ -16,7 +16,7 @@ When the library gets loaded, it inserts some assembly code into the game; inter
 ### Installation
 1. Open [resource-manager solution](resource-manager.sln)
 2. Build the project under the Release configuration
-3. Copy the output dll into the directory of your Ty the Tasmanian Tiger installation
+3. Copy the output DLL into the directory of your Ty the Tasmanian Tiger installation
 
 ### Debugging
 1. Set the Windows system environment variable `TY_1_DIR` to the path of your Ty installation

@@ -2,11 +2,9 @@
 [![MIT License](https://img.shields.io/npm/l/eslint-find-rules.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-This sample demonstrates how to create a plugin for the Ty Mod Manager.
+This sample demonstrates how to create a plugin for the Ty Mod Manager. It uses pattern searching to function on potential updates.
 
-In this sample, the exported function "main" is called with specific parameters. The function creates a thread to run in the background. This thread changes the run speed, glide speed, and jump height of Ty when control key is held.
-
-Currently, revision 1402 is the only compatible version of Ty.
+In this sample, the exported function "main" is called with specific parameters. The function creates a thread to run in the background. This thread changes the run speed, glide speed, and jump height of Ty when the control key is held.
 
 ### Build requirements
 * Visual Studio 2017 RC
@@ -27,7 +25,7 @@ Currently, revision 1402 is the only compatible version of Ty.
 ### Usage
 1. [Install](#installation)
 2. Run Ty.exe
-3. Hold the control key to play Sonic!
+3. Hold the control key
 
 ### Contributors
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):

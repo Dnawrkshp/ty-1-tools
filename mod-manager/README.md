@@ -15,6 +15,8 @@ The updated OpenAL32 project uses patterns in an attempt to safely install into 
 * Visual Studio 2017 RC
 
 ### Installation
+For precompiled builds refer to the [Wiki](https://github.com/Dnawrkshp/ty-1-tools/wiki/Install).
+
 1. Open [mod-manager solution](mod-manager.sln)
 2. Build the project under the Release configuration
 3. Copy the resulting `OpenAL32.dll` and `ty-mod-manager.exe` into the root directory of your Ty the Tasmanian Tiger installation

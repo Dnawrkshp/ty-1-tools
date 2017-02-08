@@ -1,5 +1,5 @@
 # Notice
-For copyright reasons, none of the files in this directory contains any data. They exists only to demonstrate the basic files needed for a custom map as well as the naming conventions of said files.
+For copyright reasons, none of the files in this directory contain any data. They exist only to demonstrate the standard files, and the naming convention, needed for a custom map.
 
 To learn what files are loaded by the map on entry, run the [mod-manager](../../mod-manager.sln) solution in Debug configuration and watch the Output window for Load calls.
 
