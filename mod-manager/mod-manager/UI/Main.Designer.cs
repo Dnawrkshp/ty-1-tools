@@ -38,6 +38,7 @@
             this.lbLog = new TyModManager.UI.LogLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.lbWiki = new TyModManager.UI.ButtonLink();
+            this.lbFolder = new TyModManager.UI.ButtonLink();
             this.SuspendLayout();
             // 
             // lbPlay
@@ -131,9 +132,9 @@
             // lbLog
             // 
             this.lbLog.BackColor = System.Drawing.Color.Transparent;
-            this.lbLog.Location = new System.Drawing.Point(12, 225);
+            this.lbLog.Location = new System.Drawing.Point(12, 201);
             this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(491, 146);
+            this.lbLog.Size = new System.Drawing.Size(576, 128);
             this.lbLog.TabIndex = 7;
             // 
             // lbWiki
@@ -141,12 +142,24 @@
             this.lbWiki.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbWiki.ForeColor = System.Drawing.Color.LightGray;
             this.lbWiki.Image = global::TyModManager.Properties.Resources.Wiki_Light_32px;
-            this.lbWiki.Location = new System.Drawing.Point(509, 339);
+            this.lbWiki.Location = new System.Drawing.Point(462, 339);
             this.lbWiki.Name = "lbWiki";
             this.lbWiki.Size = new System.Drawing.Size(32, 32);
             this.lbWiki.TabIndex = 8;
             this.lbWiki.Text = "https://github.com/Dnawrkshp/ty-1-tools/wiki";
             this.toolTip.SetToolTip(this.lbWiki, "Wiki");
+            // 
+            // lbFolder
+            // 
+            this.lbFolder.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbFolder.ForeColor = System.Drawing.Color.LightGray;
+            this.lbFolder.Image = global::TyModManager.Properties.Resources.Folder_Light_32px;
+            this.lbFolder.Location = new System.Drawing.Point(509, 339);
+            this.lbFolder.Name = "lbFolder";
+            this.lbFolder.Size = new System.Drawing.Size(32, 32);
+            this.lbFolder.TabIndex = 9;
+            this.lbFolder.Text = "Mods";
+            this.toolTip.SetToolTip(this.lbFolder, "Mods Folder");
             // 
             // Main
             // 
@@ -155,6 +168,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(600, 380);
             this.ControlBox = false;
+            this.Controls.Add(this.lbFolder);
             this.Controls.Add(this.lbWiki);
             this.Controls.Add(this.lbLog);
             this.Controls.Add(this.lbOptions);
@@ -188,6 +202,7 @@
         private LogLabel lbLog;
         private System.Windows.Forms.ToolTip toolTip;
         private ButtonLink lbWiki;
+        private ButtonLink lbFolder;
     }
 }
 

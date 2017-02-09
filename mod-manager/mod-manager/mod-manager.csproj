@@ -132,5 +132,8 @@
   <ItemGroup>
     <None Include="Resource\Wiki-Light-32px.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource\Folder-Light-32px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
