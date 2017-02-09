@@ -82,14 +82,10 @@ static char FULLPATH[0x121];
 
 static void Log(char * fileName, int32_t * size, char * buffer, int32_t bufferSize, signed char a5) {
 #ifdef _DEBUG
-	std::ofstream outfile;
+	char buf[300];
 
-	//outfile.open("resources.log", std::ios_base::app);
-	//outfile << "Load: " << fileName << endl;
-
-	OutputDebugStringA("Load: ");
-	OutputDebugStringA(fileName);
-	OutputDebugStringA("\r\n");
+	sprintf(buf, "Load: %s\n\0", fileName);
+	OutputDebugStringA(buf);
 #endif
 }
 

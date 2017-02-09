@@ -27,7 +27,7 @@ namespace TyModManager
         public static string ModDirectory = "Mods";
         public static string OutDirectory = "PC_External";
         public static string TyExecutable = "TY.exe";
-        public static string ConfigPath = "mod-manager.config";
+        public static string ConfigPath = "ty-mod-manager.config";
         public static string TyDirectory = String.Empty;
 
         public static ulong ErrorCount = 0;
@@ -44,7 +44,7 @@ namespace TyModManager
                                            "bVisible = 1,true\r\n" +
                                            "// User: %a\r\n";
 
-        private static string LogPath = "mod-manager.log";
+        private static string LogPath = "ty-mod-manager.log";
 
         private const int CustomMapStartIndex = 900;
 

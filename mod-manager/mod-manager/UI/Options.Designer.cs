@@ -66,7 +66,7 @@
             this.gbTestArgs.Size = new System.Drawing.Size(325, 48);
             this.gbTestArgs.TabIndex = 5;
             this.gbTestArgs.TabStop = false;
-            this.gbTestArgs.Text = "Test Arguments";
+            this.gbTestArgs.Text = "Command Arguments";
             // 
             // btOkay
             // 
