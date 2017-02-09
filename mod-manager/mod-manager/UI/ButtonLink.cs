@@ -33,13 +33,10 @@ namespace TyModManager.UI
         {
             if (Text != null)
             {
-                if (Text.StartsWith("http") || System.IO.File.Exists(Text))
-                    Process.Start(Text);
-                else if (!System.IO.Directory.Exists(Text))
-                {
+                if (!Text.StartsWith("http") && !System.IO.File.Exists(Text) && !System.IO.Directory.Exists(Text))
                     System.IO.Directory.CreateDirectory(Text);
-                    Process.Start(Text);
-                }
+
+                Process.Start(Text);
             }
         }
     }
