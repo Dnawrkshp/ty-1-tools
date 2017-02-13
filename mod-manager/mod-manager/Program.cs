@@ -86,6 +86,10 @@ namespace TyModManager
             // Load Data_PC.rkv
             DataPC = new TyRKV(Path.Combine(Program.TyDirectory, "Data_PC.rkv"));
 
+            // Create mods directory if it doesn't already exist
+            if (!Directory.Exists(ModDirectory))
+                Directory.CreateDirectory(ModDirectory);
+
             // Import mods
             if (!ImportMods(Program.ModDirectory))
             {

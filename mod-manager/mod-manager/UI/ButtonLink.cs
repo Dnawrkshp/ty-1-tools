@@ -32,12 +32,7 @@ namespace TyModManager.UI
         private void ButtonLink_Click(object sender, EventArgs e)
         {
             if (Text != null)
-            {
-                if (!Text.StartsWith("http") && !System.IO.File.Exists(Text) && !System.IO.Directory.Exists(Text))
-                    System.IO.Directory.CreateDirectory(Text);
-
                 Process.Start(Text);
-            }
         }
     }
 }
