@@ -11,8 +11,6 @@
 using namespace std;
 
 
-#define PATTERN_SIZE 12
-
 const char * LEVEL_00 = "z1";
 const char * LEVEL_01 = "z2";
 const char * LEVEL_02 = "z3";
@@ -38,11 +36,9 @@ const char * LEVEL_51 = "e2";
 const char * LEVEL_52 = "e3";
 const char * LEVEL_53 = "e4";
 
-
 char * CustomIDContainerPointer = NULL;
 char * CustomIDContainerStart = NULL;
 
-HMODULE GetModule(HANDLE hProc);
 void SetupLevelEntries(void);
 
 typedef struct LevelEntry {
@@ -107,9 +103,8 @@ void SetupLevelEntries(void) {
 	char id[32];
 	FILE* pFile;
 
-
 	// Setup entries
-	LevelEntries = new LevelEntry[1000]();
+	LevelEntries = new LevelEntry[LEVEL_MAX]();
 
 	// Setup custom map id memory container
 	CustomIDContainerStart = new char[1000]();
@@ -295,7 +290,7 @@ void SetupLevelEntries(void) {
 		return;
 
 	while (fscanf(pFile, "%i", &i) == 1) {
-		if (i < 0 || i > 1000) {
+		if (i < 0 || i > LEVEL_MAX) {
 			throw exception("Invalid level index.");
 		}
 		else {

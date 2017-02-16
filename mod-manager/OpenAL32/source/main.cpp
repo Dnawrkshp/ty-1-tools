@@ -16,6 +16,10 @@ uint64_t PID = 0;
 
 uint64_t LevelEntriesAddress = 0;
 uint64_t LoadResourceFileAddress = 0;
+uint64_t LoadSaveFileAddress = 0;
+uint64_t SaveSaveFileAddress = 0;
+
+uint32_t GameSaveBufferPointer = 0;
 
 static LPALENABLE _alEnable = NULL;
 static LPALDISABLE _alDisable = NULL;
@@ -143,10 +147,19 @@ static void GetAddresses(HANDLE hProc) {
 				LevelEntriesAddress = *(UINT32*)(x + 12);
 			else if (!LoadResourceFileAddress && memcmp(buffer, pattern_loadresourcefile, 23) == 0)
 				LoadResourceFileAddress = x;
-			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 && 
+			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 &&
 					 buffer[20] == 0xE8 && buffer[25] == 0x83 && buffer[26] == 0xC4 && buffer[27] == 0x04 && buffer[28] == 0x50 && buffer[29] == 0xE8) {
 				WriteProcessMemory(hProc, (LPVOID)(x + 0x14), &n, 5, &read);
 				WriteProcessMemory(hProc, (LPVOID)(x + 0x1D), &n, 5, &read);
+				GameSaveBufferPointer = *(uint32_t*)(x + 1);
+			}
+			else if (buffer[0] == 0x74 && buffer[1] == 0x61 && buffer[2] == 0x56 && buffer[3] == 0x8B &&
+					 buffer[9] == 0xBA && buffer[10] == 0x2C && buffer[11] == 0x0B && buffer[12] == 0x00 &&
+					 buffer[13] == 0x00 && buffer[14] == 0x69 && buffer[15] == 0xCE && buffer[16] == 0xA8 &&
+					 buffer[17] == 0x00 && buffer[18] == 0x00 && buffer[19] == 0x00 && buffer[20] == 0x8B &&
+				 	 buffer[26] == 0x3B && buffer[27] == 0xCA && buffer[28] == 0x0F && buffer[29] == 0x42 &&
+					 buffer[30] == 0xD1 && buffer[31] == 0x52) {
+				LoadSaveFileAddress = x - 0x1E;
 			}
 		}
 	}
@@ -276,6 +289,7 @@ static int Init() {
 			Handler_Resource(hProc);
 			Handler_Level(hProc);
 			Handler_Plugin(hProc);
+			Handler_GameSave(hProc);
 
 			CloseHandle(hProc);
 		}
