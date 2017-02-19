@@ -118,11 +118,11 @@ namespace TyModManager.Element
                 if (attr.Name == "source" || attr.Name == "type" || attr.Name == "context")
                     continue;
 
-                if (attr.Name == "value")
-                    modEdit.Value = attr.Value;
-                else
-                    modEdit.Attributes.Add(attr.Name, attr.Value);
+                modEdit.Attributes.Add(attr.Name, attr.Value);
             }
+
+            if (node.HasTextChild())
+                modEdit.Value = node.GetFirstTextChild();
 
             AddFromNode_Global_Recursive(modEdit, node);
 
@@ -384,7 +384,7 @@ namespace TyModManager.Element
             if (edit.Attributes.Count > 0)
             {
                 // Find with TyGlobal based on first attribute
-                string key = edit.Attributes.Keys.ElementAt(0);
+                string key = edit.Attributes.Keys.ElementAt(0).ToLower();
                 string regex = edit.Attributes[key];
 
                 foreach (TyGlobalItem item in global.Items)
@@ -412,7 +412,7 @@ namespace TyModManager.Element
 
         public static int ApplyGlobal_Find(TyGlobal global, TyGlobalItem item, TyModEdit edit, string key, string regex, ref int count)
         {
-            if (item.Key != null && item.Key == key)
+            if (item.Key != null && item.Key.ToLower() == key)
             {
                 if (item.Value != null && Regex.IsMatch(item.Value, regex))
                 {

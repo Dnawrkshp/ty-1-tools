@@ -124,7 +124,7 @@ static int hasLoadedLibrary = 0;
 static void GetAddresses(HANDLE hProc) {
 	unsigned char buffer[32];
 	SIZE_T read = 0;
-	const unsigned char n[] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
+	const unsigned char n = 0xC3;
 
 	const unsigned char pattern_levelentries[] = {
 		0x55,					// push ebp
@@ -149,8 +149,7 @@ static void GetAddresses(HANDLE hProc) {
 				LoadResourceFileAddress = x;
 			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 &&
 					 buffer[20] == 0xE8 && buffer[25] == 0x83 && buffer[26] == 0xC4 && buffer[27] == 0x04 && buffer[28] == 0x50 && buffer[29] == 0xE8) {
-				WriteProcessMemory(hProc, (LPVOID)(x + 0x14), &n, 5, &read);
-				WriteProcessMemory(hProc, (LPVOID)(x + 0x1D), &n, 5, &read);
+				WriteProcessMemory(hProc, (LPVOID)(*(uint32_t*)(x + 0x1E) + x + 5 + 0x1D), &n, 1, &read);
 				GameSaveBufferPointer = *(uint32_t*)(x + 1);
 			}
 			else if (buffer[0] == 0x74 && buffer[1] == 0x61 && buffer[2] == 0x56 && buffer[3] == 0x8B &&

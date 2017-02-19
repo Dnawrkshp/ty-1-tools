@@ -39,7 +39,7 @@ void Load(uint32_t gameSaveIndex) {
 	if (size > maxSize)
 		size = maxSize;
 
-	fread(CustomSaveFileStart + (0x70 * LEVEL_START) + 0x10, sizeof(char), size, fp);
+	fread(CustomSaveFileStart + (0x70 * LEVEL_START) + 0x10, sizeof(char), (size_t)size, fp);
 	fclose(fp);
 }
 
@@ -132,7 +132,7 @@ void Handler_GameSave(HANDLE hProc)
 		throw exception("Unable to determine address of the patched load function");
 	
 	WriteProcessMemory(hProc, (LPVOID)(LoadSaveFileAddress + 7), &patch, 4, NULL);
-
+	
 	std::thread task(Install);
 	task.detach();
 }
