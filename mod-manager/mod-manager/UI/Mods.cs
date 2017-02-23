@@ -6,32 +6,28 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using TyModManager.Localization;
 
 namespace TyModManager.UI
 {
-    public partial class Mods : Form
+    public partial class Mods : Form, ILocale
     {
-        const string tooltipMods = "The mods to install.";
-        const string tooltipLoadOrder = "The level index of each custom map.\nThis will be managed by the mod manager. Only mess with this if you know what you're doing.";
-        const string tooltipDescription = "Description of the selected mod.";
+        private List<Element.TyLevel> _tylevels = new List<Element.TyLevel>();
 
         public Mods()
         {
-            List<Element.TyLevel> tylevels = new List<Element.TyLevel>();
+            
 
             InitializeComponent();
 
             this.Icon = Properties.Resources.mod_manager;
-            this.toolTip.SetToolTip(this.gbMods, tooltipMods);
-            this.toolTip.SetToolTip(this.gbLoadOrder, tooltipLoadOrder);
-            this.toolTip.SetToolTip(this.lbDescription, tooltipDescription);
 
             // Loop through mods
             foreach (Element.TyMod tymod in Program.Mods)
             {
                 // Add all ordered levels elements
                 foreach (Element.TyLevel tylevel in tymod.Levels)
-                    tylevels.Add(tylevel);
+                    _tylevels.Add(tylevel);
 
                 // Add mods and enable if enabled
                 bool compat = tymod.TyVersion == null || tymod.TyVersion.ContainsVersion(Program.RVersion);
@@ -41,39 +37,73 @@ namespace TyModManager.UI
                     // Make sure the user understand the mod is incompatible
                     this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ReadOnly = true;
                     this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[1].Style = new DataGridViewCellStyle(this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[1].Style) { ForeColor = Color.Red };
-                    this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ToolTipText = "This mod is not compatible with Ty r" + Program.RVersion.ToString() + ".";
+                    this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ToolTipText = Locale.Language.Mods.IncompatibleMod.Replace("%%", "r" + Program.RVersion.ToString());
                     this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[1].ToolTipText = this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ToolTipText;
                 }
             }
 
             // Sort greatest to least
-            tylevels.Sort((a, b) => b.IndexOffset.CompareTo(a.IndexOffset));
+            _tylevels.Sort((a, b) => b.IndexOffset.CompareTo(a.IndexOffset));
 
-            // Add all with offsets
-            for (int x = 0; x < tylevels.Count; x++)
+            Localize();
+        }
+
+        public void Localize()
+        {
+            // Apply text
+            this.Text = Locale.Language.Mods.Title;
+            this.gbMods.Text = Locale.Language.Mods.ModsContainer.Text;
+            this.gbLoadOrder.Text = Locale.Language.Mods.LevelContainer.Text;
+            this.btOkay.Text = Locale.Language.Okay;
+            this.btCancel.Text = Locale.Language.Cancel;
+
+            // Apply tooltips
+            this.toolTip.SetToolTip(this.gbMods, Locale.Language.Mods.ModsContainer.Tooltip);
+            this.toolTip.SetToolTip(this.gbLoadOrder, Locale.Language.Mods.LevelContainer.Tooltip);
+            this.toolTip.SetToolTip(this.lbDescription, Locale.Language.Mods.DescriptionContainer.Tooltip);
+            this.dgvMods.Columns[0].ToolTipText = Locale.Language.Mods.ModsContainer.Columns.Enabled.Tooltip;
+            this.dgvMods.Columns[1].ToolTipText = Locale.Language.Mods.ModsContainer.Columns.Name.Tooltip;
+            this.dgvLoadOrder.Columns[0].ToolTipText = Locale.Language.Mods.LevelContainer.Columns.ID.Tooltip;
+            this.dgvLoadOrder.Columns[1].ToolTipText = Locale.Language.Mods.LevelContainer.Columns.Level.Tooltip;
+            this.dgvLoadOrder.Columns[2].ToolTipText = Locale.Language.Mods.LevelContainer.Columns.U.Tooltip;
+            this.dgvLoadOrder.Columns[3].ToolTipText = Locale.Language.Mods.LevelContainer.Columns.D.Tooltip;
+
+            // Apply font
+            this.Font = new Font(Locale.GetFontRegular(), 8.75f, FontStyle.Regular, GraphicsUnit.Point);
+            this.gbMods.Font = this.Font;
+            this.gbLoadOrder.Font = this.Font;
+            this.dgvMods.Font = this.Font;
+            this.dgvLoadOrder.Font = this.Font;
+            this.btOkay.Font = this.Font;
+            this.btCancel.Font = this.Font;
+
+            // Add levels
+            this.dgvLoadOrder.Rows.Clear();
+            for (int x = 0; x < _tylevels.Count; x++)
             {
                 // Find empty level to replace
-                if (tylevels[x].IndexOffset < 0)
-                    for (tylevels[x].IndexOffset = 0; tylevels[x].IndexOffset < this.dgvLoadOrder.Rows.Count; tylevels[x].IndexOffset++)
-                        if (this.dgvLoadOrder.Rows[tylevels[x].IndexOffset].Cells[1].Value is string && this.dgvLoadOrder.Rows[tylevels[x].IndexOffset].Cells[1].Value.ToString() == "Empty Level")
+                if (_tylevels[x].IndexOffset < 0)
+                    for (_tylevels[x].IndexOffset = 0; _tylevels[x].IndexOffset < this.dgvLoadOrder.Rows.Count; _tylevels[x].IndexOffset++)
+                        if (this.dgvLoadOrder.Rows[_tylevels[x].IndexOffset].Cells[1].Value is string)
                             break;
 
-                if (this.dgvLoadOrder.Rows.Count <= tylevels[x].IndexOffset) {
-                    while (this.dgvLoadOrder.Rows.Count < tylevels[x].IndexOffset)
-                        this.dgvLoadOrder.Rows.Add(this.dgvLoadOrder.Rows.Count.ToString(), "Empty Level");
+                if (this.dgvLoadOrder.Rows.Count <= _tylevels[x].IndexOffset)
+                {
+                    while (this.dgvLoadOrder.Rows.Count < _tylevels[x].IndexOffset)
+                        this.dgvLoadOrder.Rows.Add(this.dgvLoadOrder.Rows.Count.ToString(), Locale.Language.Mods.EmptyLevel);
 
-                    this.dgvLoadOrder.Rows.Add(this.dgvLoadOrder.Rows.Count.ToString(), tylevels[x]);
+                    this.dgvLoadOrder.Rows.Add(this.dgvLoadOrder.Rows.Count.ToString(), _tylevels[x]);
                 }
                 else
                 {
-                    this.dgvLoadOrder.Rows.RemoveAt(tylevels[x].IndexOffset);
-                    this.dgvLoadOrder.Rows.Insert(tylevels[x].IndexOffset, tylevels[x].IndexOffset.ToString(), tylevels[x]);
+                    this.dgvLoadOrder.Rows.RemoveAt(_tylevels[x].IndexOffset);
+                    this.dgvLoadOrder.Rows.Insert(_tylevels[x].IndexOffset, _tylevels[x].IndexOffset.ToString(), _tylevels[x]);
                 }
             }
         }
 
         // Update all index references to index in list
-        // Truncate any extra "Empty Level"
+        // Truncate any extra empty levels
         private void CleanLoadOrder()
         {
             int lastValid = -1;
@@ -89,7 +119,7 @@ namespace TyModManager.UI
                 }
             }
 
-            // Truncate unnecessary "Empty Level" at end
+            // Truncate unnecessary empty levels at end
             while (dgvLoadOrder.RowCount - 1 > lastValid)
                 dgvLoadOrder.Rows.RemoveAt(lastValid + 1);
         }
@@ -171,7 +201,8 @@ namespace TyModManager.UI
 
                     // If adding to end of list, go ahead add a new Empty Level
                     while (e.RowIndex >= dgvLoadOrder.RowCount)
-                        dgvLoadOrder.Rows.Add("", "Empty Level");
+                        dgvLoadOrder.Rows.Add("", Locale.Language.Mods.EmptyLevel);
+
                     dgvLoadOrder.Rows.Insert(e.RowIndex + 1, row);
 
                     dgvLoadOrder.ClearSelection();

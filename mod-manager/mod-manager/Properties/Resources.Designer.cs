@@ -101,36 +101,6 @@ namespace TyModManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Raleway_Light {
-            get {
-                object obj = ResourceManager.GetObject("Raleway_Light", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Raleway_Regular {
-            get {
-                object obj = ResourceManager.GetObject("Raleway_Regular", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] UbuntuMono_R {
-            get {
-                object obj = ResourceManager.GetObject("UbuntuMono_R", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Wiki_Light_32px {

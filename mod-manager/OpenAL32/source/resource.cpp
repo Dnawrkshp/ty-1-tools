@@ -10,6 +10,8 @@
 
 using namespace std;
 
+extern bool LevelLoad(char * file, char * path);
+
 /*
  * Hardcoded offsets from Ty the Tasmanian Tiger r1332_v1.02
  *
@@ -196,11 +198,32 @@ static void * LoadResourceFile(char * fileName, int32_t * size, char * buffer, i
 	RKVDirectoryEntry * dEntry = NULL;
 	int32_t fSize = 0;
 	char rkvName[16];
-
-	int32_t rkvAddr = _LoadResourceFile_GetFileEntry(fileName, &fEntry, NULL);
+	FULLPATH[0] = 0;
 
 	Log(fileName, size, buffer, bufferSize, a5);
 
+	// Try to load level specific files
+	if (LevelLoad(fileName, FULLPATH) && strlen(FULLPATH) > 0) {
+		std::ifstream in(FULLPATH, std::ios::binary | std::ios::ate);
+		if (in) {
+			buffer = ReadFile(&in, size, buffer, bufferSize, a5);
+			in.close();
+			return buffer;
+		}
+	}
+
+	sprintf_s(FULLPATH, "PC_External\\%s", fileName);
+	std::ifstream in(FULLPATH, std::ios::binary | std::ios::ate);
+	if (!in)
+		return _LoadResourceFile(fileName, size, buffer, bufferSize, a5);
+	else {
+		buffer = ReadFile(&in, size, buffer, bufferSize, a5);
+		in.close();
+		return buffer;
+	}
+
+	/*
+	int32_t rkvAddr = _LoadResourceFile_GetFileEntry(fileName, &fEntry, NULL);
 	if (fEntry) {
 		dEntry = GetRKVDirectoryEntry(rkvAddr, fEntry->dirIndex);
 		if (dEntry) {
@@ -226,17 +249,7 @@ static void * LoadResourceFile(char * fileName, int32_t * size, char * buffer, i
 			}
 		}
 	}
-	
-	// Get PC_External
-	sprintf_s(FULLPATH, "PC_External\\%s", fileName);
-	std::ifstream in(FULLPATH, std::ios::binary | std::ios::ate);
-	if (!in)
-		return _LoadResourceFile(fileName, size, buffer, bufferSize, a5);
-	else {
-		buffer = ReadFile(&in, size, buffer, bufferSize, a5);
-		in.close();
-		return buffer;
-	}
+	*/
 }
 
 // Sets up addresses and installs hook into Ty's resource loading function

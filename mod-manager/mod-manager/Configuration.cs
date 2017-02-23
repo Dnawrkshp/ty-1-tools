@@ -16,6 +16,9 @@ namespace TyModManager
         [XmlArray("LevelOrder")]
         public List<string> LevelOrder { get; set; }
 
+        [XmlElement("Language")]
+        public string Language { get; set; }
+
         [XmlElement("TestCommand")]
         public string TestCommand { get; set; }
 
@@ -25,7 +28,7 @@ namespace TyModManager
         public Configuration(string xmlPath)
         {
             Configuration con = null;
-            FileStream xmlFile = null;
+            StreamReader xmlFile = null;
 
             // No need to try and read a non-existent file
             if (!File.Exists(xmlPath))
@@ -35,7 +38,7 @@ namespace TyModManager
             {
                 // Deserialize xml file
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-                xmlFile = new FileStream(xmlPath, FileMode.Open);
+                xmlFile = new StreamReader(xmlPath, Encoding.Unicode);
                 con = (Configuration)serializer.Deserialize(xmlFile);
                 xmlFile.Close();
 
@@ -44,6 +47,7 @@ namespace TyModManager
                 this.LevelOrder = con.LevelOrder;
                 this.TestCommand = con.TestCommand;
                 this.TestStartOnly = con.TestStartOnly;
+                this.Language = con.Language;
             }
             catch (Exception e) { Program.Log(xmlPath, "Error deserializing file", e); if (xmlFile != null) { xmlFile.Close(); } }
 
@@ -68,7 +72,7 @@ namespace TyModManager
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-                using (Stream s = File.Open(xmlPath, FileMode.Create))
+                using (StreamWriter s = new StreamWriter(File.Open(xmlPath, FileMode.Create), Encoding.Unicode))
                     serializer.Serialize(s, this);
                 
                 return true;

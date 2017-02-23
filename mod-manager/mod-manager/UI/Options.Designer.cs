@@ -37,8 +37,11 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbOnTest = new System.Windows.Forms.GroupBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.gbLanguage = new System.Windows.Forms.GroupBox();
+            this.cbLanguage = new System.Windows.Forms.ComboBox();
             this.gbTestArgs.SuspendLayout();
             this.gbOnTest.SuspendLayout();
+            this.gbLanguage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbTestArgs
@@ -70,7 +73,7 @@
             // 
             // btOkay
             // 
-            this.btOkay.Location = new System.Drawing.Point(182, 163);
+            this.btOkay.Location = new System.Drawing.Point(182, 194);
             this.btOkay.Name = "btOkay";
             this.btOkay.Size = new System.Drawing.Size(75, 23);
             this.btOkay.TabIndex = 6;
@@ -81,7 +84,7 @@
             // btCancel
             // 
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(274, 163);
+            this.btCancel.Location = new System.Drawing.Point(274, 194);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 7;
@@ -100,13 +103,33 @@
             this.gbOnTest.TabStop = false;
             this.gbOnTest.Text = "On Test";
             // 
+            // gbLanguage
+            // 
+            this.gbLanguage.Controls.Add(this.cbLanguage);
+            this.gbLanguage.Location = new System.Drawing.Point(12, 119);
+            this.gbLanguage.Name = "gbLanguage";
+            this.gbLanguage.Size = new System.Drawing.Size(337, 48);
+            this.gbLanguage.TabIndex = 6;
+            this.gbLanguage.TabStop = false;
+            this.gbLanguage.Text = "Language";
+            // 
+            // cbLanguage
+            // 
+            this.cbLanguage.FormattingEnabled = true;
+            this.cbLanguage.Location = new System.Drawing.Point(14, 21);
+            this.cbLanguage.Name = "cbLanguage";
+            this.cbLanguage.Size = new System.Drawing.Size(252, 21);
+            this.cbLanguage.TabIndex = 0;
+            this.cbLanguage.SelectedIndexChanged += new System.EventHandler(this.CbLanguage_SelectedIndexChanged);
+            // 
             // Options
             // 
             this.AcceptButton = this.btOkay;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(361, 198);
+            this.ClientSize = new System.Drawing.Size(361, 229);
+            this.Controls.Add(this.gbLanguage);
             this.Controls.Add(this.gbOnTest);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOkay);
@@ -123,6 +146,7 @@
             this.gbTestArgs.PerformLayout();
             this.gbOnTest.ResumeLayout(false);
             this.gbOnTest.PerformLayout();
+            this.gbLanguage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -137,5 +161,7 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.GroupBox gbOnTest;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.GroupBox gbLanguage;
+        private System.Windows.Forms.ComboBox cbLanguage;
     }
 }

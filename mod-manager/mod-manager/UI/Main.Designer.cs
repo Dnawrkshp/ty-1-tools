@@ -43,7 +43,6 @@
             // 
             // lbPlay
             // 
-            this.lbPlay.AutoSize = true;
             this.lbPlay.BackColor = System.Drawing.Color.Transparent;
             this.lbPlay.ClickColor = System.Drawing.Color.White;
             this.lbPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -51,11 +50,11 @@
             this.lbPlay.HoverColor = System.Drawing.Color.Gray;
             this.lbPlay.Location = new System.Drawing.Point(505, 9);
             this.lbPlay.Name = "lbPlay";
-            this.lbPlay.Size = new System.Drawing.Size(83, 31);
+            this.lbPlay.Size = new System.Drawing.Size(87, 31);
             this.lbPlay.TabIndex = 1;
             this.lbPlay.Text = "PLAY";
             this.lbPlay.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.toolTip.SetToolTip(this.lbPlay, "Launch Ty.exe normally.");
+            this.toolTip.SetToolTip(this.lbPlay, "Launch Ty normally.");
             // 
             // lbMods
             // 
@@ -64,16 +63,15 @@
             this.lbMods.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbMods.ForeColor = System.Drawing.SystemColors.Control;
             this.lbMods.HoverColor = System.Drawing.Color.Gray;
-            this.lbMods.Location = new System.Drawing.Point(460, 90);
+            this.lbMods.Location = new System.Drawing.Point(497, 90);
             this.lbMods.Name = "lbMods";
-            this.lbMods.Size = new System.Drawing.Size(128, 31);
+            this.lbMods.Size = new System.Drawing.Size(95, 31);
             this.lbMods.TabIndex = 2;
             this.lbMods.Text = "MODS";
             this.lbMods.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lbExit
             // 
-            this.lbExit.AutoSize = true;
             this.lbExit.BackColor = System.Drawing.Color.Transparent;
             this.lbExit.ClickColor = System.Drawing.Color.White;
             this.lbExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -88,7 +86,6 @@
             // 
             // lbTest
             // 
-            this.lbTest.AutoSize = true;
             this.lbTest.BackColor = System.Drawing.Color.Transparent;
             this.lbTest.ClickColor = System.Drawing.Color.White;
             this.lbTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -96,11 +93,11 @@
             this.lbTest.HoverColor = System.Drawing.Color.Gray;
             this.lbTest.Location = new System.Drawing.Point(506, 50);
             this.lbTest.Name = "lbTest";
-            this.lbTest.Size = new System.Drawing.Size(84, 31);
+            this.lbTest.Size = new System.Drawing.Size(86, 31);
             this.lbTest.TabIndex = 4;
             this.lbTest.Text = "TEST";
             this.lbTest.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.toolTip.SetToolTip(this.lbTest, "Launch Ty.exe with special arguments.");
+            this.toolTip.SetToolTip(this.lbTest, "Launch Ty with special arguments.");
             // 
             // lbGithub
             // 
@@ -116,7 +113,6 @@
             // 
             // lbOptions
             // 
-            this.lbOptions.AutoSize = true;
             this.lbOptions.BackColor = System.Drawing.Color.Transparent;
             this.lbOptions.ClickColor = System.Drawing.Color.White;
             this.lbOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -188,7 +184,6 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Main_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Main_MouseUp);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

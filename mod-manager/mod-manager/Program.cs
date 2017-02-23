@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ using TyModManager.Archive;
 using TyModManager.Attribute;
 using TyModManager.Element;
 using TyModManager.UI;
+using TyModManager.Localization;
+using System.Drawing.Text;
 
 namespace TyModManager
 {
@@ -24,11 +27,16 @@ namespace TyModManager
 
         public static Configuration Config = null;
 
+        public static List<Locale> Locales = new List<Locale>();
+
+        public static PrivateFontCollection FontCollection = new PrivateFontCollection();
+
         public static string ModDirectory = "Mods";
         public static string OutDirectory = "PC_External";
         public static string TyExecutable = "TY.exe";
         public static string ConfigPath = "ty-mod-manager.config";
         public static string TyDirectory = String.Empty;
+        public static string LocalePath = "Localization";
 
         public static ulong ErrorCount = 0;
 
@@ -70,6 +78,7 @@ namespace TyModManager
             ModDirectory = Path.Combine(TyDirectory, ModDirectory);
             OutDirectory = Path.Combine(TyDirectory, OutDirectory);
             TyExecutable = Path.Combine(TyDirectory, TyExecutable);
+            LocalePath = Path.Combine(TyDirectory, LocalePath);
 
             if (File.Exists(LogPath))
                 File.Delete(LogPath);
@@ -97,10 +106,34 @@ namespace TyModManager
                 // inform user there were errors importing mods
             }
 
+            // Import locales
+            foreach (string locale in Directory.EnumerateFiles(LocalePath, "*.xml"))
+            {
+                Locale ul = Locale.Load(locale);
+                if (ul != null && ul.Valid())
+                {
+                    foreach (string font in ul.Fonts)
+                        try { FontCollection.AddFontFile(Path.Combine(LocalePath, font)); } catch { }
+                    Locales.Add(ul);
+                }
+            }
+
+            // If we don't have any locales, inform user in english
+            if (Locales.Count == 0)
+            {
+                Program.Log("Locale", "No valid language definitions found", null, true);
+                return;
+            }
+
             // Load UI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());
+
+
+            // Clean up - ish
+            FontCollection.Dispose();
+            FontCollection = null;
         }
 
         public static void Start(string command)
@@ -384,7 +417,7 @@ namespace TyModManager
                         );
 
                     // Add to list of custom levels (to be used by the OpenAL32 proxy)
-                    customLevels.Add((x + levelStart).ToString() + " " + levelID);
+                    customLevels.Add((x + levelStart).ToString() + " " + levelID + " " + Path.Combine("Mods", level.InputPath));
                 }
             }
 

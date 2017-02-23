@@ -29,7 +29,7 @@ namespace TyModManager.Element
             string result = String.Empty;
 
             foreach (TyGlobalItem item in Items)
-                result += "\r\n\r\n" + item.ToString("    ");
+                result += "\r\n\r\n" + item.ToString(this, "    ");
 
             return result.Trim();
         }
@@ -176,12 +176,19 @@ namespace TyModManager.Element
             SubItems = new List<TyGlobalItem>();
         }
 
-        public string ToString(string indent)
+        public string ToString(TyGlobal global, string indent)
         {
-            string result = (Key == null ? String.Empty : Key + " ") + (EqualSign ? "= " : String.Empty) + (Value ?? String.Empty );
+            string result = (Key == null ? String.Empty : Key + " ") + (EqualSign ? "= " : String.Empty) + (Value ?? String.Empty).Trim();
+            result = result.PadLeft((Indents - indent.Length) + 2 + result.Length, ' ');
+
+            if (indent.Length > 0 && Key != null && Value != null && Key.ToLower() == "name" && Value.ToLower() != "setup")
+                indent = "";
 
             foreach (TyGlobalItem item in SubItems)
-                result += "\r\n" + indent + item.ToString(indent + "    ");
+                result += "\r\n" + indent + item.ToString(global, indent + "  ");
+
+            if (indent.Length == 2 && global.Name.ToLower() == "global.sound")
+                result += "\r\n";
 
             return result;
         }

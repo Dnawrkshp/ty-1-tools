@@ -52,6 +52,47 @@ typedef struct LevelEntry {
 
 LevelEntry * LevelEntries = NULL;
 
+bool LevelLoad(char * file, char * path) {
+	uint32_t len, currentLevelID, x, i;
+	char * levelDir;
+
+	if (!file)
+		return false;
+	if (*(uint32_t*)GameSaveBufferPointer == 0)
+		return false;
+
+	len = strlen(file);
+	currentLevelID = *(uint32_t*)(*(uint32_t*)GameSaveBufferPointer + 0x08);
+
+	if (currentLevelID >= LEVEL_START && currentLevelID < LEVEL_MAX) {
+		levelDir = (char*)(LevelEntries[currentLevelID].levelID + strlen(LevelEntries[currentLevelID].levelID) + 1);
+
+		// Replace the level ID with %l
+		for (x = 0; x < len - 3; x++) {
+			if ((file[x] == 'f' || file[x] == 'F') && strncmp(file + x + 1, LevelEntries[currentLevelID].levelID + 1, 1) == 0) {
+				file[x] = '%';
+				file[x + 1] = 'l';
+
+				i = x + 1;
+				while (file[i] >= '0' && file[i] <= '9')
+					i++;
+
+				if (i > x + 1) {
+					memcpy(file + x + 2, file + i, len - i);
+					file[x + (len - i) + 1] = 0;
+				}
+				break;
+			}
+		}
+
+		// Set full path to level directory
+		sprintf(path, "%s%s", levelDir, file);
+		return true;
+	}
+
+	return false;
+}
+
 void Handler_Level(HANDLE hProc)
 {
 	SIZE_T read = 0;
@@ -101,13 +142,14 @@ void Handler_Level(HANDLE hProc)
 void SetupLevelEntries(void) {
 	int i = 0;
 	char id[32];
+	char path[256];
 	FILE* pFile;
 
 	// Setup entries
 	LevelEntries = new LevelEntry[LEVEL_MAX]();
 
 	// Setup custom map id memory container
-	CustomIDContainerStart = new char[1000]();
+	CustomIDContainerStart = new char[1024 * 4]();
 	CustomIDContainerPointer = CustomIDContainerStart;
 
 	// z
@@ -294,7 +336,7 @@ void SetupLevelEntries(void) {
 			throw exception("Invalid level index.");
 		}
 		else {
-			fscanf(pFile, "%s", &id);
+			fscanf(pFile, "%s %[^\n]\n", &id, &path);
 			if (id && strlen(id) > 0) {
 				strcpy(CustomIDContainerPointer, id);
 				LevelEntries[i].levelID = CustomIDContainerPointer;
@@ -303,6 +345,8 @@ void SetupLevelEntries(void) {
 				LevelEntries[i].unk_0C = 0x000;
 				LevelEntries[i].unk_10 = 0x000;
 
+				CustomIDContainerPointer += strlen(CustomIDContainerPointer) + 1;
+				strcpy(CustomIDContainerPointer, path);
 				CustomIDContainerPointer += strlen(CustomIDContainerPointer) + 1;
 			}
 			else {

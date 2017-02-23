@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using TyModManager.Localization;
 
 namespace TyModManager.UI
 {
-    public partial class Main : Form
+    public partial class Main : Form, ILocale
     {
         private readonly Color LabelFore = Color.FromArgb(0xA0, 0xA8, 0xB0);
         private readonly Color LabelHover = Color.FromArgb(0xC0, 0xC8, 0xD0);
@@ -27,43 +29,72 @@ namespace TyModManager.UI
             this.Icon = Properties.Resources.mod_manager;
             this.Text = "Ty The Tasmanian Tiger " + "r" + Program.RVersion.ToString("G") + "_v" + Program.VVersion.ToString("F");
             this.BackgroundImage = Properties.Resources.mod_manager_bg;
-            this.lbMods.Text = Program.Mods.Count(x => x.Enabled).ToString() + " MODS";
-
-            lbPlay.Font = new System.Drawing.Font(UI.Font.Raleway.RalewayRegular, 20f, FontStyle.Bold);
+            
             lbPlay.ForeColor = LabelFore;
             lbPlay.HoverColor = LabelHover;
             lbPlay.ClickColor = LabelClick;
             lbPlay.Click += LbPlay_Click;
-
-            lbTest.Font = lbPlay.Font;
+            
             lbTest.ForeColor = LabelFore;
             lbTest.HoverColor = LabelHover;
             lbTest.ClickColor = LabelClick;
             lbTest.Click += LbTest_Click;
-
-            lbMods.Font = lbPlay.Font;
+            
             lbMods.ForeColor = LabelFore;
             lbMods.HoverColor = LabelHover;
             lbMods.ClickColor = LabelClick;
             lbMods.Click += LbMods_Click;
-
-            lbOptions.Font = lbPlay.Font;
+            
             lbOptions.ForeColor = LabelFore;
             lbOptions.HoverColor = LabelHover;
             lbOptions.ClickColor = LabelClick;
             lbOptions.Click += LbOptions_Click;
-
-            lbExit.Font = lbPlay.Font;
+            
             lbExit.ForeColor = LabelFore;
             lbExit.HoverColor = LabelHover;
             lbExit.ClickColor = LabelClick;
             lbExit.Click += LbExit_Click;
-
-            lbLog.Font = new System.Drawing.Font(UI.Font.Ubuntu.UbuntuMono, 8.75f, FontStyle.Regular);
+            
             lbLog.ForeColor = LogFore;
             lbLog.MouseDown += Main_MouseDown;
             lbLog.MouseUp += Main_MouseUp;
             lbLog.MouseMove += Main_MouseMove;
+
+            // Setup locale
+            if (Program.Config.Language == null || Program.Config.Language == String.Empty)
+                Locale.ChangeLocale(CultureInfo.InstalledUICulture.Name);
+            else
+                Locale.ChangeLocale(Program.Config.Language);
+
+            Localize();
+        }
+
+        public void Localize()
+        {
+            // Apply font
+            lbPlay.Font = new System.Drawing.Font(Locale.GetFontRegular(), 20f, FontStyle.Bold);
+            lbTest.Font = lbPlay.Font;
+            lbMods.Font = lbPlay.Font;
+            lbOptions.Font = lbPlay.Font;
+            lbExit.Font = lbPlay.Font;
+            lbLog.Font = new System.Drawing.Font(Locale.GetFontMono(), 8.75f, FontStyle.Regular);
+
+            // Apply text
+            lbPlay.Text = Locale.Language.Main.Play.Text;
+            lbTest.Text = Locale.Language.Main.Test.Text;
+            lbMods.Text = Locale.Language.Main.Mods.Text.Replace("%%", Program.Mods.Count(x => x.Enabled).ToString());
+            lbOptions.Text = Locale.Language.Main.Options.Text;
+            lbExit.Text = Locale.Language.Main.Exit;
+
+            // Apply tooltip
+            toolTip.SetToolTip(lbPlay, Locale.Language.Main.Play.Tooltip);
+            toolTip.SetToolTip(lbTest, Locale.Language.Main.Test.Tooltip);
+            toolTip.SetToolTip(lbMods, Locale.Language.Main.Mods.Tooltip);
+            toolTip.SetToolTip(lbOptions, Locale.Language.Main.Options.Tooltip);
+            toolTip.SetToolTip(lbExit, null);
+            toolTip.SetToolTip(lbWiki, Locale.Language.Main.Wiki.Tooltip);
+            toolTip.SetToolTip(lbFolder, Locale.Language.Main.Folder.Tooltip);
+            toolTip.SetToolTip(lbGithub, Locale.Language.Main.Github.Tooltip);
         }
 
         #region Mods
@@ -169,7 +200,7 @@ namespace TyModManager.UI
             lbOptions.Visible = true;
             lbTest.Visible = true;
 
-            lbMods.Text = Program.Mods.Count(x => x.Enabled).ToString() + " MODS";
+            lbMods.Text = Locale.Language.Main.Mods.Text.Replace("%%", Program.Mods.Count(x => x.Enabled).ToString());
         }
 
         #endregion

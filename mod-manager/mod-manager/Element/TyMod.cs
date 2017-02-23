@@ -339,7 +339,31 @@ namespace TyModManager.Element
 
         public static void ApplyLevel(string levelID, TyLevel level)
         {
-            ApplyLevel_Directory(levelID, level, level.InputPath, Program.OutDirectory);
+            string inFile;
+
+            // Copy necessary file to output dir
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "%l_Icon.dds")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, levelID + "_Icon.dds"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "fe_000_map_%l_00.dds")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "fe_000_map_" + levelID + "_00.dds"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "fe_005_loadingscrn_%l.dds")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "fe_005_loadingscrn_" + levelID + ".dds"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "%l.lv2")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, levelID + ".lv2"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "SFX_%l.ini")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "SFX_" + levelID + ".ini"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "VOX_%l_EN.ini")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "VOX_" + levelID + "_EN.ini"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "VOX_%l_DE.ini")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "VOX_" + levelID + "_DE.ini"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "VOX_%l_ES.ini")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "VOX_" + levelID + "_ES.ini"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "VOX_%l_IT.ini")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "VOX_" + levelID + "_IT.ini"));
+            if (File.Exists(inFile = Path.Combine(level.InputPath, "VOX_%l_FR.ini")))
+                File.Copy(inFile, Path.Combine(Program.OutDirectory, "VOX_" + levelID + "_FR.ini"));
+
+            //ApplyLevel_Directory(levelID, level, level.InputPath, Program.OutDirectory);
         }
 
         private static void ApplyLevel_Directory(string levelID, TyLevel level, string directory, string outputDir)
@@ -361,7 +385,7 @@ namespace TyModManager.Element
             {
                 fi = new FileInfo(file);
                 outfile = Path.Combine(outputDir, fi.Name.Replace("%l", levelID));
-
+                
                 switch (fi.Extension.ToLower())
                 {
                     case ".lv2":
