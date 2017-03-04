@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,6 +27,8 @@ namespace TyModManager.UI
         public Main()
         {
             InitializeComponent();
+
+            CheckUpdate();
 
             this.Icon = Properties.Resources.mod_manager;
             this.Text = "Ty The Tasmanian Tiger " + "r" + Program.RVersion.ToString("G") + "_v" + Program.VVersion.ToString("F");
@@ -54,7 +58,12 @@ namespace TyModManager.UI
             lbExit.HoverColor = LabelHover;
             lbExit.ClickColor = LabelClick;
             lbExit.Click += LbExit_Click;
-            
+
+            lbUpdate.ForeColor = LabelFore;
+            lbUpdate.HoverColor = LabelHover;
+            lbUpdate.ClickColor = LabelClick;
+            lbUpdate.Click += LbUpdate_Click;
+
             lbLog.ForeColor = LogFore;
             lbLog.MouseDown += Main_MouseDown;
             lbLog.MouseUp += Main_MouseUp;
@@ -77,6 +86,7 @@ namespace TyModManager.UI
             lbMods.Font = lbPlay.Font;
             lbOptions.Font = lbPlay.Font;
             lbExit.Font = lbPlay.Font;
+            lbUpdate.Font = lbPlay.Font;
             lbLog.Font = new System.Drawing.Font(Locale.GetFontRegular(), 8.75f, FontStyle.Regular);
 
             // Apply text
@@ -85,6 +95,7 @@ namespace TyModManager.UI
             lbMods.Text = Locale.Language.Main.Mods.Text.Replace("%%", Program.Mods.Count(x => x.Enabled).ToString());
             lbOptions.Text = Locale.Language.Main.Options.Text;
             lbExit.Text = Locale.Language.Main.Exit;
+            lbUpdate.Text = Locale.Language.Main.Update;
 
             // Apply tooltip
             toolTip.SetToolTip(lbPlay, Locale.Language.Main.Play.Tooltip);
@@ -92,6 +103,7 @@ namespace TyModManager.UI
             toolTip.SetToolTip(lbMods, Locale.Language.Main.Mods.Tooltip);
             toolTip.SetToolTip(lbOptions, Locale.Language.Main.Options.Tooltip);
             toolTip.SetToolTip(lbExit, null);
+            toolTip.SetToolTip(lbUpdate, null);
             toolTip.SetToolTip(lbWiki, Locale.Language.Main.Wiki.Tooltip);
             toolTip.SetToolTip(lbFolder, Locale.Language.Main.Folder.Tooltip);
             toolTip.SetToolTip(lbGithub, Locale.Language.Main.Github.Tooltip);
@@ -177,6 +189,11 @@ namespace TyModManager.UI
             this.Close();
         }
 
+        private void LbUpdate_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/Dnawrkshp/ty-1-tools/releases");
+        }
+
         #endregion
 
         #region Sub Form
@@ -200,7 +217,7 @@ namespace TyModManager.UI
             lbOptions.Visible = true;
             lbTest.Visible = true;
 
-            lbMods.Text = Locale.Language.Main.Mods.Text.Replace("%%", Program.Mods.Count(x => x.Enabled).ToString());
+            lbMods.Text = Locale.Language.Main.Mods.Text.Replace("%%", string.Format(Locale.Language.Culture, "{0:0}", Program.Mods.Count(x => x.Enabled)));
         }
 
         #endregion
@@ -229,6 +246,27 @@ namespace TyModManager.UI
 
             scrPos = PointToScreen(e.Location);
             this.Location = new Point(scrPos.X - mainMouseDownPos.X, scrPos.Y - mainMouseDownPos.Y);
+        }
+
+        #endregion
+
+        #region Update
+
+        private void CheckUpdate()
+        {
+            string url = @"https://github.com/Dnawrkshp/ty-1-tools/wiki/update";
+
+            WebClient client = new WebClient();
+            client.DownloadStringCompleted += Client_DownloadStringCompleted; ;
+            client.DownloadStringAsync(new Uri(url));
+        }
+
+        private void Client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            int i = e.Result.IndexOf("Ty Mod Manager: ") + 16;
+            double v = double.Parse(e.Result.Substring(i, e.Result.IndexOf("<", i) - i));
+
+            lbUpdate.Visible = Program.AppVersion < v;
         }
 
         #endregion

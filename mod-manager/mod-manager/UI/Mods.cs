@@ -37,7 +37,7 @@ namespace TyModManager.UI
                     // Make sure the user understand the mod is incompatible
                     this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ReadOnly = true;
                     this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[1].Style = new DataGridViewCellStyle(this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[1].Style) { ForeColor = Color.Red };
-                    this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ToolTipText = Locale.Language.Mods.IncompatibleMod.Replace("%%", "r" + Program.RVersion.ToString());
+                    this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ToolTipText = Locale.Language.Mods.IncompatibleMod.Replace("%%", string.Format(Locale.Language.Culture, "r{0:0}", Program.RVersion));
                     this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[1].ToolTipText = this.dgvMods.Rows[this.dgvMods.RowCount - 1].Cells[0].ToolTipText;
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,10 @@ namespace TyModManager.Localization
     [Serializable, XmlRoot("locale")]
     public class Locale
     {
+
+        [XmlIgnore]
+        public CultureInfo Culture { get; set; } = null;
+
 
         #region XML Schema
 
@@ -109,6 +114,9 @@ namespace TyModManager.Localization
 
             [XmlElement("exit")]
             public string Exit { get; set; }
+
+            [XmlElement("update")]
+            public string Update { get; set; }
 
             [XmlElement("wiki")]
             public TooltipElement Wiki { get; set; }

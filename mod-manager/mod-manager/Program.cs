@@ -43,6 +43,8 @@ namespace TyModManager
         public static double RVersion = 0d;
         public static double VVersion = 0d;
 
+        public const double AppVersion = 0.01;
+
         public static string PortalEntry = "pos = %x, %y, %z\r\n" +
                                            "ID = %i,%l\r\n" +
                                            "standPos = -192.000, 4379.000, 4551.000\r\n" +
@@ -122,6 +124,7 @@ namespace TyModManager
                             fonts.Add(font);
                         }
                     }
+                    ul.Culture = new CultureInfo(ul.Name);
                     Locales.Add(ul);
                 }
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -41,7 +42,7 @@ namespace TyModManager.UI
         public void Localize()
         {
             // Apply text
-            this.Text = Locale.Language.Options.Title;
+            this.Text = Locale.Language.Options.Title.Replace("%%", string.Format(Locale.Language.Culture, "v{0:0.00}", Program.AppVersion));
             this.gbTestArgs.Text = Locale.Language.Options.OnTestContainer.TestArgs.Text;
             this.gbOnTest.Text = Locale.Language.Options.OnTestContainer.Text;
             this.cbStartOnly.Text = Locale.Language.Options.OnTestContainer.StartOnly.Text;

@@ -39,6 +39,7 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.lbWiki = new TyModManager.UI.ButtonLink();
             this.lbFolder = new TyModManager.UI.ButtonLink();
+            this.lbUpdate = new TyModManager.UI.ButtonLabel();
             this.SuspendLayout();
             // 
             // lbPlay
@@ -50,7 +51,7 @@
             this.lbPlay.HoverColor = System.Drawing.Color.Gray;
             this.lbPlay.Location = new System.Drawing.Point(505, 9);
             this.lbPlay.Name = "lbPlay";
-            this.lbPlay.Size = new System.Drawing.Size(87, 31);
+            this.lbPlay.Size = new System.Drawing.Size(83, 31);
             this.lbPlay.TabIndex = 1;
             this.lbPlay.Text = "PLAY";
             this.lbPlay.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -93,7 +94,7 @@
             this.lbTest.HoverColor = System.Drawing.Color.Gray;
             this.lbTest.Location = new System.Drawing.Point(506, 50);
             this.lbTest.Name = "lbTest";
-            this.lbTest.Size = new System.Drawing.Size(86, 31);
+            this.lbTest.Size = new System.Drawing.Size(84, 31);
             this.lbTest.TabIndex = 4;
             this.lbTest.Text = "TEST";
             this.lbTest.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -157,6 +158,21 @@
             this.lbFolder.Text = "Mods";
             this.toolTip.SetToolTip(this.lbFolder, "Mods Folder");
             // 
+            // lbUpdate
+            // 
+            this.lbUpdate.BackColor = System.Drawing.Color.Transparent;
+            this.lbUpdate.ClickColor = System.Drawing.Color.White;
+            this.lbUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbUpdate.ForeColor = System.Drawing.SystemColors.Control;
+            this.lbUpdate.HoverColor = System.Drawing.Color.Gray;
+            this.lbUpdate.Location = new System.Drawing.Point(322, 336);
+            this.lbUpdate.Name = "lbUpdate";
+            this.lbUpdate.Size = new System.Drawing.Size(125, 31);
+            this.lbUpdate.TabIndex = 10;
+            this.lbUpdate.Text = "UPDATE";
+            this.lbUpdate.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lbUpdate.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -164,6 +180,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(600, 380);
             this.ControlBox = false;
+            this.Controls.Add(this.lbUpdate);
             this.Controls.Add(this.lbFolder);
             this.Controls.Add(this.lbWiki);
             this.Controls.Add(this.lbLog);
@@ -198,6 +215,7 @@
         private System.Windows.Forms.ToolTip toolTip;
         private ButtonLink lbWiki;
         private ButtonLink lbFolder;
+        private ButtonLabel lbUpdate;
     }
 }
 
