@@ -77,7 +77,7 @@ namespace TyModManager.UI
             lbMods.Font = lbPlay.Font;
             lbOptions.Font = lbPlay.Font;
             lbExit.Font = lbPlay.Font;
-            lbLog.Font = new System.Drawing.Font(Locale.GetFontMono(), 8.75f, FontStyle.Regular);
+            lbLog.Font = new System.Drawing.Font(Locale.GetFontRegular(), 8.75f, FontStyle.Regular);
 
             // Apply text
             lbPlay.Text = Locale.Language.Main.Play.Text;

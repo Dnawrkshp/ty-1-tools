@@ -62,6 +62,8 @@ namespace TyModManager
         [STAThread]
         static void Main()
         {
+            List<string> fonts = new List<string>();
+
             // Setup log stream
             Logstream = new LogStream();
 
@@ -113,7 +115,13 @@ namespace TyModManager
                 if (ul != null && ul.Valid())
                 {
                     foreach (string font in ul.Fonts)
-                        try { FontCollection.AddFontFile(Path.Combine(LocalePath, font)); } catch { }
+                    {
+                        if (!fonts.Contains(font))
+                        {
+                            try { FontCollection.AddFontFile(Path.Combine(LocalePath, font)); } catch { }
+                            fonts.Add(font);
+                        }
+                    }
                     Locales.Add(ul);
                 }
             }

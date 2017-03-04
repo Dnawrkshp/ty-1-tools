@@ -197,7 +197,7 @@ static void * LoadResourceFile(char * fileName, int32_t * size, char * buffer, i
 	RKVFileEntry * fEntry = NULL;
 	RKVDirectoryEntry * dEntry = NULL;
 	int32_t fSize = 0;
-	char rkvName[16];
+	// char rkvName[16];
 	FULLPATH[0] = 0;
 
 	Log(fileName, size, buffer, bufferSize, a5);

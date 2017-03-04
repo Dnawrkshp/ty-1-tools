@@ -164,9 +164,6 @@ namespace TyModManager.Localization
         [XmlAttribute("font")]
         public string Font { get; set; }
 
-        [XmlAttribute("font-mono")]
-        public string FontMono { get; set; }
-
 
         [XmlArray("fonts")]
         public List<string> Fonts { get; set; }
@@ -216,15 +213,6 @@ namespace TyModManager.Localization
             return family ?? FontFamily.GenericSerif;
         }
 
-        public static FontFamily GetFontMono()
-        {
-            FontFamily family = Program.FontCollection.Families.Where(f => f.Name == Language.FontMono).FirstOrDefault();
-            if (family == null)
-                family = FontFamily.Families.Where(f => f.Name == Language.FontMono).FirstOrDefault();
-
-            return family ?? FontFamily.GenericMonospace;
-        }
-
         #endregion
 
         #region Serialization
@@ -256,7 +244,7 @@ namespace TyModManager.Localization
 
         public bool Valid()
         {
-            if (Name == null || Native == null || Font == null || FontMono == null)
+            if (Name == null || Native == null || Font == null)
                 return false;
 
             if (Okay == null || Cancel == null)
