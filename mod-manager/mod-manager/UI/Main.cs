@@ -254,7 +254,7 @@ namespace TyModManager.UI
 
         private void CheckUpdate()
         {
-            string url = @"https://github.com/Dnawrkshp/ty-1-tools/wiki/update";
+            string url = @"http://github.com/Dnawrkshp/ty-1-tools/wiki/update";
 
             WebClient client = new WebClient();
             client.DownloadStringCompleted += Client_DownloadStringCompleted; ;
@@ -263,6 +263,9 @@ namespace TyModManager.UI
 
         private void Client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
+            if (e.Cancelled || e.Error != null)
+                return;
+
             int i = e.Result.IndexOf("Ty Mod Manager: ") + 16;
             double v = double.Parse(e.Result.Substring(i, e.Result.IndexOf("<", i) - i));
 

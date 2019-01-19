@@ -58,7 +58,7 @@ bool LevelLoad(char * file, char * path) {
 
 	if (!file)
 		return false;
-	if (*(uint32_t*)GameSaveBufferPointer == 0)
+	if (!GameSaveBufferPointer || *(uint32_t*)GameSaveBufferPointer == 0)
 		return false;
 
 	len = strlen(file);

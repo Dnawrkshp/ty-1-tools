@@ -149,8 +149,8 @@ static void GetAddresses(HANDLE hProc) {
 				LoadResourceFileAddress = x;
 			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 &&
 					 buffer[20] == 0xE8 && buffer[25] == 0x83 && buffer[26] == 0xC4 && buffer[27] == 0x04 && buffer[28] == 0x50 && buffer[29] == 0xE8) {
-				WriteProcessMemory(hProc, (LPVOID)(*(uint32_t*)(x + 0x1E) + x + 5 + 0x1D), &n, 1, &read);
-				GameSaveBufferPointer = *(uint32_t*)(x + 1);
+				//WriteProcessMemory(hProc, (LPVOID)(*(uint32_t*)(x + 0x1E) + x + 5 + 0x1D), &n, 1, &read);
+				//GameSaveBufferPointer = *(uint32_t*)(x + 1);
 			}
 			else if (buffer[0] == 0x74 && buffer[1] == 0x61 && buffer[2] == 0x56 && buffer[3] == 0x8B &&
 					 buffer[9] == 0xBA && buffer[10] == 0x2C && buffer[11] == 0x0B && buffer[12] == 0x00 &&
@@ -162,6 +162,9 @@ static void GetAddresses(HANDLE hProc) {
 			}
 		}
 	}
+
+	// Hardcoded for r3569_v1.27
+	GameSaveBufferPointer = BaseAddress + (0x00681288-0x401000);
 }
 
 static int Init() {

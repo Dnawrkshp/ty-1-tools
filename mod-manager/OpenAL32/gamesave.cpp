@@ -82,6 +82,10 @@ uint32_t Handle() {
 static void Install() {
 	char buffer[4];
 
+	if (!GameSaveBufferPointer)
+		return;
+
+
 	while (CustomSaveFileStart && !GameSaveBufferAddress && GameSaveBufferPointer) {
 		GameSaveBufferAddress = *(uint32_t*)GameSaveBufferPointer;
 		Sleep(100);
