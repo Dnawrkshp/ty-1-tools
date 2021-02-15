@@ -102,6 +102,7 @@
             // 
             // lbGithub
             // 
+            this.lbGithub.BackColor = System.Drawing.Color.Transparent;
             this.lbGithub.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbGithub.ForeColor = System.Drawing.Color.LightGray;
             this.lbGithub.Image = global::TyModManager.Properties.Resources.GitHub_Mark_Light_32px;
@@ -136,6 +137,7 @@
             // 
             // lbWiki
             // 
+            this.lbWiki.BackColor = System.Drawing.Color.Transparent;
             this.lbWiki.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbWiki.ForeColor = System.Drawing.Color.LightGray;
             this.lbWiki.Image = global::TyModManager.Properties.Resources.Wiki_Light_32px;
@@ -148,6 +150,7 @@
             // 
             // lbFolder
             // 
+            this.lbFolder.BackColor = System.Drawing.Color.Transparent;
             this.lbFolder.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbFolder.ForeColor = System.Drawing.Color.LightGray;
             this.lbFolder.Image = global::TyModManager.Properties.Resources.Folder_Light_32px;
