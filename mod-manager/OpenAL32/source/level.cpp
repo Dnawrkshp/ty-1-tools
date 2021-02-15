@@ -58,11 +58,11 @@ bool LevelLoad(char * file, char * path) {
 
 	if (!file)
 		return false;
-	if (!GameSaveBufferPointer || *(uint32_t*)GameSaveBufferPointer == 0)
+	if (!LoadingLevelIdAddress)
 		return false;
 
 	len = strlen(file);
-	currentLevelID = *(uint32_t*)(*(uint32_t*)GameSaveBufferPointer + 0x08);
+	currentLevelID = *(uint32_t*)LoadingLevelIdAddress;
 
 	if (currentLevelID >= LEVEL_START && currentLevelID < LEVEL_MAX) {
 		levelDir = (char*)(LevelEntries[currentLevelID].levelID + strlen(LevelEntries[currentLevelID].levelID) + 1);
@@ -121,7 +121,10 @@ void Handler_Level(HANDLE hProc)
 		return;
 
 	if (!LevelEntriesAddress)
-		throw exception("Unable to determine address of level ids");
+		throw exception("Unable to determine address of level ids\n");
+
+	if (!LoadingLevelIdAddress)
+		throw exception("Unable to determine address of loading level id\n");
 
 	for (uint64_t x = BaseAddress; x < BaseEndAddress; x++) {
 		if (ReadProcessMemory(hProc, (LPCVOID)x, (LPVOID)buffer, 4, &read) && read == 4) {

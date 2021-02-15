@@ -18,15 +18,15 @@ extern bool LevelLoad(char * file, char * path);
  * Should work well in all version if the initial address of LoadResourceFile() is found
 */
 #define FUNCOFF_RKVCOMPAREAT	0x20
-#define FUNCOFF_RKVSEEK			0x202
-#define FUNCOFF_RKVREAD			0x213
-#define FUNCOFF_MALLOC			0x1D0
+#define FUNCOFF_RKVSEEK			0x1E4
+#define FUNCOFF_RKVREAD			(FUNCOFF_RKVSEEK + 0x11)
+#define FUNCOFF_MALLOC			0x1B2
 #define FUNCOFF_GETRKVFILEENTRY 0x33
-#define FUNCOFF_CHECKCACHE		0x133
+#define FUNCOFF_CHECKCACHE		0x126
 
 #define VAROFF_DATARKV			0x60
-#define VAROFF_MUSICRKV			0xA7
-#define VAROFF_VIDEORKV			0xEB
+#define VAROFF_MUSICRKV			0xA4
+#define VAROFF_VIDEORKV			0xE6
 #define VAROFF_PATCHRKV			0x19
 
 static uint32_t FUNCADDR_RKVSEEK = 0;
@@ -41,6 +41,7 @@ static uint32_t VARADDR_DATARKV = 0;
 static uint32_t VARADDR_MUSICRKV = 0;
 static uint32_t VARADDR_VIDEORKV = 0;
 static uint32_t VARADDR_PATCHRKV = 0;
+static uint32_t VARADDR_PCRKV = 0;
 
 #define FUNCADDR_CHECHCACHE (*(int32_t*)FUNCPTR_CHECKCACHE)
 
@@ -113,7 +114,7 @@ static RKVFileEntry * _LoadResourceFile_GetFileEntry_Item(char * fileName, int32
 
 // Try get File Entry in any RKV by Filename
 static int32_t _LoadResourceFile_GetFileEntry(char * fileName, RKVFileEntry** entry, char ** rkvName) {
-	uint32_t rkvs[] = { VARADDR_PATCHRKV, VARADDR_DATARKV, VARADDR_MUSICRKV, VARADDR_VIDEORKV };
+	uint32_t rkvs[] = { VARADDR_PATCHRKV, VARADDR_DATARKV, VARADDR_MUSICRKV, VARADDR_VIDEORKV, VARADDR_PCRKV };
 	for (int32_t x = 0; x < sizeof(rkvs) / sizeof(uint32_t); x++) {
 		*entry = _LoadResourceFile_GetFileEntry_Item(fileName, rkvs[x]);
 		if (*entry) {
@@ -289,10 +290,12 @@ void Handler_Resource(HANDLE hProc)
 	FUNCADDR_GETRKVFILEENTRY = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_GETRKVFILEENTRY + 1) + (FUNCADDR_LOADRESOURCEFILE + FUNCOFF_GETRKVFILEENTRY) + 5;	// call dword 0x1411650
 	FUNCPTR_CHECKCACHE = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + FUNCOFF_CHECKCACHE);																				// mov eax, [0x160a1d0]
 
-	VARADDR_DATARKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_DATARKV);																						// cmp [0x160a218], ebx
-	VARADDR_MUSICRKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_MUSICRKV);																					// cmp [0x160a278], ebx
-	VARADDR_VIDEORKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_VIDEORKV);																					// cmp [0x160a2d8], ebx
 	VARADDR_PATCHRKV = *(uint32_t*)(FUNCADDR_LOADRESOURCEFILE + VAROFF_PATCHRKV);																					// cmp [0x160a338], ebx
+	VARADDR_VIDEORKV = VARADDR_PATCHRKV - (0x60 * 1);
+	VARADDR_MUSICRKV = VARADDR_PATCHRKV - (0x60 * 2);
+	VARADDR_DATARKV = VARADDR_PATCHRKV - (0x60 * 3);
+	VARADDR_PCRKV = VARADDR_PATCHRKV + (0x60 * 1);
+
 
 	TY_RKVSEEK = (RKVSEEK)FUNCADDR_RKVSEEK;
 	TY_RKVREAD = (RKVREAD)FUNCADDR_RKVREAD;

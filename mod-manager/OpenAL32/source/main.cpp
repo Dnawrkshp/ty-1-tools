@@ -18,6 +18,7 @@ uint64_t LevelEntriesAddress = 0;
 uint64_t LoadResourceFileAddress = 0;
 uint64_t LoadSaveFileAddress = 0;
 uint64_t SaveSaveFileAddress = 0;
+uint64_t LoadingLevelIdAddress = 0;
 
 uint32_t GameSaveBufferPointer = 0;
 
@@ -119,6 +120,25 @@ static LPALCCAPTURESAMPLES _alcCaptureSamples = NULL;
 
 static int hasLoadedLibrary = 0;
 
+// Returns true if pattern matches input buffer
+// Values in pattern not within 0-255 range are ignored
+static bool match_pattern(uint8_t* buffer, const int16_t* pattern, int count)
+{
+	for (int i = 0; i < count; ++i)
+	{
+		int patternByte = pattern[i];
+
+		// skip invalid bytes
+		if (patternByte < 0 || patternByte > 0xFF)
+			continue;
+
+		if ((uint8_t)patternByte != buffer[i])
+			return false;
+	}
+
+	return true;
+}
+
 // Use some patterns to determine the address of important functions/data
 // This won't always work but should work better than hardcoding offsets
 static void GetAddresses(HANDLE hProc) {
@@ -137,6 +157,27 @@ static void GetAddresses(HANDLE hProc) {
 		0xBE					// 
 	};
 
+	const int16_t pattern_loadsavefile[] = {
+		0x74, 0x61,							// jz
+		0x56,								// push esi
+		0x8B, 0x35, -1, -1, -1, -1,			// mov esi, XXXX
+		0xBA, -1, -1, -1, -1,				// mov edx, XXXX
+		0x69, 0xCE, -1, -1, -1, -1,			// imul ecx, esi, XX
+		0x8B, 0x89, -1, -1, -1, -1,			// mov ecx, XXXX
+		0x3B, 0xCA,							// cmp ecx, edx
+		0x0F, 0x42, 0xD1					// cmovb edx, ecx
+	};
+
+	const int16_t pattern_loadinglevelid[] = {
+		0x56,								// push esi
+		0x8B, 0xF1,							// mov esi, ecx
+		0xE8, -1, -1, -1, -1,				// call XXXX
+		0xA1, -1, -1, -1, -1,				// mov eax, XXXX
+		0x80, 0xB8, -1, -1, -1, -1, 0,		// cmp XXXX, 0
+		0x75, 0x1A,							// jnz
+		0xFF, 0x35,							// push XXXX
+	};
+
 	const unsigned char pattern_loadresourcefile[] = {
 		0x55, 0x8B, 0xEC, 0x83, 0xEC, 0x08, 0x53, 0x56, 0x33, 0xDB, 0xC7, 0x45, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0x33, 0xF6, 0x57, 0x8B, 0x7D, 0x08
 	};
@@ -145,26 +186,17 @@ static void GetAddresses(HANDLE hProc) {
 		if (ReadProcessMemory(hProc, (LPCVOID)x, (LPVOID)buffer, 32, &read) && read == 32) {
 			if (!LevelEntriesAddress && memcmp(buffer, pattern_levelentries, 12) == 0)
 				LevelEntriesAddress = *(UINT32*)(x + 12);
+			else if (!LoadingLevelIdAddress && match_pattern(buffer, pattern_loadinglevelid, 24))
+				LoadingLevelIdAddress = *(uint32_t*)(x + 24);
 			else if (!LoadResourceFileAddress && memcmp(buffer, pattern_loadresourcefile, 23) == 0)
 				LoadResourceFileAddress = x;
-			else if (buffer[0] == 0xA1 && buffer[5] == 0x83 && buffer[6] == 0xC4 && buffer[7] == 0x0C && buffer[8] == 0xFF && buffer[9] == 0x35 && buffer[14] == 0xFF && buffer[15] == 0xB0 &&
-					 buffer[20] == 0xE8 && buffer[25] == 0x83 && buffer[26] == 0xC4 && buffer[27] == 0x04 && buffer[28] == 0x50 && buffer[29] == 0xE8) {
-				//WriteProcessMemory(hProc, (LPVOID)(*(uint32_t*)(x + 0x1E) + x + 5 + 0x1D), &n, 1, &read);
-				//GameSaveBufferPointer = *(uint32_t*)(x + 1);
-			}
-			else if (buffer[0] == 0x74 && buffer[1] == 0x61 && buffer[2] == 0x56 && buffer[3] == 0x8B &&
-					 buffer[9] == 0xBA && buffer[10] == 0x2C && buffer[11] == 0x0B && buffer[12] == 0x00 &&
-					 buffer[13] == 0x00 && buffer[14] == 0x69 && buffer[15] == 0xCE && buffer[16] == 0xA8 &&
-					 buffer[17] == 0x00 && buffer[18] == 0x00 && buffer[19] == 0x00 && buffer[20] == 0x8B &&
-				 	 buffer[26] == 0x3B && buffer[27] == 0xCA && buffer[28] == 0x0F && buffer[29] == 0x42 &&
-					 buffer[30] == 0xD1 && buffer[31] == 0x52) {
+			else if (buffer[0] == 0xA1 && buffer[5] == 0x0F && buffer[6] == 0xB6 && buffer[7] == 0x80 && buffer[8] == 0xB6 && buffer[9] == 0x0A && buffer[10] == 0x00 && buffer[11] == 0x00 &&
+				buffer[12] == 0x50 && buffer[13] == 0xE8)
+				GameSaveBufferPointer = *(uint32_t*)(x + 1);
+			else if (match_pattern(buffer, pattern_loadsavefile, 31))
 				LoadSaveFileAddress = x - 0x1E;
-			}
 		}
 	}
-
-	// Hardcoded for r3569_v1.27
-	GameSaveBufferPointer = BaseAddress + (0x00681288-0x401000);
 }
 
 static int Init() {

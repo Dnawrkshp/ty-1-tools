@@ -119,7 +119,7 @@ void Handler_GameSave(HANDLE hProc)
 		return;
 
 	if (!LoadSaveFileAddress)
-		throw exception("Unable to determine address of load save file function");
+		throw exception("Unable to determine address of load save file function\n");
 
 	LoadSaveOverwriteFunction = (void*)(*(int32_t*)(LoadSaveFileAddress + 7) + LoadSaveFileAddress + 5 + 6);
 	LoadSaveOverwriteFunctionArg = *(uint32_t*)(LoadSaveFileAddress + 2);
@@ -127,13 +127,13 @@ void Handler_GameSave(HANDLE hProc)
 	IsLoadAddress = *(uint32_t*)(LoadSaveFileAddress + 0xD);
 
 	if (IsLoadAddress < BaseAddress || IsLoadAddress > BaseEndAddress)
-		throw exception("Unable to determine address of the load/save operation type");
+		throw exception("Unable to determine address of the load/save operation type\n");
 	if (LoadSaveGameIndexAddress < BaseAddress || LoadSaveGameIndexAddress > BaseEndAddress)
-		throw exception("Unable to determine address of the save index");
+		throw exception("Unable to determine address of the save index\n");
 	if (LoadSaveOverwriteFunctionArg < BaseAddress || LoadSaveOverwriteFunctionArg > BaseEndAddress)
-		throw exception("Unable to determine address of the patched load function first argument");
+		throw exception("Unable to determine address of the patched load function first argument\n");
 	if ((uint32_t)LoadSaveOverwriteFunction < BaseAddress || (uint32_t)LoadSaveOverwriteFunction > BaseEndAddress)
-		throw exception("Unable to determine address of the patched load function");
+		throw exception("Unable to determine address of the patched load function\n");
 	
 	WriteProcessMemory(hProc, (LPVOID)(LoadSaveFileAddress + 7), &patch, 4, NULL);
 	

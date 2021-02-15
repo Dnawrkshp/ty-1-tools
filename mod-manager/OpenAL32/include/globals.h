@@ -13,5 +13,6 @@ extern uint64_t LevelEntriesAddress;
 extern uint64_t LoadResourceFileAddress;
 extern uint64_t LoadSaveFileAddress;
 extern uint64_t SaveSaveFileAddress;
+extern uint64_t LoadingLevelIdAddress;
 
 extern uint32_t GameSaveBufferPointer;
