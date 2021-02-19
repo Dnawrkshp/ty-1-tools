@@ -38,12 +38,17 @@ namespace TyModManager
         public static string TyDirectory = String.Empty;
         public static string LocalePath = "Localization";
 
+        public static IFormatProvider TyFormat = new NumberFormatInfo()
+        {
+            NumberDecimalSeparator = "."
+        };
+
         public static ulong ErrorCount = 0;
 
         public static double RVersion = 0d;
         public static double VVersion = 0d;
 
-        public const double AppVersion = 0.03;
+        public const double AppVersion = 0.04;
 
         public static string PortalEntry = "pos = %x, %y, %z\r\n" +
                                            "ID = %i,%l\r\n" +
@@ -420,15 +425,18 @@ namespace TyModManager
                     // Add portal for level
                     z1LV2 = z1LV2.Insert(z1LV2.IndexOf("\r\n", portal.Index) + 2, "\r\n" + Program.PortalEntry
                         .Replace("%l", levelID)
-                        .Replace("%i", (x+levelStart).ToString())
-                        .Replace("%x", level.X.ToString("F"))
-                        .Replace("%y", level.Y.ToString("F"))
-                        .Replace("%z", level.Z.ToString("F"))
+                        .Replace("%i", (x+levelStart).ToString(TyFormat))
+                        .Replace("%x", level.X.ToString("F", TyFormat))
+                        .Replace("%y", level.Y.ToString("F", TyFormat))
+                        .Replace("%z", level.Z.ToString("F", TyFormat))
                         .Replace("%a", level.Authors)
                         );
 
+                    // Ensure input path ends in a backslash
+                    string inputPath = level.InputPath.TrimEnd(Path.DirectorySeparatorChar).TrimEnd(Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
                     // Add to list of custom levels (to be used by the OpenAL32 proxy)
-                    customLevels.Add((x + levelStart).ToString() + " " + levelID + " " + Path.Combine("Mods", level.InputPath));
+                    customLevels.Add((x + levelStart).ToString() + " " + levelID + " " + Path.Combine("Mods", inputPath));
                 }
             }
 
