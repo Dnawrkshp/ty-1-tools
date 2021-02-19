@@ -48,7 +48,7 @@ namespace TyModManager
         public static double RVersion = 0d;
         public static double VVersion = 0d;
 
-        public const double AppVersion = 0.04;
+        public const double AppVersion = 0.05;
 
         public static string PortalEntry = "pos = %x, %y, %z\r\n" +
                                            "ID = %i,%l\r\n" +

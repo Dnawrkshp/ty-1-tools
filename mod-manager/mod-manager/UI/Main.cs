@@ -254,10 +254,11 @@ namespace TyModManager.UI
 
         private void CheckUpdate()
         {
-            string url = @"http://github.com/Dnawrkshp/ty-1-tools/wiki/update";
+            string url = @"https://github.com/Dnawrkshp/ty-1-tools/wiki/update";
 
-            WebClient client = new WebClient();
-            client.DownloadStringCompleted += Client_DownloadStringCompleted; ;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            var client = new System.Net.WebClient();
+            client.DownloadStringCompleted += Client_DownloadStringCompleted;
             client.DownloadStringAsync(new Uri(url));
         }
 

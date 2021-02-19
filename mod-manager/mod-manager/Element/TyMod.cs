@@ -109,8 +109,8 @@ namespace TyModManager.Element
 
             try { source = node.Attributes.GetNamedItem("source").Value; } catch (Exception e) { Program.Log(tymod.ToString(), "Invalid source attribute for global \"" + node.OuterXml + "\"", e); return; }
             try { type = node.Attributes.GetNamedItem("type").Value; editType = (TyModEdit.EditType)Enum.Parse(typeof(TyModEdit.EditType), type); } catch (Exception) { }
-            try { context = node.Attributes.GetNamedItem("context").Value.ToLower(); } catch (Exception) { }
-
+            try { context = node.Attributes.GetNamedItem("context")?.Value?.ToLower(); } catch (Exception) { }
+            
             modEdit = new TyModEdit(source, editType, context);
 
             foreach (XmlAttribute attr in node.Attributes)
