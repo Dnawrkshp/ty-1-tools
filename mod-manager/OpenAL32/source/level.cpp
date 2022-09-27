@@ -155,179 +155,187 @@ void SetupLevelEntries(void) {
 	CustomIDContainerStart = new char[1024 * 4]();
 	CustomIDContainerPointer = CustomIDContainerStart;
 
-	// z
-	LevelEntries[i].levelID = LEVEL_00;
-	LevelEntries[i].unk_04 = 0x003;
-	LevelEntries[i].unk_08 = 0x000;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x100;
-	i++;
+	if (LevelEntriesAddress)
+	{
+		i = 24;
+		memcpy(LevelEntries, (void*)LevelEntriesAddress, 20 * i);
+	}
+	else
+	{
+		// z
+		LevelEntries[i].levelID = LEVEL_00;
+		LevelEntries[i].unk_04 = 0x003;
+		LevelEntries[i].unk_08 = 0x000;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x100;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_01;
-	LevelEntries[i].unk_04 = 0x003;
-	LevelEntries[i].unk_08 = 0x000;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x100;
-	i++;
+		LevelEntries[i].levelID = LEVEL_01;
+		LevelEntries[i].unk_04 = 0x003;
+		LevelEntries[i].unk_08 = 0x000;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x100;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_02;
-	LevelEntries[i].unk_04 = 0x003;
-	LevelEntries[i].unk_08 = 0x000;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_02;
+		LevelEntries[i].unk_04 = 0x003;
+		LevelEntries[i].unk_08 = 0x000;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_03;
-	LevelEntries[i].unk_04 = 0x003;
-	LevelEntries[i].unk_08 = 0x000;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_03;
+		LevelEntries[i].unk_04 = 0x003;
+		LevelEntries[i].unk_08 = 0x000;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	// a
-	LevelEntries[i].levelID = LEVEL_10;
-	LevelEntries[i].unk_04 = 0x000;
-	LevelEntries[i].unk_08 = 0x001;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		// a
+		LevelEntries[i].levelID = LEVEL_10;
+		LevelEntries[i].unk_04 = 0x000;
+		LevelEntries[i].unk_08 = 0x001;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_11;
-	LevelEntries[i].unk_04 = 0x000;
-	LevelEntries[i].unk_08 = 0x001;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		LevelEntries[i].levelID = LEVEL_11;
+		LevelEntries[i].unk_04 = 0x000;
+		LevelEntries[i].unk_08 = 0x001;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_12;
-	LevelEntries[i].unk_04 = 0x000;
-	LevelEntries[i].unk_08 = 0x001;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		LevelEntries[i].levelID = LEVEL_12;
+		LevelEntries[i].unk_04 = 0x000;
+		LevelEntries[i].unk_08 = 0x001;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_13;
-	LevelEntries[i].unk_04 = 0x000;
-	LevelEntries[i].unk_08 = 0x001;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_13;
+		LevelEntries[i].unk_04 = 0x000;
+		LevelEntries[i].unk_08 = 0x001;
+		LevelEntries[i].unk_0C = 0x000;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	// b
-	LevelEntries[i].levelID = LEVEL_20;
-	LevelEntries[i].unk_04 = 0x001;
-	LevelEntries[i].unk_08 = 0x002;
-	LevelEntries[i].unk_0C = 0x001;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		// b
+		LevelEntries[i].levelID = LEVEL_20;
+		LevelEntries[i].unk_04 = 0x001;
+		LevelEntries[i].unk_08 = 0x002;
+		LevelEntries[i].unk_0C = 0x001;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_21;
-	LevelEntries[i].unk_04 = 0x001;
-	LevelEntries[i].unk_08 = 0x002;
-	LevelEntries[i].unk_0C = 0x001;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		LevelEntries[i].levelID = LEVEL_21;
+		LevelEntries[i].unk_04 = 0x001;
+		LevelEntries[i].unk_08 = 0x002;
+		LevelEntries[i].unk_0C = 0x001;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_22;
-	LevelEntries[i].unk_04 = 0x001;
-	LevelEntries[i].unk_08 = 0x002;
-	LevelEntries[i].unk_0C = 0x001;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		LevelEntries[i].levelID = LEVEL_22;
+		LevelEntries[i].unk_04 = 0x001;
+		LevelEntries[i].unk_08 = 0x002;
+		LevelEntries[i].unk_0C = 0x001;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_23;
-	LevelEntries[i].unk_04 = 0x001;
-	LevelEntries[i].unk_08 = 0x002;
-	LevelEntries[i].unk_0C = 0x001;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_23;
+		LevelEntries[i].unk_04 = 0x001;
+		LevelEntries[i].unk_08 = 0x002;
+		LevelEntries[i].unk_0C = 0x001;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	// c
-	LevelEntries[i].levelID = LEVEL_30;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x003;
-	LevelEntries[i].unk_0C = 0x002;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		// c
+		LevelEntries[i].levelID = LEVEL_30;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x003;
+		LevelEntries[i].unk_0C = 0x002;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_31;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x003;
-	LevelEntries[i].unk_0C = 0x002;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		LevelEntries[i].levelID = LEVEL_31;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x003;
+		LevelEntries[i].unk_0C = 0x002;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_32;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x003;
-	LevelEntries[i].unk_0C = 0x002;
-	LevelEntries[i].unk_10 = 0x101;
-	i++;
+		LevelEntries[i].levelID = LEVEL_32;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x003;
+		LevelEntries[i].unk_0C = 0x002;
+		LevelEntries[i].unk_10 = 0x101;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_33;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x003;
-	LevelEntries[i].unk_0C = 0x002;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_33;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x003;
+		LevelEntries[i].unk_0C = 0x002;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	// d
-	LevelEntries[i].levelID = LEVEL_40;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x005;
-	LevelEntries[i].unk_0C = 0x003;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		// d
+		LevelEntries[i].levelID = LEVEL_40;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x005;
+		LevelEntries[i].unk_0C = 0x003;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_41;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x005;
-	LevelEntries[i].unk_0C = 0x003;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_41;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x005;
+		LevelEntries[i].unk_0C = 0x003;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_42;
-	LevelEntries[i].unk_04 = 0x002;
-	LevelEntries[i].unk_08 = 0x004;
-	LevelEntries[i].unk_0C = 0x003;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_42;
+		LevelEntries[i].unk_04 = 0x002;
+		LevelEntries[i].unk_08 = 0x004;
+		LevelEntries[i].unk_0C = 0x003;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_43;
-	LevelEntries[i].unk_04 = 0x001;
-	LevelEntries[i].unk_08 = 0x002;
-	LevelEntries[i].unk_0C = 0x001;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_43;
+		LevelEntries[i].unk_04 = 0x001;
+		LevelEntries[i].unk_08 = 0x002;
+		LevelEntries[i].unk_0C = 0x001;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	// e
-	LevelEntries[i].levelID = LEVEL_50;
-	LevelEntries[i].unk_04 = 0x004;
-	LevelEntries[i].unk_08 = 0x005;
-	LevelEntries[i].unk_0C = 0x003;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		// e
+		LevelEntries[i].levelID = LEVEL_50;
+		LevelEntries[i].unk_04 = 0x004;
+		LevelEntries[i].unk_08 = 0x005;
+		LevelEntries[i].unk_0C = 0x003;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_51;
-	LevelEntries[i].unk_04 = 0x004;
-	LevelEntries[i].unk_08 = 0x005;
-	LevelEntries[i].unk_0C = 0x004;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_51;
+		LevelEntries[i].unk_04 = 0x004;
+		LevelEntries[i].unk_08 = 0x005;
+		LevelEntries[i].unk_0C = 0x004;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_52;
-	LevelEntries[i].unk_04 = 0x004;
-	LevelEntries[i].unk_08 = 0x005;
-	LevelEntries[i].unk_0C = 0x003;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_52;
+		LevelEntries[i].unk_04 = 0x004;
+		LevelEntries[i].unk_08 = 0x005;
+		LevelEntries[i].unk_0C = 0x004;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
 
-	LevelEntries[i].levelID = LEVEL_53;
-	LevelEntries[i].unk_04 = 0x004;
-	LevelEntries[i].unk_08 = 0x002;
-	LevelEntries[i].unk_0C = 0x000;
-	LevelEntries[i].unk_10 = 0x000;
-	i++;
+		LevelEntries[i].levelID = LEVEL_53;
+		LevelEntries[i].unk_04 = 0x004;
+		LevelEntries[i].unk_08 = 0x005;
+		LevelEntries[i].unk_0C = 0x004;
+		LevelEntries[i].unk_10 = 0x000;
+		i++;
+	}
 
 	// Parse custom maps
 	pFile = fopen("PC_External/cmaps.ini", "rb");

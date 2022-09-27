@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <Windows.h>
 
-#define LEVEL_START   900
-#define LEVEL_MAX    1000
+#define LEVEL_START				(900)
+#define LEVEL_MAX				(1000)
 
 extern uint64_t BaseAddress;
 extern uint64_t BaseEndAddress;
