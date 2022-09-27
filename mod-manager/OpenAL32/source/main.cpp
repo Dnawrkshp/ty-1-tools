@@ -208,7 +208,9 @@ static int Init() {
 		return 1;
 
 	// Load OpenAL32.dll
-	HMODULE hModOAL32 = LoadLibrary(L"C:\\Windows\\System32\\OpenAL32.dll");
+	HMODULE hModOAL32 = LoadLibrary(L"_OpenAL32.dll");
+	if (!hModOAL32)
+		hModOAL32 = LoadLibrary(L"C:\\Windows\\System32\\OpenAL32.dll");
 	if (!hModOAL32)
 		hModOAL32 = LoadLibrary(L"C:\\Windows\\SysWOW64\\OpenAL32.dll");
 	if (!hModOAL32)
