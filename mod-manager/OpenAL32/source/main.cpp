@@ -13,6 +13,7 @@ HMODULE GetModule(HANDLE hProc);
 uint64_t BaseAddress = 0;
 uint64_t BaseEndAddress = 0;
 uint64_t PID = 0;
+HWND ActiveWindow;
 
 uint64_t LevelEntriesAddress = 0;
 uint64_t LoadResourceFileAddress = 0;
@@ -200,6 +201,9 @@ static void GetAddresses(HANDLE hProc) {
 }
 
 static int Init() {
+
+	ActiveWindow = GetActiveWindow();
+
 	if (hasLoadedLibrary)
 		return 1;
 
@@ -324,6 +328,7 @@ static int Init() {
 			Handler_Level(hProc);
 			Handler_Plugin(hProc);
 			Handler_GameSave(hProc);
+			Handler_Manager(hProc);
 
 			CloseHandle(hProc);
 		}
